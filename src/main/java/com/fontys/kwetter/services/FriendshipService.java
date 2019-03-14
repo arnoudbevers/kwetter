@@ -1,7 +1,7 @@
-package services;
+package com.fontys.kwetter.services;
 
-import dao.UserDAO;
-import domain.User;
+import com.fontys.kwetter.dao.UserDAO;
+import com.fontys.kwetter.domain.User;
 
 import javax.ejb.Stateful;
 import javax.inject.Inject;

@@ -1,7 +1,6 @@
-package dao;
+package com.fontys.kwetter.dao;
 
-import domain.User;
-
+import com.fontys.kwetter.domain.User;
 import java.util.List;
 
 /**

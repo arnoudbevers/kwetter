@@ -1,9 +1,9 @@
-package services;
+package com.fontys.kwetter.services;
 
-import dao.KweetDAO;
-import dao.jpa.KweetDAOJPAImpl;
-import domain.Kweet;
-import domain.User;
+import com.fontys.kwetter.dao.KweetDAO;
+import com.fontys.kwetter.dao.jpa.KweetDAOJPAImpl;
+import com.fontys.kwetter.domain.Kweet;
+import com.fontys.kwetter.domain.User;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;

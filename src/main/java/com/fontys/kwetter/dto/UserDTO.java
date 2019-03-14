@@ -1,6 +1,6 @@
-package dto;
+package com.fontys.kwetter.dto;
 
-import domain.User;
+import com.fontys.kwetter.domain.User;
 
 import javax.ejb.Stateful;
 import java.util.ArrayList;

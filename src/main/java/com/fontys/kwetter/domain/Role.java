@@ -1,4 +1,4 @@
-package domain;
+package com.fontys.kwetter.domain;
 
 /**
  * Role a user can have on the platform.

@@ -1,9 +1,8 @@
-package services;
+package com.fontys.kwetter.services;
 
-import dao.UserDAO;
-import dao.jpa.UserDAOJPAImpl;
-import domain.User;
-import exceptions.FollowException;
+import com.fontys.kwetter.dao.UserDAO;
+import com.fontys.kwetter.dao.jpa.UserDAOJPAImpl;
+import com.fontys.kwetter.domain.User;
 
 import javax.ejb.Stateful;
 import javax.inject.Inject;

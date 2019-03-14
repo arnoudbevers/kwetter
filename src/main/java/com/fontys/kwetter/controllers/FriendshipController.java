@@ -1,19 +1,20 @@
-package controllers;
+package com.fontys.kwetter.controllers;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import domain.User;
-import dto.UserDTO;
-import services.FriendshipService;
+import com.fontys.kwetter.domain.User;
+import com.fontys.kwetter.dto.UserDTO;
+import com.fontys.kwetter.services.FriendshipService;
 
 import javax.ejb.EJB;
 import javax.ejb.EJBTransactionRolledbackException;
 import javax.faces.bean.RequestScoped;
 import javax.inject.Named;
 import javax.persistence.PersistenceException;
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;

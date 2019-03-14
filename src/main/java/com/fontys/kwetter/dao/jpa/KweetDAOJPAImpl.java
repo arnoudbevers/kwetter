@@ -1,9 +1,8 @@
-package dao.jpa;
+package com.fontys.kwetter.dao.jpa;
 
-import dao.KweetDAO;
-import domain.Kweet;
-import domain.User;
-
+import com.fontys.kwetter.dao.KweetDAO;
+import com.fontys.kwetter.domain.Kweet;
+import com.fontys.kwetter.domain.User;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

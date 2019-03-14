@@ -1,11 +1,11 @@
-package controllers;
+package com.fontys.kwetter.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import domain.Kweet;
-import domain.User;
-import services.KweetService;
-import services.UserService;
+import com.fontys.kwetter.domain.Kweet;
+import com.fontys.kwetter.domain.User;
+import com.fontys.kwetter.services.KweetService;
+import com.fontys.kwetter.services.UserService;
 
 import javax.ejb.EJB;
 import javax.ejb.EJBTransactionRolledbackException;

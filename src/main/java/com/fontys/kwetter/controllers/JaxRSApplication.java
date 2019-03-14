@@ -1,4 +1,4 @@
-package controllers;
+package com.fontys.kwetter.controllers;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;

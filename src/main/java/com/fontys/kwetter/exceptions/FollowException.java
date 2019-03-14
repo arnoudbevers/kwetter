@@ -1,4 +1,4 @@
-package exceptions;
+package com.fontys.kwetter.exceptions;
 
 import java.io.Serializable;
 

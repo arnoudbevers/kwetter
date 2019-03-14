@@ -1,4 +1,4 @@
-package domain;
+package com.fontys.kwetter.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
