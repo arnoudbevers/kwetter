@@ -1,0 +1,206 @@
+{
+	"info": {
+		"_postman_id": "01149a07-9c41-2c99-7fba-605d434657b6",
+		"name": "JEA6 - Kwetter",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "/users - User1",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"role\": \"USER\",\n\t\"email\": \"mail1@test.com\",\n\t\"username\": \"user1\",\n\t\"password\": \"qw12QW!@\",\n\t\"picture\": \"www.picture1.com\"\n}"
+						},
+						"url": {
+							"raw": "{{apiHost}}/users",
+							"host": [
+								"{{apiHost}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/users - User2",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"role\": \"USER\",\n\t\"email\": \"mail2@test.com\",\n\t\"username\": \"user2\",\n\t\"password\": \"qw12QW!@\",\n\t\"picture\": \"www.picture2.com\"\n}"
+						},
+						"url": {
+							"raw": "{{apiHost}}/users",
+							"host": [
+								"{{apiHost}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/users - User3",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"role\": \"USER\",\n\t\"email\": \"mail3@test.com\",\n\t\"username\": \"user3\",\n\t\"password\": \"qw12QW!@\",\n\t\"picture\": \"www.picture3.com\"\n}"
+						},
+						"url": {
+							"raw": "{{apiHost}}/users",
+							"host": [
+								"{{apiHost}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/users/{id}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{apiHost}}/users/1",
+							"host": [
+								"{{apiHost}}"
+							],
+							"path": [
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/users/{username}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{apiHost}}/users/search/user",
+							"host": [
+								"{{apiHost}}"
+							],
+							"path": [
+								"users",
+								"search",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Kweet",
+			"item": [
+				{
+					"name": "/kweets",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"message\": \"This is a test tweet! #cool\",\n    \"sender\": {\n        \"role\": \"USER\",\n        \"email\": \"mail1@test.com\",\n        \"username\": \"user1\"\n    }\n}"
+						},
+						"url": {
+							"raw": "{{apiHost}}/kweets",
+							"host": [
+								"{{apiHost}}"
+							],
+							"path": [
+								"kweets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/kweets",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
