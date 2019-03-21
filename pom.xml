@@ -9,9 +9,8 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
-    <name>kwetter Maven Webapp</name>
-    <!-- FIXME change it to the project's website -->
-    <url>http://www.example.com</url>
+    <name>Kwetter application - backend</name>
+    <url>http://kwetter.arnoudbevers.io</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -44,6 +43,18 @@
             <artifactId>jackson-databind</artifactId>
             <version>2.7.5</version>
             <type>jar</type>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sun.faces</groupId>
+            <artifactId>jsf-api</artifactId>
+            <version>2.1.7</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sun.faces</groupId>
+            <artifactId>jsf-impl</artifactId>
+            <version>2.1.7</version>
         </dependency>
     </dependencies>
 

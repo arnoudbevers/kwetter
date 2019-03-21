@@ -10,7 +10,9 @@ import com.fontys.kwetter.services.UserService;
 import javax.ejb.EJB;
 import javax.ejb.EJBTransactionRolledbackException;
 import javax.faces.bean.RequestScoped;
+import javax.inject.Named;
 import javax.persistence.PersistenceException;
+import javax.servlet.http.HttpServlet;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -23,6 +25,7 @@ import java.util.List;
  * @author Arnoud Bevers
  * @project kwetter
  */
+@Named("userController")
 @RequestScoped
 @Path("users")
 public class UserController {

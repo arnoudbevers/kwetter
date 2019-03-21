@@ -9,6 +9,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * User object containing the personal information of a user on the system.
@@ -20,13 +21,19 @@ import java.util.Objects;
 @NamedQueries({
         @NamedQuery(name = "user.getAll", query = "select u from User as u"),
         @NamedQuery(name = "user.getById", query = "select u from User as u where u.id = :id"),
-        @NamedQuery(name = "user.searchByUserName", query = "select u from User as u where u.username LIKE :searchString")
+        @NamedQuery(name = "user.searchByUserName", query = "select u from User as u where u.username LIKE :searchString"),
+        @NamedQuery(name = "user.login", query = "select u from User as u where u.username = :username AND u.password = :password")
 })
 public class User {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+
+  // TODO: Handle UUID registration
+  // TODO: Save as String or UUID?
+  @Column
+  private String uuid;
 
   @Column(nullable = false, unique = true, length = 20)
   private String username;
@@ -64,12 +71,14 @@ public class User {
 
   // Constructor needed for JPA implementation
   public User() {
+    this.uuid = UUID.randomUUID().toString();
     this.kweets = new ArrayList<>();
     this.following = new ArrayList<>();
     this.followers = new ArrayList<>();
   }
 
   public User(Role role, String email, String username) {
+    super();
     this.role = role.toString();
     this.email = email;
     this.username = username;
@@ -78,10 +87,6 @@ public class User {
     this.websiteUrl = "";
     this.bio = "";
     this.picture = "";
-
-    this.kweets = new ArrayList<>();
-    this.following = new ArrayList<>();
-    this.followers = new ArrayList<>();
   }
 
   public User(Role role, String email, String username, String password, String picture) {
@@ -107,6 +112,14 @@ public class User {
 
   public void setId(Long id) {
     this.id = id;
+  }
+
+  public String getUuid() {
+    return uuid;
+  }
+
+  public void setUuid(String uuid) {
+    this.uuid = uuid;
   }
 
   public String getUsername() {

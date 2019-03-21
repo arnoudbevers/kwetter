@@ -52,7 +52,8 @@ public class KweetController {
     }
   }
 
-  @GET @Path("/search/{searchString}")
+  @GET
+  @Path("/search/{searchString}")
   @Produces(MediaType.APPLICATION_JSON)
   public Response searchKweets(@PathParam("searchString") String searchString) {
     try {
@@ -76,5 +77,12 @@ public class KweetController {
       e.printStackTrace();
       return Response.status(Response.Status.BAD_REQUEST).entity("Something went wrong when fetching all kweets!").build();
     }
+  }
+
+  @GET
+  @Path("/{userId}")
+  public Response getKweetsForUser() {
+    // TODO: Implement getKweetsForUser()
+    return Response.ok().build();
   }
 }

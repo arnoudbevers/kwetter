@@ -48,12 +48,11 @@ public class FriendshipController {
    */
   @POST @Path("create")
   @Consumes("application/json")
-  // TODO: Remove list?
+  // TODO: Remove list? - replace with two UUIDs when implemented
   public Response createFriendship(List<User> friendship) {
     try {
       friendshipService.follow(friendship.get(0), friendship.get(1));
-      // TODO: Move to helper class
-
+      // Remove followers + following from user's following + followers, prevent infinite recursion
       final String jsonResult = mapper.writeValueAsString(userDTO.simplifyUser(friendship.get(1)));
       return Response.ok(jsonResult, MediaType.APPLICATION_JSON).build();
     } catch (EJBTransactionRolledbackException | JsonProcessingException | PersistenceException e) {
@@ -64,20 +63,11 @@ public class FriendshipController {
 
   @POST @Path("destroy")
   @Consumes("application/json")
+  // TODO: Remove list? - replace with two UUIDs when implemented
   public Response deleteFriendship(List<User> friendship) {
-    System.out.println("I am here");
     try {
       friendshipService.unfollow(friendship.get(0), friendship.get(1));
-      // TODO: Move to helper class
-      for (User u : friendship.get(0).getFollowers()) {
-        u.setFollowers(new ArrayList<>());
-        u.setFollowing(new ArrayList<>());
-      }
-      for (User u : friendship.get(0).getFollowing()) {
-        u.setFollowers(new ArrayList<>());
-        u.setFollowing(new ArrayList<>());
-      }
-      final String jsonResult = mapper.writeValueAsString(friendship.get(0));
+      final String jsonResult = mapper.writeValueAsString(userDTO.simplifyUser(friendship.get(0)));
       return Response.ok(jsonResult, MediaType.APPLICATION_JSON).build();
     } catch (EJBTransactionRolledbackException | JsonProcessingException | PersistenceException e) {
       e.printStackTrace();

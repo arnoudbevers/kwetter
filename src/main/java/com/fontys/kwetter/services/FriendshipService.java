@@ -7,8 +7,9 @@ import javax.ejb.Stateful;
 import javax.inject.Inject;
 
 /**
- * Service for the Kweet model related methods defined in the DAO.
+ * Service for the methods related to friendships (follower/following).
  * Used by the API controllers to call the needed methods.
+ *
  * @author Arnoud Bevers
  * @project kwetter
  */
