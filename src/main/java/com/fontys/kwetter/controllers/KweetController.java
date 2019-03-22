@@ -7,9 +7,9 @@ import com.fontys.kwetter.domain.User;
 import com.fontys.kwetter.services.KweetService;
 import com.fontys.kwetter.services.UserService;
 
-import javax.ejb.EJB;
 import javax.ejb.EJBTransactionRolledbackException;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.PersistenceException;
 import javax.ws.rs.*;
@@ -29,9 +29,11 @@ import java.util.List;
 @Path("kweets")
 public class KweetController {
 
-  @EJB
+  @Inject
+  @Named("kweetService")
   private KweetService kweetService;
-  @EJB
+  @Inject
+  @Named("userService")
   private UserService userService;
 
   private ObjectMapper mapper = new ObjectMapper();

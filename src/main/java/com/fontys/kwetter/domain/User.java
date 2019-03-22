@@ -89,21 +89,9 @@ public class User {
     this.picture = "";
   }
 
-  public User(Role role, String email, String username, String password, String picture) {
-    this.role = role.toString();
-    this.email = email;
-
-    this.username = username;
+  public User(Role role, String email, String username, String password) {
+    this(role, email, username);
     this.password = password;
-
-    this.location = "";
-    this.websiteUrl = "";
-    this.bio = "";
-    this.picture = picture;
-
-    this.kweets = new ArrayList<>();
-    this.following = new ArrayList<>();
-    this.followers = new ArrayList<>();
   }
 
   public Long getId() {
@@ -234,9 +222,10 @@ public class User {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     User user = (User) o;
-    return id.equals(user.id) &&
-            username.equals(user.username) &&
-            email.equals(user.email);
+    return id.equals(user.getId()) &&
+            uuid.equals(user.getUuid()) &&
+            username.equals(user.getUsername()) &&
+            email.equals(user.getEmail());
   }
 
   @Override

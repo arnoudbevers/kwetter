@@ -4,6 +4,7 @@ import com.fontys.kwetter.dao.UserDAO;
 import com.fontys.kwetter.domain.User;
 
 import javax.ejb.Stateless;
+import javax.enterprise.inject.Default;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -16,7 +17,7 @@ import java.util.List;
  * @author Arnoud Bevers
  * @project kwetter
  */
-@Stateless
+@Stateless @Default
 public class UserDAOJPAImpl implements UserDAO {
 
   @PersistenceContext
@@ -90,5 +91,18 @@ public class UserDAOJPAImpl implements UserDAO {
   @Override
   public void removeUser(User user) {
     em.remove(user);
+  }
+
+  @Override
+  public User login(String username, String password) {
+    Query query = em.createNamedQuery("user.login", User.class);
+    query.setParameter("username", username);
+    query.setParameter("password", password);
+    return (User) query.getSingleResult();
+  }
+
+  @Override
+  public boolean register(String username, String email, String password) {
+      return false;
   }
 }

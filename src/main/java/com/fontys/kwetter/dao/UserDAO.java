@@ -87,4 +87,15 @@ public interface UserDAO {
    */
   void removeUser(User user);
 
+  /**
+   * Checks username and password combination for correctness.
+   *
+   * @param username
+   * @param password
+   * @return Instance of user if username and password combination is correct, else null object.
+   */
+  User login(String username, String password);
+
+  boolean register(String username, String email, String password);
+
 }

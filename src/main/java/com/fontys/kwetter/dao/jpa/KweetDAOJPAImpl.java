@@ -3,18 +3,20 @@ package com.fontys.kwetter.dao.jpa;
 import com.fontys.kwetter.dao.KweetDAO;
 import com.fontys.kwetter.domain.Kweet;
 import com.fontys.kwetter.domain.User;
+
 import javax.ejb.Stateless;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.List;
 
 /**
- * Implementation of the Kweet for JPA.
+ * Implementation of the Kweet DAO for JPA.
  * @author Arnoud Bevers
  * @project kwetter
  */
-@Stateless
+@Stateless @Named("kweetDAO")
 public class KweetDAOJPAImpl implements KweetDAO {
 
   @PersistenceContext

@@ -5,8 +5,10 @@ import com.fontys.kwetter.dao.jpa.KweetDAOJPAImpl;
 import com.fontys.kwetter.domain.Kweet;
 import com.fontys.kwetter.domain.User;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.inject.Named;
 import java.util.List;
 
 /**
@@ -16,10 +18,10 @@ import java.util.List;
  * @author Arnoud Bevers
  * @project kwetter
  */
-@Stateless
+@Stateless @Named("kweetService")
 public class KweetService {
 
-  @Inject
+  @Inject @Named("kweetDAO")
   private KweetDAO kweetDAO;
 
   public KweetService() {

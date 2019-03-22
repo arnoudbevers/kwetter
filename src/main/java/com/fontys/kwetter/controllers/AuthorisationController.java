@@ -2,14 +2,14 @@ package com.fontys.kwetter.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fontys.kwetter.domain.User;
-import com.fontys.kwetter.services.AuthorisationService;
+import com.fontys.kwetter.services.UserService;
 import com.fontys.kwetter.utils.SessionUtils;
 
-import javax.ejb.EJB;
 import javax.ejb.EJBTransactionRolledbackException;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.PersistenceException;
 import javax.servlet.http.HttpSession;
@@ -34,8 +34,8 @@ import java.io.Serializable;
 //@Path("authorisation")
 public class AuthorisationController implements Serializable {
 
-  @EJB
-  private AuthorisationService authService;
+  @Inject @Named("userService")
+  private UserService userService;
   private ObjectMapper mapper = new ObjectMapper();
 
   // JSF related variables + setters
@@ -73,7 +73,7 @@ public class AuthorisationController implements Serializable {
     System.out.println("<<< USERNAME: " + username);
     System.out.println("<<< PASSWORD: " + password);
     try {
-      loggedInUser = authService.logIn(username, password);
+      loggedInUser = userService.logIn(username, password);
       System.out.println("<<< RETRIEVED USER " + loggedInUser);
       if (loggedInUser != null) {
         HttpSession session = SessionUtils.getSession();

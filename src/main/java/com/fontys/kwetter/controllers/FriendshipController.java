@@ -10,6 +10,7 @@ import com.fontys.kwetter.services.FriendshipService;
 import javax.ejb.EJB;
 import javax.ejb.EJBTransactionRolledbackException;
 import javax.faces.bean.RequestScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.PersistenceException;
 import javax.ws.rs.Consumes;
@@ -33,8 +34,10 @@ import java.util.List;
 @Path("friendships")
 public class FriendshipController {
 
-  @EJB
+  @Inject
+  @Named("friendshipService")
   private FriendshipService friendshipService;
+
   @EJB
   private UserDTO userDTO;
 

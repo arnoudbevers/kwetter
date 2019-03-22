@@ -4,8 +4,10 @@ import com.fontys.kwetter.dao.UserDAO;
 import com.fontys.kwetter.dao.jpa.UserDAOJPAImpl;
 import com.fontys.kwetter.domain.User;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateful;
 import javax.inject.Inject;
+import javax.inject.Named;
 import java.util.List;
 
 /**
@@ -15,10 +17,10 @@ import java.util.List;
  * @author Arnoud Bevers
  * @project kwetter
  */
-@Stateful
+@Stateful @Named("userService")
 public class UserService {
 
-  @Inject
+  @Inject @Named("userDAO")
   private UserDAO userDAO;
 
   public UserService() {
@@ -41,5 +43,8 @@ public class UserService {
     return userDAO.getAll();
   }
 
+  public User logIn(String username, String password) {
+    return userDAO.login(username, password);
+  }
 
 }
