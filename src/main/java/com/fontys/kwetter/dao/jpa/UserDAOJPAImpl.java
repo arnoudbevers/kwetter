@@ -5,6 +5,7 @@ import com.fontys.kwetter.domain.User;
 
 import javax.ejb.Stateless;
 import javax.enterprise.inject.Default;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -17,7 +18,7 @@ import java.util.List;
  * @author Arnoud Bevers
  * @project kwetter
  */
-@Stateless @Default
+@Stateless @Named("userDAO")
 public class UserDAOJPAImpl implements UserDAO {
 
   @PersistenceContext
