@@ -21,6 +21,7 @@ import java.util.UUID;
 @NamedQueries({
         @NamedQuery(name = "user.getAll", query = "select u from User as u"),
         @NamedQuery(name = "user.getById", query = "select u from User as u where u.id = :id"),
+        @NamedQuery(name = "user.getByEmail", query = "select u from User as u where u.email = :email"),
         @NamedQuery(name = "user.searchByUserName", query = "select u from User as u where u.username LIKE :searchString"),
         @NamedQuery(name = "user.login", query = "select u from User as u where u.username = :username AND u.password = :password")
 })
@@ -40,8 +41,11 @@ public class User {
   @Column(nullable = false, unique = true)
   private String email;
   @JsonIgnore
-  @Column(length = 20)
+  @Column(nullable = false)
   private String password;
+  @JsonIgnore
+  @Column
+  private String salt;
   @Column
   private String picture;
   @Column
@@ -124,6 +128,14 @@ public class User {
 
   public void setPassword(String password) {
     this.password = password;
+  }
+
+  public String getSalt() {
+    return salt;
+  }
+
+  public void setSalt(String salt) {
+    this.salt = salt;
   }
 
   public String getEmail() {

@@ -96,6 +96,6 @@ public interface UserDAO {
    */
   User login(String username, String password);
 
-  boolean register(String username, String email, String password);
+  User register(User user);
 
 }

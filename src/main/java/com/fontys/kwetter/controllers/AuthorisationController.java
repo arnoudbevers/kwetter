@@ -78,7 +78,7 @@ public class AuthorisationController implements Serializable {
       if (loggedInUser != null) {
         HttpSession session = SessionUtils.getSession();
         session.setAttribute("UUID", loggedInUser.getUuid());
-        return "admin";
+        return "admin/admin";
       } else {
         FacesContext.getCurrentInstance().addMessage(
                 null,

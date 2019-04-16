@@ -3,7 +3,6 @@ package com.fontys.kwetter.services;
 import com.fontys.kwetter.dao.UserDAO;
 import com.fontys.kwetter.domain.User;
 
-import javax.ejb.EJB;
 import javax.ejb.Stateful;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -19,7 +18,6 @@ import javax.inject.Named;
 @Named("friendshipService")
 public class FriendshipService {
   // TODO: Move all friendship methods to this service
-
   @Inject
   @Named("userDAO")
   private UserDAO userDAO;

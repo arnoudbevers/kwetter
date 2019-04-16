@@ -108,13 +108,14 @@ public class UserDAOMemoryImpl implements UserDAO {
   }
 
   @Override
-  public boolean register(String username, String email, String password) {
+  public User register(User user) {
     for (User u : allUsers) {
-      if (u.getUsername().equals(username) || u.getEmail().equals(email)) {
-        return false;
+      if (u.getUsername().equals(user.getUsername()) || u.getEmail().equals(user.getEmail())) {
+        return null;
       }
     }
-    allUsers.add(new User(Role.USER, username, email, password));
-    return true;
+    allUsers.add(new User(Role.USER, user.getUsername(), user.getEmail(), user.getPassword()));
+    return allUsers.get(allUsers.size() - 1);
   }
+
 }

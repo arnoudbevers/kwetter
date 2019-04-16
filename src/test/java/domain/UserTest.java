@@ -18,7 +18,7 @@ public class UserTest {
     this.users = new ArrayList<>();
 
     for (int i = 0; i < 10; i++) {
-      User u = new User(Role.USER, "test" + i + "@mail.com", "User" + i, "password" + i);
+      User u = new User(Role.USER, "test" + i + "@mail.com", "User" + i, "password" + i );
       u.setId((long) i);
       users.add(u);
     }

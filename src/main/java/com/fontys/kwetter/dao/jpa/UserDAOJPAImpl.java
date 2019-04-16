@@ -2,9 +2,11 @@ package com.fontys.kwetter.dao.jpa;
 
 import com.fontys.kwetter.dao.UserDAO;
 import com.fontys.kwetter.domain.User;
+import com.fontys.kwetter.utils.HashedPassword;
+import com.fontys.kwetter.utils.PasswordEncrypt;
 
 import javax.ejb.Stateless;
-import javax.enterprise.inject.Default;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -17,7 +19,7 @@ import java.util.List;
  * @author Arnoud Bevers
  * @project kwetter
  */
-@Stateless @Default
+@Stateless @Named("userDAO")
 public class UserDAOJPAImpl implements UserDAO {
 
   @PersistenceContext
@@ -102,7 +104,17 @@ public class UserDAOJPAImpl implements UserDAO {
   }
 
   @Override
-  public boolean register(String username, String email, String password) {
-      return false;
+  public User register(User user) {
+    if (searchUsersByUsername(user.getUsername()) != null) {
+      return null;
+    }
+    // Encrypt password
+    HashedPassword hashedPassword = PasswordEncrypt.hashPassword(user.getPassword(), "");
+    user.setPassword(hashedPassword.getPassword());
+    user.setSalt(hashedPassword.getSalt());
+    addUser(user);
+    // This makes sure a UUID gets returned
+    return searchUsersByUsername(user.getUsername()).get(0);
   }
+
 }

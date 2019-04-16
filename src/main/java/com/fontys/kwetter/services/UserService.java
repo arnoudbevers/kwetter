@@ -47,4 +47,8 @@ public class UserService {
     return userDAO.login(username, password);
   }
 
+  public User register(User user) {
+    return userDAO.register(user);
+  }
+
 }
