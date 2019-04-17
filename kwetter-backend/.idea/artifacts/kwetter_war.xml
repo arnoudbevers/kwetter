@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="kwetter:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>kwetter</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="kwetter.war">
+      <element id="artifact" artifact-name="kwetter:war exploded" />
+    </root>
+  </artifact>
+</component>
