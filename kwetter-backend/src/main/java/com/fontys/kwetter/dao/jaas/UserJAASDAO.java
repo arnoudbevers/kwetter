@@ -9,7 +9,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -61,4 +60,5 @@ public class UserJAASDAO {
     query.setParameter("id", id);
     query.executeUpdate();
   }
+
 }

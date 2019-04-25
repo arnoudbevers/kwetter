@@ -108,7 +108,7 @@ public class UserController {
       return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Something went wrong when fetching user by username " + username + "!").build();
     }
   }
-
+  
 //  @POST
 //  @Consumes(MediaType.APPLICATION_JSON)
 //  @Produces(MediaType.APPLICATION_JSON)
@@ -122,5 +122,4 @@ public class UserController {
 //      return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Something went wrong when registering user!").build();
 //    }
 //  }
-
 }

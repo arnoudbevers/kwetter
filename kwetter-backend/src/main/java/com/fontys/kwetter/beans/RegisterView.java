@@ -67,7 +67,6 @@ public class RegisterView implements Serializable {
   }
 
   public String register() {
-    System.out.println("I am registering...");
     User user = new User(Role.ADMINISTRATOR, email, username, password);
     userJAASDAO.createUser(user);
     log.info("New user created with email: " + email + " and username: " + username);

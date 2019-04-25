@@ -19,6 +19,7 @@ public class Group implements Serializable {
   public static final String USERS_GROUP = "users";
   public static final String ADMIN_GROUP = "admins";
 
+
   @Id
   @Column(name="email", nullable=false, length=255)
   private String email;
@@ -32,7 +33,6 @@ public class Group implements Serializable {
     this.email = email;
     this.groupname = groupname;
   }
-
   public String getEmail() {
     return email;
   }

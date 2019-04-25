@@ -48,18 +48,20 @@ public class LoginView implements Serializable {
     ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
     Map<String, Object> sessionMap = externalContext.getSessionMap();
     sessionMap.put("User", user);
-    System.out.println("principal: " + request.getUserPrincipal());
     if (request.isUserInRole("users")) {
       return "/user/privatepage?faces-redirect=true";
     }
     if (request.isUserInRole("admins")) {
       return "/admin/admin";
+    }
+    if (request.isUserInRole("users")) {
+      return "/user/privatepage?faces-redirect=true";
     } else {
       return "signin";
     }
   }
-
   public String logout() {
+
     FacesContext context = FacesContext.getCurrentInstance();
     HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
     try {
@@ -76,19 +78,16 @@ public class LoginView implements Serializable {
   public User getAuthenticatedUser() {
     return user;
   }
-
   public String getEmail() {
     return email;
   }
-
   public void setEmail(String email) {
     this.email = email;
   }
-
   public String getPassword() {
     return password;
   }
-
+  
   public void setPassword(String password) {
     this.password = password;
   }

@@ -35,8 +35,8 @@ public class Kweet {
   private Timestamp sent;
 
   // TODO: Vragen hoe je die met JPA persist
-  @OneToMany
-  private List<User> likes;
+//    @OneToMany(mappedBy = "kweet")
+//    private List<User> likes;
 
   @ManyToOne
   @JsonBackReference
@@ -84,18 +84,17 @@ public class Kweet {
     this.sender = sender;
   }
 
-  public List<User> getLikes() {
-    return likes;
-  }
-
-  public void setLikes(List<User> likes) {
-    this.likes = likes;
-  }
-
-  public void addLike(User user) {
-    this.likes.add(user);
-  }
-
+  //    public List<User> getLikes() {
+//        return likes;
+//    }
+//
+//    public void setLikes(List<User> likes) {
+//        this.likes = likes;
+//    }
+//
+//    public void addLike(User user) {
+//        this.likes.add(user);
+//    }
 
   @Override
   public String toString() {

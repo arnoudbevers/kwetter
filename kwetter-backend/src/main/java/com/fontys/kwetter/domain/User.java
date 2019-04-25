@@ -36,6 +36,7 @@ public class User {
   // TODO: Save as String or UUID?
   @Column
   private String uuid;
+
   @Column(nullable = false, unique = true, length = 20)
   private String username;
   @Column(nullable = false, unique = true)
@@ -51,6 +52,7 @@ public class User {
   @Column
   private String role;
 
+
   /* User details */
   @Column
   private String location;
@@ -58,7 +60,6 @@ public class User {
   private String websiteUrl;
   @Column(length = 160)
   private String bio;
-
 
   @LazyCollection(LazyCollectionOption.FALSE)
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "sender", fetch = FetchType.LAZY)
@@ -72,10 +73,21 @@ public class User {
   @ManyToMany
   private List<User> followers;
 
+  /* User details */
+  @Column
+  private String location;
+  @Column
+  private String websiteUrl;
+  @Column(length = 160)
+  private String bio;
+
 
   // Constructor needed for JPA implementation
   public User() {
     this.uuid = UUID.randomUUID().toString();
+    this.kweets = new ArrayList<>();
+    this.following = new ArrayList<>();
+    this.followers = new ArrayList<>();
   }
 
   public User(Role role, String email, String username) {
@@ -86,6 +98,7 @@ public class User {
     this.kweets = new ArrayList<>();
     this.following = new ArrayList<>();
     this.followers = new ArrayList<>();
+
     this.location = "";
     this.websiteUrl = "";
     this.bio = "";
@@ -194,9 +207,10 @@ public class User {
     this.kweets.add(kweet);
   }
 
-  public void likeKweet(Kweet kweet) {
-    kweet.addLike(this);
-  }
+//    public void likeKweet(Kweet kweet) {
+//        kweet.addLike(this);
+//    }
+
 
   /**
    * Follows a user.
@@ -210,10 +224,6 @@ public class User {
     user.addFollower(this);
   }
 
-  /**
-   *
-   * @param follow
-   */
   public void unfollow(User follow) {
     this.following.remove(follow);
     follow.removeFollower(this);
