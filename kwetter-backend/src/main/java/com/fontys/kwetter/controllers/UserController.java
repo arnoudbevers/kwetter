@@ -108,19 +108,18 @@ public class UserController {
       return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Something went wrong when fetching user by username " + username + "!").build();
     }
   }
-
-  @POST
-  @Consumes(MediaType.APPLICATION_JSON)
-  @Produces(MediaType.APPLICATION_JSON)
-  public Response register(User user) {
-    try {
-      User registeredUser = userService.register(user);
-      final String jsonResult = mapper.writeValueAsString(userDTO.simplifyUser(registeredUser));
-      return Response.ok(jsonResult, MediaType.APPLICATION_JSON).build();
-    } catch (EJBTransactionRolledbackException | JsonProcessingException | PersistenceException e) {
-      e.printStackTrace();
-      return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Something went wrong when registering user!").build();
-    }
-  }
-
+  
+//  @POST
+//  @Consumes(MediaType.APPLICATION_JSON)
+//  @Produces(MediaType.APPLICATION_JSON)
+//  public Response register(User user) {
+//    try {
+//      User registeredUser = userService.register(user);
+//      final String jsonResult = mapper.writeValueAsString(userDTO.simplifyUser(registeredUser));
+//      return Response.ok(jsonResult, MediaType.APPLICATION_JSON).build();
+//    } catch (EJBTransactionRolledbackException | JsonProcessingException | PersistenceException e) {
+//      e.printStackTrace();
+//      return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Something went wrong when registering user!").build();
+//    }
+//  }
 }

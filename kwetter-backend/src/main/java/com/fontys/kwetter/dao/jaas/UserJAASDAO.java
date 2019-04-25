@@ -7,6 +7,7 @@ import com.fontys.kwetter.utils.AuthenticationUtils;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,7 +31,7 @@ public class UserJAASDAO {
     }
     Group group = new Group();
     group.setEmail(user.getEmail());
-    group.setGroupname(Group.USERS_GROUP);
+    group.setGroupname(Group.ADMIN_GROUP);
     em.persist(user);
     em.persist(group);
 
@@ -48,4 +49,16 @@ public class UserJAASDAO {
     }
     return user;
   }
+
+  public List<User> getAllUsers() {
+    Query query = em.createNamedQuery("user.getAll", User.class);
+    return query.getResultList();
+  }
+
+  public void deleteUser(Long id) {
+    Query query = em.createNamedQuery("user.remove", User.class);
+    query.setParameter("id", id);
+    query.executeUpdate();
+  }
+
 }

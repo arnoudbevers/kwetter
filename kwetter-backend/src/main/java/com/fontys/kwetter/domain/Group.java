@@ -7,6 +7,7 @@ import javax.persistence.Table;
 import java.io.Serializable;
 
 /**
+ * Stores the group a user is in. This is used for JSF/JAAS based authorisation, since this combines the group name and email.
  * @author Arnoud Bevers
  * @project kwetter
  */
@@ -16,6 +17,8 @@ public class Group implements Serializable {
   private static final long serialVersionUID = 1528447384986169065L;
 
   public static final String USERS_GROUP = "users";
+  public static final String ADMIN_GROUP = "admins";
+
 
   @Id
   @Column(name="email", nullable=false, length=255)

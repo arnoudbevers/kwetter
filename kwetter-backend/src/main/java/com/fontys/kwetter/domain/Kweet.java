@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * Kweet object - similar to a Tweet.
@@ -94,7 +95,6 @@ public class Kweet {
 //    public void addLike(User user) {
 //        this.likes.add(user);
 //    }
-
 
   @Override
   public String toString() {

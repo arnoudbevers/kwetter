@@ -23,7 +23,8 @@ import java.util.UUID;
         @NamedQuery(name = "user.getById", query = "select u from User as u where u.id = :id"),
         @NamedQuery(name = "user.getByEmail", query = "select u from User as u where u.email = :email"),
         @NamedQuery(name = "user.searchByUserName", query = "select u from User as u where u.username LIKE :searchString"),
-        @NamedQuery(name = "user.login", query = "select u from User as u where u.username = :username AND u.password = :password")
+        @NamedQuery(name = "user.login", query = "select u from User as u where u.username = :username AND u.password = :password"),
+        @NamedQuery(name = "user.remove", query = "delete from User as u where u.id = :id")
 })
 public class User {
 
@@ -51,6 +52,15 @@ public class User {
   @Column
   private String role;
 
+
+  /* User details */
+  @Column
+  private String location;
+  @Column
+  private String websiteUrl;
+  @Column(length = 160)
+  private String bio;
+
   @LazyCollection(LazyCollectionOption.FALSE)
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "sender", fetch = FetchType.LAZY)
   @JsonManagedReference
@@ -62,7 +72,6 @@ public class User {
   @LazyCollection(LazyCollectionOption.FALSE)
   @ManyToMany
   private List<User> followers;
-
 
   /* User details */
   @Column
@@ -86,6 +95,9 @@ public class User {
     this.role = role.toString();
     this.email = email;
     this.username = username;
+    this.kweets = new ArrayList<>();
+    this.following = new ArrayList<>();
+    this.followers = new ArrayList<>();
 
     this.location = "";
     this.websiteUrl = "";
@@ -154,6 +166,10 @@ public class User {
     this.picture = picture;
   }
 
+  public String getLocation() {
+    return location;
+  }
+
   public String getRole() {
     return this.role;
   }
@@ -195,6 +211,11 @@ public class User {
 //        kweet.addLike(this);
 //    }
 
+
+  /**
+   * Follows a user.
+   * @param user The user to follow.
+   */
   public void follow(User user) {
 //    if (user.equals(this)) {
 //      throw new FollowException("User cannot follow itself");

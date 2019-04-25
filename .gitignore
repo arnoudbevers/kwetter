@@ -8,7 +8,7 @@
 
 *.iml
 pom.xml
-.idea/*
+kwetter-backend/.idea/*
 
 # User-specific stuff
 .idea/**/workspace.xml

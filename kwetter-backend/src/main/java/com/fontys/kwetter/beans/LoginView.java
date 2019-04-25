@@ -32,6 +32,7 @@ public class LoginView implements Serializable {
   private String email;
   private String password;
   private User user;
+
   public String login() {
     FacesContext context = FacesContext.getCurrentInstance();
     HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
@@ -49,12 +50,18 @@ public class LoginView implements Serializable {
     sessionMap.put("User", user);
     if (request.isUserInRole("users")) {
       return "/user/privatepage?faces-redirect=true";
+    }
+    if (request.isUserInRole("admins")) {
+      return "/admin/admin";
+    }
+    if (request.isUserInRole("users")) {
+      return "/user/privatepage?faces-redirect=true";
     } else {
       return "signin";
     }
   }
   public String logout() {
-    System.out.println("logging out...");
+
     FacesContext context = FacesContext.getCurrentInstance();
     HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
     try {
@@ -67,6 +74,7 @@ public class LoginView implements Serializable {
     }
     return "/login?faces-redirect=true";
   }
+
   public User getAuthenticatedUser() {
     return user;
   }
@@ -79,6 +87,7 @@ public class LoginView implements Serializable {
   public String getPassword() {
     return password;
   }
+  
   public void setPassword(String password) {
     this.password = password;
   }

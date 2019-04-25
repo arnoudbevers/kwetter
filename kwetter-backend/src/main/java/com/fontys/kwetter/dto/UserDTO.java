@@ -18,12 +18,20 @@ public class UserDTO {
   public UserDTO() {
   }
 
+
+  /**
+   *
+   * @param user
+   * @return
+   */
   public User simplifyUser(User user) {
     for (User u : user.getFollowers()) {
+      u.setKweets(new ArrayList<>());
       u.setFollowers(new ArrayList<>());
       u.setFollowing(new ArrayList<>());
     }
     for (User u : user.getFollowing()) {
+      u.setKweets(new ArrayList<>());
       u.setFollowers(new ArrayList<>());
       u.setFollowing(new ArrayList<>());
     }
