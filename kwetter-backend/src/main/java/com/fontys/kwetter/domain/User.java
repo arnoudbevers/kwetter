@@ -73,15 +73,6 @@ public class User {
   @ManyToMany
   private List<User> followers;
 
-  /* User details */
-  @Column
-  private String location;
-  @Column
-  private String websiteUrl;
-  @Column(length = 160)
-  private String bio;
-
-
   // Constructor needed for JPA implementation
   public User() {
     this.uuid = UUID.randomUUID().toString();

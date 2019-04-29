@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/kwetter.iml" filepath="$PROJECT_DIR$/.idea/kwetter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/kwetter-backend.iml" filepath="$PROJECT_DIR$/.idea/kwetter-backend.iml" />
     </modules>
   </component>
 </project>

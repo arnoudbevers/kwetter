@@ -27,6 +27,11 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
         <role-name>users</role-name>
     </security-role>
 
+    <security-role>
+        <description/>
+        <role-name>admins</role-name>
+    </security-role>
+
     <security-constraint>
         <display-name>Restricted to users</display-name>
         <web-resource-collection>
@@ -35,6 +40,19 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
         </web-resource-collection>
         <auth-constraint>
             <role-name>users</role-name>
+        </auth-constraint>
+        <user-data-constraint>
+            <transport-guarantee>NONE</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
+    <security-constraint>
+        <display-name>Restricted to admins</display-name>
+        <web-resource-collection>
+            <web-resource-name>Restricted Access</web-resource-name>
+            <url-pattern>/admin/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>admins</role-name>
         </auth-constraint>
         <user-data-constraint>
             <transport-guarantee>NONE</transport-guarantee>
