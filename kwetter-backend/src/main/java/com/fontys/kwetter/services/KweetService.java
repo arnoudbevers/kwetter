@@ -24,10 +24,6 @@ public class KweetService {
   @Inject @Named("kweetDAO")
   private KweetDAO kweetDAO;
 
-  public KweetService() {
-    this.kweetDAO = new KweetDAOJPAImpl();
-  }
-
   public void postKweet(Kweet kweet) {
     kweetDAO.postKweet(kweet);
   }

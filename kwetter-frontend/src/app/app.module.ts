@@ -3,10 +3,11 @@ import { NgModule } from "@angular/core";
 
 // Modules
 import { RoutingModule } from "./routing/routing.module";
+import { HttpClientModule } from "@angular/common/http";
 
 //Angular Material Modules
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
 // Components
 import { AppComponent } from "./app.component";
@@ -19,12 +20,13 @@ import { StorageService } from "./services/storage/storage.service";
 @NgModule({
   declarations: [AppComponent, LoginComponent, NavbarComponent],
   imports: [
-    BrowserModule, 
-    RoutingModule, 
+    BrowserModule,
+    RoutingModule,
     BrowserAnimationsModule,
-    NgbModule
+    NgbModule,
+    HttpClientModule
   ],
   providers: [StorageService],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

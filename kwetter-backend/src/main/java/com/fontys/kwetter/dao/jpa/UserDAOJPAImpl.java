@@ -19,10 +19,11 @@ import java.util.List;
  * @author Arnoud Bevers
  * @project kwetter
  */
-@Stateless @Named("userDAO")
+@Stateless
+@Named("userDAO")
 public class UserDAOJPAImpl implements UserDAO {
 
-  @PersistenceContext
+  @PersistenceContext(unitName = "kwetterPU")
   private EntityManager em;
 
   @Override
@@ -97,6 +98,7 @@ public class UserDAOJPAImpl implements UserDAO {
 
   @Override
   public User login(String username, String password) {
+    // 1. Get salt from user where username = equal to
     Query query = em.createNamedQuery("user.login", User.class);
     query.setParameter("username", username);
     query.setParameter("password", password);

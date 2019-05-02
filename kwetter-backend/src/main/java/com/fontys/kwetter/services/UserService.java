@@ -23,10 +23,6 @@ public class UserService {
   @Inject @Named("userDAO")
   private UserDAO userDAO;
 
-  public UserService() {
-    this.userDAO = new UserDAOJPAImpl();
-  }
-
   public void createUser(User user) {
     userDAO.addUser(user);
   }

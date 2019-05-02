@@ -2,10 +2,12 @@ package com.fontys.kwetter.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fontys.kwetter.domain.User;
+import com.fontys.kwetter.security.JWTValidator;
 import com.fontys.kwetter.services.UserService;
 import com.fontys.kwetter.utils.SessionUtils;
 
 import javax.ejb.EJBTransactionRolledbackException;
+import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -29,68 +31,21 @@ import java.io.Serializable;
  * @author Arnoud Bevers
  * @project kwetter
  */
-@Named("authorisation")
-@SessionScoped
-//@Path("authorisation")
+@Named
+@RequestScoped
+@Path("auth")
 public class AuthorisationController implements Serializable {
 
   @Inject @Named("userService")
   private UserService userService;
   private ObjectMapper mapper = new ObjectMapper();
 
-  // JSF related variables + setters
-  private String username;
-  private String password;
-  private User loggedInUser;
-
-  public String getUsername() {
-    return username;
-  }
-
-  public void setUsername(String username) {
-    this.username = username;
-  }
-
-  public String getPassword() {
-    return password;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
-  }
-
-  public User getLoggedInUser() {
-    return loggedInUser;
-  }
-
-  public void setLoggedInUser(User loggedInUser) {
-    this.loggedInUser = loggedInUser;
-  }
-
-  public String login() {
-    // TODO: Implement login()
-    System.out.println("<<< I AM LOGGING IN...");
-    System.out.println("<<< USERNAME: " + username);
-    System.out.println("<<< PASSWORD: " + password);
-    try {
-      loggedInUser = userService.logIn(username, password);
-      System.out.println("<<< RETRIEVED USER " + loggedInUser);
-      if (loggedInUser != null) {
-        HttpSession session = SessionUtils.getSession();
-        session.setAttribute("UUID", loggedInUser.getUuid());
-        return "admin/admin";
-      } else {
-        FacesContext.getCurrentInstance().addMessage(
-                null,
-                new FacesMessage(FacesMessage.SEVERITY_WARN,
-                        "Incorrect username and password",
-                        "Please enter the correct username and password combination!"));
-        return "login";
-      }
-    } catch (EJBTransactionRolledbackException | PersistenceException e) {
-      e.printStackTrace();
-      return null;
-    }
+  @Path("login")
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response login() {
+    System.out.println(JWTValidator.createJWT("arnoudbevers"));
+    return Response.ok().build();
   }
 
   public String logout() {
