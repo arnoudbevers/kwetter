@@ -254,7 +254,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"following\" : \"e4aed4ac-6c5d-4968-9320-2d032100e83c\",\n\t\"followed\": \"4229dda4-3862-4b65-a75f-066198f7afa1\"\n}"
+							"raw": "{\n\t\"following\" : \"f6cb9ee9-1dc6-44d5-b9bb-4606e5d35757\",\n\t\"followed\": \"64df26fe-b62a-4b7b-933e-e6c82c67f72a\"\n}"
 						},
 						"url": {
 							"raw": "{{apiHost}}/friendships/create",
@@ -283,7 +283,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"following\" : \"e4aed4ac-6c5d-4968-9320-2d032100e83c\",\n\t\"followed\": \"4229dda4-3862-4b65-a75f-066198f7afa1\"\n}"
+							"raw": "{\n\t\"following\" : \"f6cb9ee9-1dc6-44d5-b9bb-4606e5d35757\",\n\t\"followed\": \"64df26fe-b62a-4b7b-933e-e6c82c67f72a\"\n}"
 						},
 						"url": {
 							"raw": "{{apiHost}}/friendships/destroy",

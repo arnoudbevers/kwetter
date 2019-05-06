@@ -4,6 +4,7 @@ import { AuthenticationService } from 'src/app/services/authentication/authentic
 import * as $ from 'jquery';
 import { Credentials } from 'src/app/models/credentials';
 import { Router } from '@angular/router';
+import { StorageService } from 'src/app/services/storage/storage.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -11,7 +12,7 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private authService: AuthenticationService, private router: Router) { }
+  constructor(private authService: AuthenticationService, private storageService: StorageService, private router: Router) { }
 
   ngOnInit() {
   }
@@ -21,8 +22,8 @@ export class LoginComponent implements OnInit {
     credentials.username = $('#input_username').val();
     credentials.password = $('#input_password').val();
     this.authService.login(credentials).subscribe(response => {
-      localStorage.setItem('kwetter_jwt_token', response['jwt_token']);
-      localStorage.setItem('kwetter_uuid', response['uuid']);
+      this.storageService.setItem('kwetter_jwt_token', response['jwt_token']);
+      this.storageService.setItem('kwetter_uuid', response['uuid']);
       this.router.navigateByUrl('');
     });
   }

@@ -4,11 +4,11 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
 // Components
 import { LoginComponent } from "../components/login/login.component";
-import { TimelineComponent } from '../components/timeline/timeline.component';
+import { HomepageComponent } from '../components/homepage/homepage.component';
 
 const appRoutes: Routes = [
   // { path: "", redirectTo: "account/login", pathMatch: 'full' },
-  { path: "", component: TimelineComponent },
+  { path: "", component: HomepageComponent },
   { path: "account/login", component: LoginComponent }
 ];
 

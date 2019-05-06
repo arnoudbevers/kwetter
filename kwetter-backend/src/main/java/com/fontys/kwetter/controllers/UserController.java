@@ -67,7 +67,8 @@ public class UserController {
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("No users exist!").build();
       }
       allUsers.forEach(user -> user = userDTO.simplifyUser(user));
-      final String jsonResult = objectMapper.writeValueAsString(allUsers);
+      UserDTO[] userDto = modelMapper.map(allUsers, UserDTO[].class);
+      final String jsonResult = objectMapper.writeValueAsString(userDto);
       return Response.ok(jsonResult, MediaType.APPLICATION_JSON_TYPE).build();
     } catch (EJBTransactionRolledbackException | JsonProcessingException | PersistenceException e) {
       e.printStackTrace();
@@ -82,11 +83,18 @@ public class UserController {
     User user;
     try {
       user = userService.getUserById(id);
+      System.out.println(user.getFollowers());
+      System.out.println(user.getFollowing());
       user.setKweets(kweetService.getKweetsForUser(user));
+      System.out.println(user.getFollowing());
+      System.out.println(user.getFollowers());
+      System.out.println(user.getKweets());
+      user = userDTO.simplifyUser(user);
+      System.out.println(user.getKweets());
       if (user == null) {
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Could not find user by id " + id + "!").build();
       }
-      UserDTO userDto = modelMapper.map(userDTO.simplifyUser(user), UserDTO.class);
+      UserDTO userDto = modelMapper.map(user, UserDTO.class);
       final String jsonResult = objectMapper.writeValueAsString(userDto);
       return Response.ok(jsonResult, MediaType.APPLICATION_JSON).build();
     } catch (EJBTransactionRolledbackException | JsonProcessingException | PersistenceException e) {

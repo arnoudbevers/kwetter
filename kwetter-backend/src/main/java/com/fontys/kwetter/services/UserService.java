@@ -40,6 +40,8 @@ public class UserService {
     return userDAO.getUserById(id);
   }
 
+  public User getUserByUUID(String uuid) { return userDAO.getUserByUUID(uuid); }
+
   public List<User> getAllUsers() {
     return userDAO.getAll();
   }
