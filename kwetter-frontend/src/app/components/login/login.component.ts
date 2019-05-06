@@ -22,6 +22,7 @@ export class LoginComponent implements OnInit {
     credentials.password = $('#input_password').val();
     this.authService.login(credentials).subscribe(response => {
       localStorage.setItem('kwetter_jwt_token', response['jwt_token']);
+      localStorage.setItem('kwetter_uuid', response['uuid']);
       this.router.navigateByUrl('');
     });
   }

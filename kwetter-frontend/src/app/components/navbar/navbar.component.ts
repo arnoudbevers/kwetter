@@ -15,6 +15,7 @@ export class NavbarComponent implements OnInit {
 
   logOut() {
     localStorage.removeItem('kwetter_jwt_token');
+    localStorage.removeItem('kwetter_uuid');
     this.router.navigateByUrl('/account/login');
   }
 }

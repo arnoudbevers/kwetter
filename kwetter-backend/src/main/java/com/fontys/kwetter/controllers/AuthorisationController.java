@@ -57,7 +57,8 @@ public class AuthorisationController implements Serializable {
     }
     // 3. Use username and UUID in JWT generator
     String jwt = JWTValidator.createJWT(user.getUsername(), user.getUuid());
-    String json = new JSONObject().put("jwt_token", jwt).toString();
+    JSONObject json = new JSONObject().put("jwt_token", jwt);
+    json.put("uuid", user.getUuid());
     return Response.ok(json.toString(), MediaType.APPLICATION_JSON).build();
   }
 
