@@ -19,7 +19,7 @@ import java.util.List;
 @Stateless @Named("kweetDAO")
 public class KweetDAOJPAImpl implements KweetDAO {
 
-  @PersistenceContext
+  @PersistenceContext(unitName = "kwetterPU")
   private EntityManager em;
 
   @Override

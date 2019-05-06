@@ -2,6 +2,7 @@ package com.fontys.kwetter.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fontys.kwetter.exceptions.FollowException;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -21,7 +22,10 @@ import java.util.UUID;
 @NamedQueries({
         @NamedQuery(name = "user.getAll", query = "select u from User as u"),
         @NamedQuery(name = "user.getById", query = "select u from User as u where u.id = :id"),
+        @NamedQuery(name = "user.getByUUID", query = "select u from User as u where u.uuid = :uuid"),
+        @NamedQuery(name = "user.getByUsername", query = "select u from User as u where u.username = :username"),
         @NamedQuery(name = "user.getByEmail", query = "select u from User as u where u.email = :email"),
+        @NamedQuery(name = "user.getSaltForUsername", query = "select u from User as u where u.email = :email"),
         @NamedQuery(name = "user.searchByUserName", query = "select u from User as u where u.username LIKE :searchString"),
         @NamedQuery(name = "user.login", query = "select u from User as u where u.username = :username AND u.password = :password"),
         @NamedQuery(name = "user.remove", query = "delete from User as u where u.id = :id")
@@ -44,14 +48,13 @@ public class User {
   @JsonIgnore
   @Column(nullable = false)
   private String password;
-  @JsonIgnore
+
   @Column
   private String salt;
   @Column
   private String picture;
   @Column
   private String role;
-
 
   /* User details */
   @Column
@@ -63,7 +66,7 @@ public class User {
 
   @LazyCollection(LazyCollectionOption.FALSE)
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "sender", fetch = FetchType.LAZY)
-  @JsonManagedReference
+//  @JsonManagedReference
   private List<Kweet> kweets;
 
   @LazyCollection(LazyCollectionOption.FALSE)
@@ -72,15 +75,6 @@ public class User {
   @LazyCollection(LazyCollectionOption.FALSE)
   @ManyToMany
   private List<User> followers;
-
-  /* User details */
-  @Column
-  private String location;
-  @Column
-  private String websiteUrl;
-  @Column(length = 160)
-  private String bio;
-
 
   // Constructor needed for JPA implementation
   public User() {
@@ -216,10 +210,13 @@ public class User {
    * Follows a user.
    * @param user The user to follow.
    */
-  public void follow(User user) {
-//    if (user.equals(this)) {
-//      throw new FollowException("User cannot follow itself");
-//    }
+  public void follow(User user) throws FollowException {
+    if (user.equals(this)) {
+      throw new FollowException("User cannot follow itself!");
+    }
+    else if(this.following.contains(user)) {
+      throw new FollowException("User has already followed this user!");
+    }
     this.following.add(user);
     user.addFollower(this);
   }
@@ -249,7 +246,6 @@ public class User {
             '}';
   }
 
-  // TODO: Override equals of User properly
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;

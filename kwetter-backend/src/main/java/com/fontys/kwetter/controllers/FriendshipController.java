@@ -4,7 +4,9 @@ package com.fontys.kwetter.controllers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fontys.kwetter.domain.User;
+import com.fontys.kwetter.domain.api.Friendship;
 import com.fontys.kwetter.dto.UserDTO;
+import com.fontys.kwetter.exceptions.FollowException;
 import com.fontys.kwetter.services.FriendshipService;
 
 import javax.ejb.EJB;
@@ -50,15 +52,17 @@ public class FriendshipController {
    * @return Returns the followed user when successful. Returns a string with failure condition when not successful.
    */
   @POST @Path("create")
-  @Consumes("application/json")
-  // TODO: Remove list? - replace with two UUIDs when implemented
-  public Response createFriendship(List<User> friendship) {
+  @Consumes(MediaType.APPLICATION_JSON)
+  public Response createFriendship(Friendship friendship) {
     try {
-      friendshipService.follow(friendship.get(0), friendship.get(1));
-      // Remove followers + following from user's following + followers, prevent infinite recursion
-      final String jsonResult = mapper.writeValueAsString(userDTO.simplifyUser(friendship.get(1)));
+      friendshipService.createFriendship(friendship);
+      final String jsonResult = mapper.writeValueAsString(friendship);
       return Response.ok(jsonResult, MediaType.APPLICATION_JSON).build();
-    } catch (EJBTransactionRolledbackException | JsonProcessingException | PersistenceException e) {
+    } catch (FollowException e) {
+      e.printStackTrace();
+      return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+    }
+    catch (EJBTransactionRolledbackException | JsonProcessingException | PersistenceException e) {
       e.printStackTrace();
       return Response.status(Response.Status.BAD_REQUEST).entity("Something went wrong when creating friendship!").build();
     }
@@ -66,15 +70,14 @@ public class FriendshipController {
 
   @POST @Path("destroy")
   @Consumes("application/json")
-  // TODO: Remove list? - replace with two UUIDs when implemented
-  public Response deleteFriendship(List<User> friendship) {
+  public Response deleteFriendship(Friendship friendship) {
     try {
-      friendshipService.unfollow(friendship.get(0), friendship.get(1));
-      final String jsonResult = mapper.writeValueAsString(userDTO.simplifyUser(friendship.get(0)));
+      friendshipService.destroyFriendship(friendship);
+      final String jsonResult = mapper.writeValueAsString(friendship);
       return Response.ok(jsonResult, MediaType.APPLICATION_JSON).build();
     } catch (EJBTransactionRolledbackException | JsonProcessingException | PersistenceException e) {
       e.printStackTrace();
-      return Response.status(Response.Status.BAD_REQUEST).entity("Something went wrong when creating friendship!").build();
+      return Response.status(Response.Status.BAD_REQUEST).entity("Something went wrong when destroying friendship!").build();
     }
   }
 }

@@ -3,6 +3,7 @@ package com.fontys.kwetter.dao.memory;
 import com.fontys.kwetter.dao.UserDAO;
 import com.fontys.kwetter.domain.Role;
 import com.fontys.kwetter.domain.User;
+import com.fontys.kwetter.exceptions.FollowException;
 
 import javax.ejb.Stateful;
 import javax.enterprise.inject.Default;
@@ -27,6 +28,16 @@ public class UserDAOMemoryImpl implements UserDAO {
   public User getUserById(int id) {
     for (User u : allUsers) {
       if (u.getId().equals(Long.valueOf(id))) {
+        return u;
+      }
+    }
+    return null;
+  }
+
+  @Override
+  public User getUserByUUID(String uuid) {
+    for (User u : allUsers) {
+      if (u.getUuid().equals(uuid)) {
         return u;
       }
     }
@@ -66,7 +77,11 @@ public class UserDAOMemoryImpl implements UserDAO {
 
   @Override
   public void followUser(User user, User userToFollow) {
-    user.follow(userToFollow);
+    try {
+      user.follow(userToFollow);
+    } catch (FollowException e) {
+      e.printStackTrace();
+    }
     editUser(user);
     editUser(userToFollow);
   }
