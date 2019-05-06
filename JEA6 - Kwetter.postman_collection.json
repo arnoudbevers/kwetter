@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "01149a07-9c41-2c99-7fba-605d434657b6",
+		"_postman_id": "5a3fa9be-2810-4f65-a4e9-7384f049a65c",
 		"name": "JEA6 - Kwetter",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -22,7 +22,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"role\": \"USER\",\n\t\"email\": \"mail1@test.com\",\n\t\"username\": \"user1\",\n\t\"password\": \"qw12QW!@\",\n\t\"picture\": \"www.picture1.com\"\n}"
+							"raw": "{\n\t\"username\": \"arnoudbevers\",\n\t\"email\": \"arnoudbevers@mail.com\",\n\t\"password\": \"qw12QW!@\",\n\t\"role\": \"USER\",\n\t\"picture\": \"www.testURL.com\"\n}"
 						},
 						"url": {
 							"raw": "{{apiHost}}/users",
@@ -50,7 +50,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"role\": \"USER\",\n\t\"email\": \"mail2@test.com\",\n\t\"username\": \"user2\",\n\t\"password\": \"qw12QW!@\",\n\t\"picture\": \"www.picture2.com\"\n}"
+							"raw": "{\n\t\"username\": \"levibuck\",\n\t\"email\": \"levibuck@mail.com\",\n\t\"password\": \"qw12QW!@\",\n\t\"role\": \"USER\",\n\t\"picture\": \"www.testURL.com\"\n}"
 						},
 						"url": {
 							"raw": "{{apiHost}}/users",
@@ -78,7 +78,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"role\": \"USER\",\n\t\"email\": \"mail3@test.com\",\n\t\"username\": \"user3\",\n\t\"password\": \"qw12QW!@\",\n\t\"picture\": \"www.picture3.com\"\n}"
+							"raw": "{\n\t\"username\": \"basjoosten\",\n\t\"email\": \"basjoosten@mail.com\",\n\t\"password\": \"qw12QW!@\",\n\t\"role\": \"USER\",\n\t\"picture\": \"www.testURL.com\"\n}"
 						},
 						"url": {
 							"raw": "{{apiHost}}/users",
@@ -102,13 +102,13 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{apiHost}}/users/1",
+							"raw": "{{apiHost}}/users/2",
 							"host": [
 								"{{apiHost}}"
 							],
 							"path": [
 								"users",
-								"1"
+								"2"
 							]
 						}
 					},
@@ -124,14 +124,14 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{apiHost}}/users/search/user",
+							"raw": "{{apiHost}}/users/search/a",
 							"host": [
 								"{{apiHost}}"
 							],
 							"path": [
 								"users",
 								"search",
-								"user"
+								"a"
 							]
 						}
 					},
@@ -147,7 +147,13 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": ""
+							"raw": "{{apiHost}}/users",
+							"host": [
+								"{{apiHost}}"
+							],
+							"path": [
+								"users"
+							]
 						}
 					},
 					"response": []
@@ -171,7 +177,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"message\": \"This is a test tweet! #cool\",\n    \"sender\": {\n        \"role\": \"USER\",\n        \"email\": \"mail1@test.com\",\n        \"username\": \"user1\"\n    }\n}"
+							"raw": "{\n    \"message\": \"This is a test tweet! #cool\",\n    \"sender\": {\n        \"role\": \"USER\",\n        \"email\": \"arnoudbevers@mail.com\",\n        \"username\": \"arnoudbevers\"\n    }\n}"
 						},
 						"url": {
 							"raw": "{{apiHost}}/kweets",
@@ -195,7 +201,133 @@
 							"raw": ""
 						},
 						"url": {
+							"raw": "{{apiHost}}/kweets",
+							"host": [
+								"{{apiHost}}"
+							],
+							"path": [
+								"kweets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/kweets/search",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
 							"raw": ""
+						},
+						"url": {
+							"raw": "{{apiHost}}/kweets/search/test",
+							"host": [
+								"{{apiHost}}"
+							],
+							"path": [
+								"kweets",
+								"search",
+								"test"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Friendship",
+			"item": [
+				{
+					"name": "/friendship/create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"following\" : \"e4aed4ac-6c5d-4968-9320-2d032100e83c\",\n\t\"followed\": \"4229dda4-3862-4b65-a75f-066198f7afa1\"\n}"
+						},
+						"url": {
+							"raw": "{{apiHost}}/friendships/create",
+							"host": [
+								"{{apiHost}}"
+							],
+							"path": [
+								"friendships",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/friendship/destroy",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"following\" : \"e4aed4ac-6c5d-4968-9320-2d032100e83c\",\n\t\"followed\": \"4229dda4-3862-4b65-a75f-066198f7afa1\"\n}"
+						},
+						"url": {
+							"raw": "{{apiHost}}/friendships/destroy",
+							"host": [
+								"{{apiHost}}"
+							],
+							"path": [
+								"friendships",
+								"destroy"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Authorisation",
+			"item": [
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"arnoudbevers\",\n\t\"password\": \"qw12QW!@\"\n}"
+						},
+						"url": {
+							"raw": "{{apiHost}}/auth/login",
+							"host": [
+								"{{apiHost}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
 						}
 					},
 					"response": []

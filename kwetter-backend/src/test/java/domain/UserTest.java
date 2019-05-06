@@ -2,6 +2,7 @@ package domain;
 
 import com.fontys.kwetter.domain.Role;
 import com.fontys.kwetter.domain.User;
+import com.fontys.kwetter.exceptions.FollowException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,7 +28,11 @@ public class UserTest {
       User u = users.get(i);
       for (int j = 0; j < users.size(); j++) {
         if (j != i) {
-          u.follow(users.get(j));
+          try {
+            u.follow(users.get(j));
+          } catch (FollowException e) {
+            e.printStackTrace();
+          }
         }
       }
     }
@@ -58,7 +63,11 @@ public class UserTest {
     for (int i = 0; i < users.size(); i++) {
       User u = users.get(i);
       for (int j = 0; j < users.size(); j++) {
-        u.follow(users.get(j));
+        try {
+          u.follow(users.get(j));
+        } catch (FollowException e) {
+          e.printStackTrace();
+        }
       }
     }
     // Each user should have 9 following and 9 followers

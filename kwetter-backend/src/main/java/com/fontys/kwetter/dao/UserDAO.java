@@ -27,6 +27,13 @@ public interface UserDAO {
   User getUserById(int id);
 
   /**
+   * Gets a user by its UUID.
+   *
+   * @param uuid UUID of the user to find.
+   * @return User object corresponding to given UUID.
+   */
+  User getUserByUUID(String uuid);
+  /**
    * Gets user by its username.
    *
    * @param username Username of the user to find.

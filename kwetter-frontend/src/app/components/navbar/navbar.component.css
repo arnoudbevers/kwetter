@@ -1,7 +1,7 @@
-.navbar {
-  justify-content: space-between;
+.dropdown-toggle {
+  border: 1px solid white;
 }
 
-span {
-  padding-right: 1rem;
+.dropdown-menu button {
+  text-align: center;
 }

@@ -10,7 +10,7 @@
       "prefix": "app",
       "schematics": {
         "@schematics/angular:component": {
-          "styleext": "scss"
+          "styleext": "css"
         }
       },
       "architect": {
@@ -140,5 +140,10 @@
       }
     }
   },
-  "defaultProject": "kwetter-frontend"
+  "defaultProject": "kwetter-frontend",
+  "schematics": {
+    "@schematics/angular:component": {
+      "styleext": "css"
+    }
+  }
 }

@@ -45,6 +45,18 @@ public class UserDAOJPAImpl implements UserDAO {
   }
 
   @Override
+  public User getUserByUUID(String uuid) {
+    Query query = em.createNamedQuery("user.getByUUID", User.class);
+    query.setParameter("uuid", uuid);
+    try {
+      return (User) query.getSingleResult();
+    } catch (NoResultException e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  @Override
   public List<User> searchUsersByUsername(String username) {
     Query query = em.createNamedQuery("user.searchByUserName", User.class);
     query.setParameter("searchString", "%" + username + "%");
@@ -70,7 +82,6 @@ public class UserDAOJPAImpl implements UserDAO {
 
   @Override
   public void followUser(User user, User userToFollow) {
-    // TODO: Check if this works, if two users are needed
     em.merge(user);
     em.merge(userToFollow);
   }
@@ -98,11 +109,17 @@ public class UserDAOJPAImpl implements UserDAO {
 
   @Override
   public User login(String username, String password) {
-    // 1. Get salt from user where username = equal to
-    Query query = em.createNamedQuery("user.login", User.class);
+    // 1. Get salt from user where username = equal to given username
+    Query query = em.createQuery("select u from User as u where u.username = :username");
     query.setParameter("username", username);
-    query.setParameter("password", password);
-    return (User) query.getSingleResult();
+    User u = (User) query.getSingleResult();
+    // 2. Check if password in retrieved user is the same as
+    // the given password
+    HashedPassword checkPassword = PasswordEncrypt.hashPassword(password, u.getSalt());
+    if(!checkPassword.getPassword().equals(u.getPassword())) { // 3. If passwords are not equal
+      return null; // Return null object
+    }
+    return u; // Else return retrieved user object
   }
 
   @Override

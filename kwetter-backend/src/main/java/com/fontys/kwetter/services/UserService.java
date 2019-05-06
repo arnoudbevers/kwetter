@@ -3,6 +3,8 @@ package com.fontys.kwetter.services;
 import com.fontys.kwetter.dao.UserDAO;
 import com.fontys.kwetter.dao.jpa.UserDAOJPAImpl;
 import com.fontys.kwetter.domain.User;
+import com.fontys.kwetter.utils.HashedPassword;
+import com.fontys.kwetter.utils.PasswordEncrypt;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
@@ -24,6 +26,9 @@ public class UserService {
   private UserDAO userDAO;
 
   public void createUser(User user) {
+    HashedPassword hashedPassword = PasswordEncrypt.hashPassword(user.getPassword(), "");
+    user.setPassword(hashedPassword.getPassword());
+    user.setSalt(hashedPassword.getSalt());
     userDAO.addUser(user);
   }
 

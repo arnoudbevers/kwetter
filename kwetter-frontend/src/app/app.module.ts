@@ -16,9 +16,10 @@ import { NavbarComponent } from "./components/navbar/navbar.component";
 
 // Serivces
 import { StorageService } from "./services/storage/storage.service";
+import { TimelineComponent } from './components/timeline/timeline.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, NavbarComponent],
+  declarations: [AppComponent, LoginComponent, NavbarComponent, TimelineComponent],
   imports: [
     BrowserModule,
     RoutingModule,

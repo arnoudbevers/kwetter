@@ -28,16 +28,12 @@ public class KweetService {
     kweetDAO.postKweet(kweet);
   }
 
-  public User getKweetsForUser(User user) {
-//    user.setFollowing(new ArrayList<>());
-//    user.setFollowers(new ArrayList<>());
-//    user.setKweets(new ArrayList<>());
+  public List<Kweet> getKweetsForUser(User user) {
     List<Kweet> kweets = kweetDAO.getKweetsForUser(user);
     for (Kweet k : kweets) {
       k.setSender(user);
     }
-    user.setKweets(kweets);
-    return user;
+    return kweets;
   }
 
   // TODO: Add indexing to this method (e.g. get kweets by groups of 1000)

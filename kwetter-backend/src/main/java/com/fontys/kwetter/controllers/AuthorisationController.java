@@ -1,10 +1,13 @@
 package com.fontys.kwetter.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.fontys.kwetter.domain.User;
+import com.fontys.kwetter.domain.api.Credentials;
 import com.fontys.kwetter.security.JWTValidator;
 import com.fontys.kwetter.services.UserService;
 import com.fontys.kwetter.utils.SessionUtils;
+import org.json.JSONObject;
 
 import javax.ejb.EJBTransactionRolledbackException;
 import javax.enterprise.context.RequestScoped;
@@ -22,6 +25,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.Serializable;
+import java.util.UUID;
 
 /**
  * Controller for all authorisation related methods (logging in, registering etc.)
@@ -40,18 +44,21 @@ public class AuthorisationController implements Serializable {
   private UserService userService;
   private ObjectMapper mapper = new ObjectMapper();
 
+  @POST
   @Path("login")
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  public Response login() {
-    System.out.println(JWTValidator.createJWT("arnoudbevers"));
-    return Response.ok().build();
-  }
-
-  public String logout() {
-    HttpSession session = SessionUtils.getSession();
-    session.invalidate();
-    return "login";
+  public Response login(Credentials credentials) {
+    // 1. Call login method - return User object
+    User user = userService.logIn(credentials.getUsername(), credentials.getPassword());
+    // 2. Check if user is null - this means login has failed!
+    if(user == null) {
+      return Response.status(400).entity("Username and password are incorrect!").build();
+    }
+    // 3. Use username and UUID in JWT generator
+    String jwt = JWTValidator.createJWT(user.getUsername(), user.getUuid());
+    String json = new JSONObject().put("jwt_token", jwt).toString();
+    return Response.ok(json.toString(), MediaType.APPLICATION_JSON).build();
   }
 
   @POST
