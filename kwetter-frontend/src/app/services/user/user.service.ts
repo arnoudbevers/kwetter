@@ -8,6 +8,8 @@ import { User } from '../../models/user';
 })
 export class UserService extends ApiService {
 
+  private _currentUser: User;
+
   constructor(http: HttpClient) {
     super(http);
   }
@@ -15,4 +17,14 @@ export class UserService extends ApiService {
   getUser(uuid: String) {
     return this.getHttpClient().get<User>(`${this.getApiUrl()}/users/${uuid}`, this.getHttpOptions());
   }
+
+
+  getCurrentUser() {
+    return this._currentUser;
+  }
+  
+  // TODO: null check
+  setCurrentUser(user: User) {
+    this._currentUser = user;
+  } 
 }

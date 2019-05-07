@@ -9,7 +9,7 @@ import { StorageService } from 'src/app/services/storage/storage.service';
   styleUrls: ['./homepage.component.css']
 })
 export class HomepageComponent implements OnInit {
-  private _currentUser: User;
+  private currentUser: User;
 
   constructor(private storageService: StorageService, private userService: UserService) { }
 
@@ -19,8 +19,9 @@ export class HomepageComponent implements OnInit {
 
   getCurrentUser() {
     this.userService.getUser(this.storageService.getItem('kwetter_uuid')).subscribe(response => {
-      this._currentUser = response;
-      console.log(this._currentUser);
+      this.userService.setCurrentUser(response);
+      this.currentUser = this.userService.getCurrentUser();
+      console.log(this.currentUser);
     });
   }
 
