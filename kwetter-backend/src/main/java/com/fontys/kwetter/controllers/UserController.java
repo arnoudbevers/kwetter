@@ -78,21 +78,15 @@ public class UserController {
 
   // TODO: UUID instead of normal ID
   @GET
-  @Path("{id}")
-  public Response getUserById(@PathParam("id") int id) {
+  @Path("{uuid}")
+  public Response getUserById(@PathParam("uuid") String uuid) {
     User user;
     try {
-      user = userService.getUserById(id);
-      System.out.println(user.getFollowers());
-      System.out.println(user.getFollowing());
+      user = userService.getUserByUUID(uuid);
       user.setKweets(kweetService.getKweetsForUser(user));
-      System.out.println(user.getFollowing());
-      System.out.println(user.getFollowers());
-      System.out.println(user.getKweets());
       user = userDTO.simplifyUser(user);
-      System.out.println(user.getKweets());
       if (user == null) {
-        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Could not find user by id " + id + "!").build();
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Could not find user by id " + uuid + "!").build();
       }
       UserDTO userDto = modelMapper.map(user, UserDTO.class);
       final String jsonResult = objectMapper.writeValueAsString(userDto);
@@ -101,6 +95,13 @@ public class UserController {
       e.printStackTrace();
       return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Something went wrong when fetching user!").build();
     }
+  }
+
+  @GET
+  @Path("{uuid}/timeline")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getTimelineForUser() {
+    return Response.ok().build();
   }
 
   @GET
@@ -120,7 +121,8 @@ public class UserController {
       return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Something went wrong when fetching user by username " + username + "!").build();
     }
   }
-  
+
+
 //  @POST
 //  @Consumes(MediaType.APPLICATION_JSON)
 //  @Produces(MediaType.APPLICATION_JSON)

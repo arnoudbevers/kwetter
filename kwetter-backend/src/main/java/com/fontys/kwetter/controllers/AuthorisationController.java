@@ -1,5 +1,6 @@
 package com.fontys.kwetter.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.fontys.kwetter.domain.User;
@@ -49,17 +50,23 @@ public class AuthorisationController implements Serializable {
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
   public Response login(Credentials credentials) {
-    // 1. Call login method - return User object
-    User user = userService.logIn(credentials.getUsername(), credentials.getPassword());
-    // 2. Check if user is null - this means login has failed!
-    if(user == null) {
-      return Response.status(400).entity("Username and password are incorrect!").build();
+    try {
+      // 1. Call login method - return User object
+      User user = userService.logIn(credentials.getUsername(), credentials.getPassword());
+      // 2. Check if user is null - this means login has failed!
+      if(user == null) {
+        return Response.status(400).entity("Username and password are incorrect!").build();
+      }
+      // 3. Use username and UUID in JWT generator
+      String jwt = JWTValidator.createJWT(user.getUsername(), user.getUuid());
+      JSONObject json = new JSONObject();
+      json.put("jwt_token", jwt);
+      json.put("uuid", user.getUuid());
+      return Response.ok(json.toString(), MediaType.APPLICATION_JSON).build();
+    } catch (EJBTransactionRolledbackException | PersistenceException e) {
+      e.printStackTrace();
+      return Response.status(Response.Status.BAD_REQUEST).entity("Something went wrong when logging in!").build();
     }
-    // 3. Use username and UUID in JWT generator
-    String jwt = JWTValidator.createJWT(user.getUsername(), user.getUuid());
-    JSONObject json = new JSONObject().put("jwt_token", jwt);
-    json.put("uuid", user.getUuid());
-    return Response.ok(json.toString(), MediaType.APPLICATION_JSON).build();
   }
 
   @POST

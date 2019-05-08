@@ -78,6 +78,7 @@ public class User {
 
   // Constructor needed for JPA implementation
   public User() {
+    this.uuid = UUID.randomUUID().toString();
     this.kweets = new ArrayList<>();
     this.following = new ArrayList<>();
     this.followers = new ArrayList<>();
