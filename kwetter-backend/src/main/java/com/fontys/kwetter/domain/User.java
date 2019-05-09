@@ -244,7 +244,8 @@ public class User {
             ", password='" + password + '\'' +
             ", picture='" + picture + '\'' +
             ", role='" + role + '\'' +
-            '}';
+            ", bio='" + bio + '\'' +
+            "}";
   }
 
   @Override

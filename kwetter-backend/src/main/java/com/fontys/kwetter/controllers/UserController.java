@@ -85,6 +85,7 @@ public class UserController {
       user = userService.getUserByUUID(uuid);
       user.setKweets(kweetService.getKweetsForUser(user));
       user = userDTO.simplifyUser(user);
+      System.out.println(user);
       if (user == null) {
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Could not find user by id " + uuid + "!").build();
       }

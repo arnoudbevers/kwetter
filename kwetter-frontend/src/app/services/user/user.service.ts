@@ -1,30 +1,43 @@
-import { Injectable } from '@angular/core';
-import { ApiService } from '../api/api.service';
-import { HttpClient } from '@angular/common/http';
-import { User } from '../../models/user';
+import { Injectable } from "@angular/core";
+import { ApiService } from "../api/api.service";
+import { HttpClient } from "@angular/common/http";
+import { User } from "../../models/user";
+import { StorageService } from "../storage/storage.service";
+import { map } from "rxjs/operators";
+import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class UserService extends ApiService {
-
   private _currentUser: User;
 
-  constructor(http: HttpClient) {
+  constructor(http: HttpClient, private storageService: StorageService) {
     super(http);
+    this.getUser(this.storageService.getItem('kwetter_uuid')).subscribe(data => {
+      this._currentUser = data;
+    });
   }
 
   getUser(uuid: String) {
-    return this.getHttpClient().get<User>(`${this.getApiUrl()}/users/${uuid}`, this.getHttpOptions());
+    return this.getHttpClient()
+      .get<User>(`${this.getApiUrl()}/users/${uuid}`, this.getHttpOptions())
+      .pipe(
+        map(user => {
+          return user;
+        })
+      );
   }
-
 
   getCurrentUser() {
-    return this._currentUser;
+    if (this._currentUser !== undefined) return this._currentUser;
+    else {
+      return this.getUser(this.storageService.getItem("kwetter_uuid"));
+    }
   }
-  
+
   // TODO: null check
   setCurrentUser(user: User) {
     this._currentUser = user;
-  } 
+  }
 }

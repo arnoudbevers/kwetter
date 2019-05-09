@@ -19,9 +19,10 @@ import { StorageService } from "./services/storage/storage.service";
 import { TimelineComponent } from './components/timeline/timeline.component';
 import { HomepageComponent } from './components/homepage/homepage.component';
 import { SearchbarComponent } from './components/searchbar/searchbar.component';
+import { HomepageProfileinfoComponent } from './components/homepage-profileinfo/homepage-profileinfo.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, NavbarComponent, TimelineComponent, HomepageComponent, SearchbarComponent],
+  declarations: [AppComponent, LoginComponent, NavbarComponent, TimelineComponent, HomepageComponent, SearchbarComponent, HomepageProfileinfoComponent],
   imports: [
     BrowserModule,
     RoutingModule,

@@ -11,16 +11,17 @@ import { StorageService } from 'src/app/services/storage/storage.service';
 export class HomepageComponent implements OnInit {
   private currentUser: User;
 
-  constructor(private storageService: StorageService, private userService: UserService) { }
+  constructor(private storageService: StorageService, private userService: UserService) { 
+    this.getCurrentUser();
+  }
 
   ngOnInit() {
-    this.getCurrentUser();
   }
 
   getCurrentUser() {
     this.userService.getUser(this.storageService.getItem('kwetter_uuid')).subscribe(response => {
       this.userService.setCurrentUser(response);
-      this.currentUser = this.userService.getCurrentUser();
+      this.currentUser =  response;
       console.log(this.currentUser);
     });
   }
