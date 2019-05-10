@@ -1,3 +1,19 @@
 .homepage-profilecard .profile-name {
   color: #007BFF;
 }
+
+.crop {
+  width: 8rem;
+  height: 8rem;
+  overflow: hidden;
+}
+
+.profilecard-statLabel {
+  font-weight: bold;
+  color: #657786;
+}
+
+.card-body [class^="col-"] .left, .right {
+ vertical-align: bottom;
+ display: inline-block;
+}  
