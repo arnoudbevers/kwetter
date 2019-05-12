@@ -1,6 +1,7 @@
 package com.fontys.kwetter.dao;
 
 import com.fontys.kwetter.domain.User;
+
 import java.util.List;
 
 /**
@@ -33,6 +34,7 @@ public interface UserDAO {
    * @return User object corresponding to given UUID.
    */
   User getUserByUUID(String uuid);
+
   /**
    * Gets user by its username.
    *
@@ -85,7 +87,7 @@ public interface UserDAO {
    *
    * @param user User object to edit.
    */
-  void editUser(User user);
+  User editUser(User user);
 
   /**
    * Removes/deletes a user.

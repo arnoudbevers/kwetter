@@ -98,8 +98,9 @@ public class UserDAOJPAImpl implements UserDAO {
   }
 
   @Override
-  public void editUser(User user) {
+  public User editUser(User user) {
     em.merge(user);
+    return user;
   }
 
   @Override

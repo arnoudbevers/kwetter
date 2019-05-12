@@ -76,7 +76,6 @@ public class UserController {
     }
   }
 
-  // TODO: UUID instead of normal ID
   @GET
   @Path("{uuid}")
   public Response getUserById(@PathParam("uuid") String uuid) {
@@ -85,10 +84,23 @@ public class UserController {
       user = userService.getUserByUUID(uuid);
       user.setKweets(kweetService.getKweetsForUser(user));
       user = userDTO.simplifyUser(user);
-      System.out.println(user);
       if (user == null) {
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Could not find user by id " + uuid + "!").build();
       }
+      UserDTO userDto = modelMapper.map(user, UserDTO.class);
+      final String jsonResult = objectMapper.writeValueAsString(userDto);
+      return Response.ok(jsonResult, MediaType.APPLICATION_JSON).build();
+    } catch (EJBTransactionRolledbackException | JsonProcessingException | PersistenceException e) {
+      e.printStackTrace();
+      return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Something went wrong when fetching user!").build();
+    }
+  }
+
+  @PUT
+  @Path("{uuid}")
+  public Response updateUserById(@PathParam("uuid") String uuid, User user) {
+    try {
+      user = userService.updateUser(user);
       UserDTO userDto = modelMapper.map(user, UserDTO.class);
       final String jsonResult = objectMapper.writeValueAsString(userDto);
       return Response.ok(jsonResult, MediaType.APPLICATION_JSON).build();

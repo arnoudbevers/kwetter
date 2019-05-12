@@ -99,12 +99,13 @@ public class UserDAOMemoryImpl implements UserDAO {
   }
 
   @Override
-  public void editUser(User user) {
+  public User editUser(User user) {
     for (User u : allUsers) {
       if (u.equals(user)) {
         allUsers.set(allUsers.indexOf(u), user);
       }
     }
+    return user;
   }
 
   @Override

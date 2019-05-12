@@ -4,21 +4,22 @@
     data-target="#navbarsDefault" aria-controls="navbarsDefault" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <div [ngbCollapse]="isNavbarCollapsed" class="collapse navbar-collapse float-right" id="navbarsDefault"
-    *ngIf="this.isLoggedIn()">
-    <div class="dropdown">
-      <button type="button" class="btn btn-primary bg-primary dropdown-toggle" id="navBarDropdownButton" data-toggle="dropdown"
-        aria-haspopup="true" aria-expanded="false">
-        <span style="font-size: 20px;" class="fa fa-user"></span>
-      </button>
-      <div class="dropdown-menu" aria-labelledby="navBarDropdownButton">
-        <a class="dropdown-item" href="#">View account</a>
-        <div class="dropdown-divider"></div>
-        <div class="btn-group dropdown-item">
-          <button type="button" class="btn btn-primary btn-danger" (click)="logOut()">Logout</button>
+  <div [ngbCollapse]="isNavbarCollapsed" class="collapse navbar-collapse mr-auto justify-content-between" id="navbarsDefault" *ngIf="this.isLoggedIn()">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item dropdown">
+        <button type="button" class="btn btn-primary bg-primary dropdown-toggle" id="navBarDropdownButton"
+          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <span style="font-size: 20px;" class="fa fa-user"></span>
+        </button>
+        <div class="dropdown-menu" aria-labelledby="navBarDropdownButton">
+          <a class="dropdown-item" href="#">View account</a>
+          <div class="dropdown-divider"></div>
+          <div class="btn-group dropdown-item">
+            <button type="button" class="btn btn-primary btn-danger" (click)="logOut()">Logout</button>
+          </div>
         </div>
-      </div>
-    </div>
+      </li>
+    </ul>
     <form class="form-inline my-2 my-lg-0">
       <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
       <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
