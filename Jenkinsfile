@@ -5,6 +5,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building and testing if changes work..'
+            }
         }
         stage('Test') {
             steps {
