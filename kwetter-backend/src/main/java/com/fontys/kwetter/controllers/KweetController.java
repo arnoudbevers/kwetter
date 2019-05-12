@@ -6,6 +6,7 @@ import com.fontys.kwetter.domain.Kweet;
 import com.fontys.kwetter.domain.User;
 import com.fontys.kwetter.services.KweetService;
 import com.fontys.kwetter.services.UserService;
+import org.modelmapper.ModelMapper;
 
 import javax.ejb.EJBTransactionRolledbackException;
 import javax.enterprise.context.RequestScoped;
@@ -37,6 +38,7 @@ public class KweetController {
   private UserService userService;
 
   private ObjectMapper mapper = new ObjectMapper();
+  private ModelMapper modelMapper = new ModelMapper();
 
   @POST
   @Produces("application/json")

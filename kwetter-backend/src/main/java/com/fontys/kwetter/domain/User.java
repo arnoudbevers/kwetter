@@ -86,6 +86,7 @@ public class User {
 
   public User(Role role, String email, String username) {
     super();
+    this.uuid = UUID.randomUUID().toString();
     this.role = role.toString();
     this.email = email;
     this.username = username;

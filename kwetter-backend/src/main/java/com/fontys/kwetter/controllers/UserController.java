@@ -67,7 +67,8 @@ public class UserController {
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("No users exist!").build();
       }
       allUsers.forEach(user -> user = userDTO.simplifyUser(user));
-      final String jsonResult = objectMapper.writeValueAsString(allUsers);
+      UserDTO[] userDto = modelMapper.map(allUsers, UserDTO[].class);
+      final String jsonResult = objectMapper.writeValueAsString(userDto);
       return Response.ok(jsonResult, MediaType.APPLICATION_JSON_TYPE).build();
     } catch (EJBTransactionRolledbackException | JsonProcessingException | PersistenceException e) {
       e.printStackTrace();
@@ -77,22 +78,30 @@ public class UserController {
 
   // TODO: UUID instead of normal ID
   @GET
-  @Path("{id}")
-  public Response getUserById(@PathParam("id") int id) {
+  @Path("{uuid}")
+  public Response getUserById(@PathParam("uuid") String uuid) {
     User user;
     try {
-      user = userService.getUserById(id);
+      user = userService.getUserByUUID(uuid);
       user.setKweets(kweetService.getKweetsForUser(user));
+      user = userDTO.simplifyUser(user);
       if (user == null) {
-        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Could not find user by id " + id + "!").build();
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Could not find user by id " + uuid + "!").build();
       }
-      UserDTO userDto = modelMapper.map(userDTO.simplifyUser(user), UserDTO.class);
+      UserDTO userDto = modelMapper.map(user, UserDTO.class);
       final String jsonResult = objectMapper.writeValueAsString(userDto);
       return Response.ok(jsonResult, MediaType.APPLICATION_JSON).build();
     } catch (EJBTransactionRolledbackException | JsonProcessingException | PersistenceException e) {
       e.printStackTrace();
       return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Something went wrong when fetching user!").build();
     }
+  }
+
+  @GET
+  @Path("{uuid}/timeline")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getTimelineForUser() {
+    return Response.ok().build();
   }
 
   @GET
@@ -112,7 +121,8 @@ public class UserController {
       return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Something went wrong when fetching user by username " + username + "!").build();
     }
   }
-  
+
+
 //  @POST
 //  @Consumes(MediaType.APPLICATION_JSON)
 //  @Produces(MediaType.APPLICATION_JSON)

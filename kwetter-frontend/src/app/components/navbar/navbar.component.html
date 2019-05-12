@@ -5,10 +5,10 @@
         aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <div [ngbCollapse]="isNavbarCollapsed" class="collapse navbar-collapse" id="navbarsDefault">
+    <div [ngbCollapse]="isNavbarCollapsed" class="collapse navbar-collapse" id="navbarsDefault" *ngIf="this.isLoggedIn()">
         <div class="btn-group pull-right">
             <button type="button" class="btn btn-primary bg-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              USERNAME
+            <span style="font-size: 20px;" class="glyphicon glyphicon-user"></span>
             </button>
             <div class="dropdown-menu">
               <a class="dropdown-item" href="#">View account</a>

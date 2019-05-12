@@ -1,10 +1,12 @@
 package com.fontys.kwetter.dto;
 
+import com.fontys.kwetter.domain.Kweet;
 import com.fontys.kwetter.domain.User;
 
 import javax.ejb.Stateful;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Data transfer object, carrying the user data between processes.
@@ -24,9 +26,9 @@ public class UserDTO {
   private String location;
   private String websiteUrl;
   private String bio;
-  private List<KweetDTO> kweets;
-  private List<UserDTO> following;
-  private List<UserDTO> followers;
+  private Set<KweetDTO> kweets;
+  private Set<UserDTO> following;
+  private Set<UserDTO> followers;
 
   public UserDTO() {}
 
@@ -94,27 +96,27 @@ public class UserDTO {
     this.bio = bio;
   }
 
-  public List<KweetDTO> getKweets() {
+  public Set<KweetDTO> getKweets() {
     return kweets;
   }
 
-  public void setKweets(List<KweetDTO> kweets) {
+  public void setKweets(Set<KweetDTO> kweets) {
     this.kweets = kweets;
   }
 
-  public List<UserDTO> getFollowing() {
+  public Set<UserDTO> getFollowing() {
     return following;
   }
 
-  public void setFollowing(List<UserDTO> following) {
+  public void setFollowing(Set<UserDTO> following) {
     this.following = following;
   }
 
-  public List<UserDTO> getFollowers() {
+  public Set<UserDTO> getFollowers() {
     return followers;
   }
 
-  public void setFollowers(List<UserDTO> followers) {
+  public void setFollowers(Set<UserDTO> followers) {
     this.followers = followers;
   }
 
@@ -133,6 +135,9 @@ public class UserDTO {
       u.setKweets(new ArrayList<>());
       u.setFollowers(new ArrayList<>());
       u.setFollowing(new ArrayList<>());
+    }
+    for(Kweet k: user.getKweets()) {
+      k.setSender(null);
     }
     return user;
   }

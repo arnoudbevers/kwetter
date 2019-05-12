@@ -17,9 +17,11 @@ import { NavbarComponent } from "./components/navbar/navbar.component";
 // Serivces
 import { StorageService } from "./services/storage/storage.service";
 import { TimelineComponent } from './components/timeline/timeline.component';
+import { HomepageComponent } from './components/homepage/homepage.component';
+import { SearchbarComponent } from './components/searchbar/searchbar.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, NavbarComponent, TimelineComponent],
+  declarations: [AppComponent, LoginComponent, NavbarComponent, TimelineComponent, HomepageComponent, SearchbarComponent],
   imports: [
     BrowserModule,
     RoutingModule,
@@ -30,4 +32,4 @@ import { TimelineComponent } from './components/timeline/timeline.component';
   providers: [StorageService],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

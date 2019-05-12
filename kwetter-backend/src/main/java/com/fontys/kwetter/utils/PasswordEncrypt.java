@@ -51,7 +51,7 @@ public class PasswordEncrypt {
     MessageDigest messageDigest = null;
     byte[] byteData;
 
-    if (salt.isEmpty()) {
+    if (salt.isEmpty() || salt == null) {
       // Then the user has not registered yet, and the hash is generated
       // using a SecureRandom.
       // This makes sure no two hashed passwords are the same.
