@@ -7,15 +7,19 @@ pipeline {
                 echo 'Building and testing if changes work..'
             }
         }
-        stage('SonarQube analysis') {
-            steps{
-                // requires SonarQube Scanner 2.8+
-                def scannerHome = tool 'SonarQube Scanner 2.8';
-                withSonarQubeEnv('My SonarQube Server') {
-                  sh "${scannerHome}/bin/sonar-scanner"
-              }
+        stage('Sonarqube') {
+            environment {
+                scannerHome = tool 'SonarQubeScanner'
             }
-        } 
+            steps {
+                withSonarQubeEnv('sonarqube') {
+                    sh "${scannerHome}/bin/sonar-scanner"
+                }
+                timeout(time: 10, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
         stage('Test') {
             steps {
                 echo 'Testing..'
