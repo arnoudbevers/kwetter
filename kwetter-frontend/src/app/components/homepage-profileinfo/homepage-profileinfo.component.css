@@ -1,11 +1,14 @@
+.card {
+  max-width: 300px;
+}
 .homepage-profilecard .profile-name {
   color: #007BFF;
 }
 
-.crop {
-  width: 8rem;
-  height: 8rem;
-  overflow: hidden;
+.card-img-top {
+  width: 100%;
+  height: 15vw;
+  object-fit: cover;
 }
 
 .profilecard-statLabel {

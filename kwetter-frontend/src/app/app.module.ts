@@ -16,13 +16,14 @@ import { NavbarComponent } from "./components/navbar/navbar.component";
 
 // Serivces
 import { StorageService } from "./services/storage/storage.service";
-import { TimelineComponent } from './components/timeline/timeline.component';
 import { HomepageComponent } from './components/homepage/homepage.component';
-import { SearchbarComponent } from './components/searchbar/searchbar.component';
 import { HomepageProfileinfoComponent } from './components/homepage-profileinfo/homepage-profileinfo.component';
+import { HomepageKweetboxComponent } from './components/homepage-kweetbox/homepage-kweetbox.component';
+import { HomepageTimelineComponent } from './components/homepage-timeline/homepage-timeline.component';
+import { RegisterComponent } from './components/register/register.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, NavbarComponent, TimelineComponent, HomepageComponent, SearchbarComponent, HomepageProfileinfoComponent],
+  declarations: [AppComponent, LoginComponent, NavbarComponent, HomepageComponent, HomepageProfileinfoComponent, HomepageKweetboxComponent, HomepageTimelineComponent, RegisterComponent],
   imports: [
     BrowserModule,
     RoutingModule,
