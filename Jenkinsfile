@@ -7,8 +7,10 @@ pipeline {
     }
     stages {
         stage('Initialize'){
+            environment {
+                dockerHome = tool 'myDocker'
+            }
             steps {
-                def dockerHome = tool 'myDocker'
                 env.PATH = "${dockerHome}/bin:${env.PATH}"
             }
         }
@@ -17,7 +19,7 @@ pipeline {
                 sh 'mvn -B -Dskiptests clean package'
             }
         }
-        stage('Sonarqube') {
+        stage('SonarQube') {
             environment {
                 scannerHome = tool 'SonarQubeScanner'
             }
