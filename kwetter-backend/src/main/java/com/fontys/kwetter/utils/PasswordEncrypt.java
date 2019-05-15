@@ -4,12 +4,16 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Base64;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Arnoud Bevers
  * @project kwetter
  */
 public class PasswordEncrypt {
+
+  private static final Logger LOGGER = Logger.getLogger(PasswordEncrypt.class.getName());
 
   private PasswordEncrypt() {
     throw new IllegalStateException("Utility class");
@@ -80,7 +84,7 @@ public class PasswordEncrypt {
       }
       return new HashedPassword(sb.toString(), encode64(byteData));
     } catch (NoSuchAlgorithmException | NullPointerException ex) {
-      ex.printStackTrace();
+      LOGGER.log(Level.SEVERE, ex.toString(), ex);
     }
     return null;
     // Returns instance of object, used to store the hashed password and the salt.

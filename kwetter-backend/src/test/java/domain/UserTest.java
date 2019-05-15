@@ -3,15 +3,19 @@ package domain;
 import com.fontys.kwetter.domain.Role;
 import com.fontys.kwetter.domain.User;
 import com.fontys.kwetter.exceptions.FollowException;
+import com.fontys.kwetter.utils.PasswordEncrypt;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class UserTest {
 
+  private static final Logger LOGGER = Logger.getLogger(PasswordEncrypt.class.getName());
   private List<User> users;
 
   @Before
@@ -19,7 +23,7 @@ public class UserTest {
     this.users = new ArrayList<>();
 
     for (int i = 0; i < 10; i++) {
-      User u = new User(Role.USER, "test" + i + "@mail.com", "User" + i, "password" + i );
+      User u = new User(Role.USER, "test" + i + "@mail.com", "User" + i, "password" + i);
       u.setId((long) i);
       users.add(u);
     }
@@ -60,14 +64,14 @@ public class UserTest {
       u.setFollowers(new ArrayList<>());
       u.setFollowing(new ArrayList<>());
     }
-   for (int i = 0; i < users.size(); i++) {
+    for (int i = 0; i < users.size(); i++) {
       User u = users.get(i);
       for (int j = 0; j < users.size(); j++) {
-        if(i != j) {
+        if (i != j) {
           try {
             u.follow(users.get(j));
-          } catch (FollowException e) {
-            e.printStackTrace();
+          } catch (FollowException ex) {
+            LOGGER.log(Level.SEVERE, ex.toString(), ex);
           }
         }
       }
@@ -79,11 +83,11 @@ public class UserTest {
     }
   }
 
-//  @Test(expected = FollowException.class)
-//  public void testUserCannotFollowItself() throws FollowException {
-//    for (User u : users) {
-//      u.follow(u);
-//    }
-//  }
+  @Test(expected = FollowException.class)
+  public void testUserCannotFollowItself() throws FollowException {
+    for (User u : users) {
+      u.follow(u);
+    }
+  }
 
 }
