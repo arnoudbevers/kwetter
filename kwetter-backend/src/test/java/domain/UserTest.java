@@ -60,13 +60,15 @@ public class UserTest {
       u.setFollowers(new ArrayList<>());
       u.setFollowing(new ArrayList<>());
     }
-    for (int i = 0; i < users.size(); i++) {
+   for (int i = 0; i < users.size(); i++) {
       User u = users.get(i);
       for (int j = 0; j < users.size(); j++) {
-        try {
-          u.follow(users.get(j));
-        } catch (FollowException e) {
-          e.printStackTrace();
+        if(i != j) {
+          try {
+            u.follow(users.get(j));
+          } catch (FollowException e) {
+            e.printStackTrace();
+          }
         }
       }
     }
