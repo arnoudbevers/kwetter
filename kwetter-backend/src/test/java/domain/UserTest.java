@@ -45,7 +45,7 @@ public class UserTest {
       Assert.assertEquals(Math.toIntExact(u.getId()), i);
       Assert.assertEquals(u.getUsername(), "User" + i);
       Assert.assertEquals(u.getEmail(), "test" + i + "@mail.com");
-      Assert.assertEquals(u.getRole(), "USER");
+      Assert.assertEquals(u.getRole(), "User");
       Assert.assertEquals(u.getPassword(), "password" + i);
 //       Assert.assertEquals(u.getPicture(), "www.picture" + i + ".com");
       Assert.assertEquals(u.getKweets(), new ArrayList<>());
