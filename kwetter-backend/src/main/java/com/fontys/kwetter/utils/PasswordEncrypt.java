@@ -78,12 +78,12 @@ public class PasswordEncrypt {
       for (int i = 0; i < hashedPwd.length; i++) {
         sb.append(Integer.toString((hashedPwd[i] & 0xff) + 0x100, 16).substring(1));
       }
+      return new HashedPassword(sb.toString(), encode64(byteData));
     } catch (NoSuchAlgorithmException | NullPointerException ex) {
       ex.printStackTrace();
     }
-
+    return null;
     // Returns instance of object, used to store the hashed password and the salt.
-    return new HashedPassword(sb.toString(), encode64(byteData));
   }
 }
 
