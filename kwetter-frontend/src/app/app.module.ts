@@ -4,6 +4,7 @@ import { NgModule } from "@angular/core";
 // Modules
 import { RoutingModule } from "./routing/routing.module";
 import { HttpClientModule } from "@angular/common/http";
+import { JwtModule } from "@auth0/angular-jwt";
 
 //Angular Material Modules
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
@@ -29,7 +30,16 @@ import { RegisterComponent } from './components/register/register.component';
     RoutingModule,
     BrowserAnimationsModule,
     NgbModule,
-    HttpClientModule
+    HttpClientModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: function tokenGetter() {
+          return localStorage.getItem("kwetter_jwt_token");
+        }, 
+        whitelistedDomains: ["localhost:8080"],
+        blacklistedRoutes: ["localhost:8080/auth/login"]
+      }
+    })
   ],
   providers: [StorageService],
   bootstrap: [AppComponent]

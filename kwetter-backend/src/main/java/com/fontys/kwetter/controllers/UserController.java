@@ -2,6 +2,7 @@ package com.fontys.kwetter.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fontys.kwetter.api.JWTTokenNeeded;
 import com.fontys.kwetter.domain.User;
 import com.fontys.kwetter.dto.UserDTO;
 import com.fontys.kwetter.services.KweetService;
@@ -78,6 +79,7 @@ public class UserController {
 
   @GET
   @Path("{uuid}")
+  @JWTTokenNeeded
   public Response getUserById(@PathParam("uuid") String uuid) {
     User user;
     try {

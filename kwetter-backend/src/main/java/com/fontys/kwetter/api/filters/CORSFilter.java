@@ -1,4 +1,4 @@
-package com.fontys.kwetter.api;
+package com.fontys.kwetter.api.filters;
 
 import java.io.IOException;
 import javax.servlet.Filter;
