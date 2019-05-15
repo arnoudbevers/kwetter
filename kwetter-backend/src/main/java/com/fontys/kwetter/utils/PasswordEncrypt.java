@@ -48,8 +48,10 @@ public class PasswordEncrypt {
    */
   public static HashedPassword hashPassword(String pwdtoHash, String salt) {
 
-    MessageDigest messageDigest = null;
+    MessageDigest messageDigest;
     byte[] byteData;
+    byte[] hashedPwd;
+
 
     if (salt.isEmpty() || salt == null) {
       // Then the user has not registered yet, and the hash is generated
@@ -69,21 +71,17 @@ public class PasswordEncrypt {
       messageDigest = MessageDigest.getInstance("SHA-512");
       messageDigest.update(byteData);
       messageDigest.update(pwdtoHash.getBytes());
+      hashedPwd = messageDigest.digest();
+      StringBuilder sb = new StringBuilder();
+      // Byte array (salt) is used to encrypt the passwords.
+      // Since the array is randomly generated, no two passwords are hashed the same.
+      for (int i = 0; i < hashedPwd.length; i++) {
+        sb.append(Integer.toString((hashedPwd[i] & 0xff) + 0x100, 16).substring(1));
+      }
     } catch (NoSuchAlgorithmException | NullPointerException ex) {
       ex.printStackTrace();
     }
-    byte[] hashedPwd;
-    try {
-      hashedPwd = messageDigest.digest();
-    } catch (NullPointerException ex) {
-      return null;
-    }
-    StringBuilder sb = new StringBuilder();
-    // Byte array (salt) is used to encrypt the passwords.
-    // Since the array is randomly generated, no two passwords are hashed the same.
-    for (int i = 0; i < hashedPwd.length; i++) {
-      sb.append(Integer.toString((hashedPwd[i] & 0xff) + 0x100, 16).substring(1));
-    }
+
     // Returns instance of object, used to store the hashed password and the salt.
     return new HashedPassword(sb.toString(), encode64(byteData));
   }
