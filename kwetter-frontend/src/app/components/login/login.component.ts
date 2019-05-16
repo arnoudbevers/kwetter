@@ -4,6 +4,7 @@ import { AuthenticationService } from 'src/app/services/authentication/authentic
 import * as $ from 'jquery';
 import { Credentials } from 'src/app/models/credentials';
 import { Router } from '@angular/router';
+import { NgForm } from '@angular/forms';
 import { StorageService } from 'src/app/services/storage/storage.service';
 @Component({
   selector: 'app-login',
@@ -26,5 +27,9 @@ export class LoginComponent implements OnInit {
       this.storageService.setItem('kwetter_uuid', response['uuid']);
       this.router.navigateByUrl('');
     });
+  }
+
+  onSubmit(f: NgForm){
+    console.log('i submitted');
   }
 }

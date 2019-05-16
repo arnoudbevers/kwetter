@@ -31,8 +31,8 @@ public class Kweet {
 
   @Column(length = 140, nullable = false)
   private String message;
-  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
-  private Timestamp sent;
+  //  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
+  private long sent;
 
   // TODO: Vragen hoe je die met JPA persist
 //    @OneToMany(mappedBy = "kweet")
@@ -43,7 +43,7 @@ public class Kweet {
   private User sender;
 
   public Kweet() {
-    this.sent = new Timestamp(System.currentTimeMillis());
+    this.sent = System.currentTimeMillis() / 1000L;
   }
 
   public Kweet(String message, User sender) {
@@ -68,11 +68,11 @@ public class Kweet {
     this.message = message;
   }
 
-  public Timestamp getSent() {
+  public long getSent() {
     return sent;
   }
 
-  public void setSent(Timestamp sent) {
+  public void setSent(long sent) {
     this.sent = sent;
   }
 

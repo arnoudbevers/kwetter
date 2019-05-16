@@ -5,6 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 
 import javax.crypto.KeyGenerator;
+import javax.ejb.EJB;
 import javax.inject.Inject;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -15,7 +16,8 @@ import java.util.Date;
  * @project kwetter-backend
  */
 public class JWTGenerator {
-  @Inject
+
+  @EJB
   private KeyGenerator keyGenerator;
 
   public static String createJWT(String subject) {

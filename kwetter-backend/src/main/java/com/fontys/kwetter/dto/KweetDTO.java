@@ -9,7 +9,7 @@ import java.sql.Timestamp;
 public class KweetDTO {
   private Long id;
   private String message;
-  private Timestamp sent;
+  private long sent;
   private UserDTO sender;
 
   private KweetDTO() { }
@@ -30,11 +30,11 @@ public class KweetDTO {
     this.message = message;
   }
 
-  public Timestamp getSent() {
+  public long getSent() {
     return sent;
   }
 
-  public void setSent(Timestamp sent) {
+  public void setSent(long sent) {
     this.sent = sent;
   }
 

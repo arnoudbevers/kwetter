@@ -14,7 +14,6 @@ import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,21 +29,20 @@ public class JWTTokenNeededFilter implements ContainerRequestFilter {
   private static final Logger LOGGER = Logger.getLogger(JWTTokenNeededFilter.class.getName());
 
   @Override
-  public void filter(ContainerRequestContext requestContext) throws IOException {
-    //Get the authorization header from the request
-    String authorizationHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
-    //Trim the bearer token from that header
-    String jwt_token = authorizationHeader.substring("Bearer".length()).trim();
-
+  public void filter(ContainerRequestContext requestContext)  {
     // TODO: Validate JWS tokens with KyeGenerator
     try {
+      //Get the authorization header from the request
+      String authorizationHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
+      //Trim the bearer token from that header
+      String jwt_token = authorizationHeader.substring("Bearer".length()).trim();
       Algorithm algorithm = Algorithm.HMAC256("secret");
       JWTVerifier verifier = JWT.require(algorithm)
               .withIssuer("kwetter_arnoud_bevers")
               .build();
       DecodedJWT decodedJWT = verifier.verify(jwt_token);
       LOGGER.log(Level.INFO, "Valid JWT token: " + decodedJWT.getToken());
-    } catch (JWTVerificationException ex) {
+    } catch (JWTVerificationException  | NullPointerException ex) {
       LOGGER.log(Level.SEVERE, ex.toString(), ex);
       requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
     }
