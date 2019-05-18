@@ -1,3 +1,5 @@
 <p>
   homepage-timeline works!
 </p>
+
+<p *ngFor="let k of this.timeline | async">{{ k.message }}</p>
