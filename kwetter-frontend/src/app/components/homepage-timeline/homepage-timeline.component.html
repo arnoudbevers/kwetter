@@ -1,5 +1,11 @@
-<p>
-  homepage-timeline works!
-</p>
-
-<p *ngFor="let k of this.timeline | async">{{ k.message }}</p>
+<div class="kweet card" *ngFor="let k of this.timeline">
+  <div class="card-header">
+    <span> @{{ k.sender.username }} </span>
+  </div>
+  <div class="card-body">
+    <span>{{ k.message }}</span>
+  </div>
+  <div class="card-footer">
+    <span>Sent at {{ convertDate(k.sent) }}</span>
+  </div>
+</div>

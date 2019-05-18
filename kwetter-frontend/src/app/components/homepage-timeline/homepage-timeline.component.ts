@@ -5,6 +5,8 @@ import { KweetService } from "src/app/services/kweet/kweet.service";
 import { Observable, Subscription, BehaviorSubject } from "rxjs";
 import { StorageService } from "src/app/services/storage/storage.service";
 
+import * as moment from "moment";
+
 @Component({
   selector: "homepage-timeline",
   templateUrl: "./homepage-timeline.component.html",
@@ -12,24 +14,23 @@ import { StorageService } from "src/app/services/storage/storage.service";
 })
 export class HomepageTimelineComponent implements OnInit {
   @Input() private currentUser: User;
-  // private _timeline: BehaviorSubject<Kweet[]> = new BehaviorSubject([]);
-  // // private readonly timeline =  this._timeline.asObservable();
+  public timeline = [];
 
   constructor(
     private kweetService: KweetService,
     private storageService: StorageService
-  ) {
-    const timeline = new Observable((observer) => {
-      const {next, error} = observer;
-    })
+  ) {}
+
+  ngOnInit() {
+    this.kweetService
+      .getAll(this.storageService.getItem("kwetter_uuid"))
+      .subscribe(data => {
+        this.timeline = data;
+        console.log(this.timeline);
+      });
   }
 
-  get timeline() {
-    // return this._timeline.asObservable();
-  }
-
-  ngOnInit() {}
-
-  loadInitialData() {
+  convertDate(unix: number) {
+    return moment.unix(unix).utc().format("DD-MM-YYYY, HH:MM");
   }
 }
