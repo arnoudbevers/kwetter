@@ -2,7 +2,9 @@ package com.fontys.kwetter.services;
 
 import com.fontys.kwetter.dao.UserDAO;
 import com.fontys.kwetter.dao.jpa.UserDAOJPAImpl;
+import com.fontys.kwetter.domain.Kweet;
 import com.fontys.kwetter.domain.User;
+import com.fontys.kwetter.dto.KweetDTO;
 import com.fontys.kwetter.utils.HashedPassword;
 import com.fontys.kwetter.utils.PasswordEncrypt;
 

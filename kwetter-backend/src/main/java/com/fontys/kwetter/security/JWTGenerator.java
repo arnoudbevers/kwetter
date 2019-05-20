@@ -6,7 +6,6 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 
 import javax.crypto.KeyGenerator;
 import javax.ejb.EJB;
-import javax.inject.Inject;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;

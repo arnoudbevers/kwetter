@@ -3,7 +3,9 @@ package com.fontys.kwetter.controllers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fontys.kwetter.api.JWTTokenNeeded;
+import com.fontys.kwetter.domain.Kweet;
 import com.fontys.kwetter.domain.User;
+import com.fontys.kwetter.dto.KweetDTO;
 import com.fontys.kwetter.dto.UserDTO;
 import com.fontys.kwetter.services.KweetService;
 import com.fontys.kwetter.services.UserService;
@@ -79,7 +81,7 @@ public class UserController {
 
   @GET
   @Path("{uuid}")
-  @JWTTokenNeeded
+//  @JWTTokenNeeded
   public Response getUserById(@PathParam("uuid") String uuid) {
     User user;
     try {
@@ -108,8 +110,27 @@ public class UserController {
       return Response.ok(jsonResult, MediaType.APPLICATION_JSON).build();
     } catch (EJBTransactionRolledbackException | JsonProcessingException | PersistenceException e) {
       e.printStackTrace();
-      return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Something went wrong when fetching user!").build();
+      return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Something went wrong when updating user!").build();
     }
+  }
+
+
+  @GET
+  @Path("{uuid}/kweets")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getKweetsForUser(@PathParam("uuid") String uuid) {
+    try {
+      User user = userService.getUserByUUID(uuid);
+      user = userDTO.simplifyUser(user);
+      List<Kweet> kweets = kweetService.getKweetsForUser(user);
+      KweetDTO[] kweetDTOs = modelMapper.map(kweets, KweetDTO[].class);
+      final String jsonResult = objectMapper.writeValueAsString(kweetDTOs);
+      return Response.ok(jsonResult, MediaType.APPLICATION_JSON).build();
+    } catch (JsonProcessingException e) {
+      e.printStackTrace();
+      return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Something went wrong when fetching kweets for user!").build();
+    }
+
   }
 
   @GET
