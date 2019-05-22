@@ -1,11 +1,9 @@
 package com.fontys.kwetter.services;
 
 import com.fontys.kwetter.dao.KweetDAO;
-import com.fontys.kwetter.dao.jpa.KweetDAOJPAImpl;
 import com.fontys.kwetter.domain.Kweet;
 import com.fontys.kwetter.domain.User;
 
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;

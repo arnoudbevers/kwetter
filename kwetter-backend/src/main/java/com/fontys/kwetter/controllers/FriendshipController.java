@@ -3,7 +3,6 @@ package com.fontys.kwetter.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fontys.kwetter.domain.User;
 import com.fontys.kwetter.domain.api.Friendship;
 import com.fontys.kwetter.dto.UserDTO;
 import com.fontys.kwetter.exceptions.FollowException;
@@ -20,8 +19,6 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * API controller used to call all 'friendship' related calls.

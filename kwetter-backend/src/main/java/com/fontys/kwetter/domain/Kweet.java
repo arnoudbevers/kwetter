@@ -1,11 +1,8 @@
 package com.fontys.kwetter.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
-import java.util.List;
 
 /**
  * Kweet object - similar to a Tweet.

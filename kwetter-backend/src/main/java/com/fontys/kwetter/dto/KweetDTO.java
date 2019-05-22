@@ -1,7 +1,5 @@
 package com.fontys.kwetter.dto;
 
-import java.sql.Timestamp;
-
 /**
  * @author Arnoud
  * @project kwetter-backend

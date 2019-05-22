@@ -1,14 +1,10 @@
 package com.fontys.kwetter.services;
 
 import com.fontys.kwetter.dao.UserDAO;
-import com.fontys.kwetter.dao.jpa.UserDAOJPAImpl;
-import com.fontys.kwetter.domain.Kweet;
 import com.fontys.kwetter.domain.User;
-import com.fontys.kwetter.dto.KweetDTO;
-import com.fontys.kwetter.utils.HashedPassword;
-import com.fontys.kwetter.utils.PasswordEncrypt;
+import com.fontys.kwetter.security.HashedPassword;
+import com.fontys.kwetter.security.PasswordEncrypt;
 
-import javax.ejb.EJB;
 import javax.ejb.Stateful;
 import javax.inject.Inject;
 import javax.inject.Named;

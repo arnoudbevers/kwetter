@@ -3,7 +3,6 @@ package com.fontys.kwetter.beans;
 import com.fontys.kwetter.dao.jaas.UserJAASDAO;
 import com.fontys.kwetter.domain.Role;
 import com.fontys.kwetter.domain.User;
-import com.fontys.kwetter.services.UserService;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -13,7 +12,6 @@ import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ComponentSystemEvent;
 import javax.inject.Inject;
-import javax.inject.Named;
 import java.io.Serializable;
 import java.util.logging.Logger;
 

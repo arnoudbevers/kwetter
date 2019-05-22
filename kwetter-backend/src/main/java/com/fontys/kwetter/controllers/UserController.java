@@ -81,7 +81,7 @@ public class UserController {
 
   @GET
   @Path("{uuid}")
-//  @JWTTokenNeeded
+  @JWTTokenNeeded
   public Response getUserById(@PathParam("uuid") String uuid) {
     User user;
     try {
