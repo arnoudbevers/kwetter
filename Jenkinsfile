@@ -15,7 +15,7 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh "mvn -f ${WORKSPACE}/kwetter-backend/ -B -Dskiptests clean package"
+                sh "mvn -f ${WORKSPACE}/kwetter-backend/ -B -DskipTests clean package"
             }
         }
         stage('SonarQube') {
