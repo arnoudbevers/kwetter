@@ -33,7 +33,7 @@ pipeline {
         }
         stage('Test') {
             steps {
-                sh "mvn test"
+                sh "mvn -f ${WORKSPACE}/kwetter-backend/ test"
             }
         }
         stage('Deploy') {
