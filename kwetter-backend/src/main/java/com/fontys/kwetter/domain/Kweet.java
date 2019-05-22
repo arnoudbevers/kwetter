@@ -17,7 +17,7 @@ import javax.persistence.*;
         @NamedQuery(name = "kweet.getById",
                 query = "SELECT k FROM Kweet k where k.id = :id"),
         @NamedQuery(name = "kweet.getForUser",
-                query = "SELECT k FROM Kweet k where k.sender = :sender"),
+                query = "SELECT k FROM Kweet k where k.sender = :sender order by k.sent desc"),
         @NamedQuery(name = "kweet.search",
                 query = "SELECT k FROM Kweet k where k.message LIKE CONCAT('%', :searchString, '%')")
 })

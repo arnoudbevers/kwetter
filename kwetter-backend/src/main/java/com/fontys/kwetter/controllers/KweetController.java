@@ -4,10 +4,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fontys.kwetter.domain.Kweet;
 import com.fontys.kwetter.domain.User;
+import com.fontys.kwetter.dto.KweetDTO;
+import com.fontys.kwetter.dto.UserDTO;
 import com.fontys.kwetter.services.KweetService;
 import com.fontys.kwetter.services.UserService;
 import org.modelmapper.ModelMapper;
 
+import javax.ejb.EJB;
 import javax.ejb.EJBTransactionRolledbackException;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -36,7 +39,8 @@ public class KweetController {
   @Inject
   @Named("userService")
   private UserService userService;
-
+  @EJB
+  private UserDTO userDTO;
   private ObjectMapper mapper = new ObjectMapper();
   private ModelMapper modelMapper = new ModelMapper();
 
@@ -46,9 +50,10 @@ public class KweetController {
   public Response postKweet(Kweet kweet) {
     try {
       final List<User> senderList = userService.getUserByUsername(kweet.getSender().getUsername());
-      kweet.setSender(senderList.get(senderList.size() - 1));
+      kweet.setSender(userDTO.simplifyUser(senderList.get(senderList.size() - 1)) );
       kweetService.postKweet(kweet);
-      final String json = mapper.writeValueAsString(kweet);
+      KweetDTO kweetDTO = modelMapper.map(kweet, KweetDTO.class);
+      final String json = mapper.writeValueAsString(kweetDTO);
       return Response.ok(json, MediaType.APPLICATION_JSON).build();
     } catch (EJBTransactionRolledbackException | JsonProcessingException | PersistenceException e) {
       e.printStackTrace();

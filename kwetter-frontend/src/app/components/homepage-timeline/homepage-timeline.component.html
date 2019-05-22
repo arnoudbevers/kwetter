@@ -1,4 +1,4 @@
-<div class="kweet card" *ngFor="let k of this.timeline">
+<div class="kweet card" *ngFor="let k of this.kweetService.timeline">
   <div class="card-header">
     <span> @{{ k.sender.username }} </span>
   </div>

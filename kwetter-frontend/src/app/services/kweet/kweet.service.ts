@@ -10,28 +10,27 @@ import { StorageService } from "../storage/storage.service";
   providedIn: "root"
 })
 export class KweetService extends ApiService {
-  timeline$ = new BehaviorSubject([]);
+  private timeline = [];
 
   constructor(http: HttpClient, private storageService: StorageService) {
     super(http);
+
     // this.dataStore = { timeline: [] };
     // this._timeline = <BehaviorSubject<Kweet[]>>new BehaviorSubject([]);
     // this.timeline = this._timeline.asObservable();
   }
 
   getAll(uuid: string) {
-    return this.getHttpClient().get<Kweet[]>(
-      `${this.getApiUrl()}/users/${uuid}/kweets`
-    );
-
-
+    return this.getHttpClient()
+      .get<Kweet[]>(`${this.getApiUrl()}/users/${uuid}/kweets`)
+      .subscribe(data => (this.timeline = data));
   }
 
   postKweet(kweet: Kweet) {
-    this.getHttpClient().post<Kweet>(
-      `${this.getApiUrl()}/kweets`,
-      kweet,
-      this.getHttpOptions()
-    );
+    this.getHttpClient()
+      .post<Kweet>(`${this.getApiUrl()}/kweets`, kweet, this.getHttpOptions())
+      .subscribe(data => {
+        this.timeline.push(data as Kweet);
+      });
   }
 }

@@ -29,7 +29,4 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  onSubmit(f: NgForm){
-    console.log('i submitted');
-  }
 }

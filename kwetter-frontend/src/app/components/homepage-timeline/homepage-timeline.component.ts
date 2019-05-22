@@ -23,14 +23,10 @@ export class HomepageTimelineComponent implements OnInit {
 
   ngOnInit() {
     this.kweetService
-      .getAll(this.storageService.getItem("kwetter_uuid"))
-      .subscribe(data => {
-        this.timeline = data;
-        console.log(this.timeline);
-      });
+      .getAll(this.storageService.getItem("kwetter_uuid"));
   }
 
   convertDate(unix: number) {
-    return moment.unix(unix).utc().format("DD-MM-YYYY, HH:MM");
+    return moment.unix(unix).format("DD-MM-YYYY, HH:mm");
   }
 }
