@@ -3,7 +3,6 @@ package domain;
 import com.fontys.kwetter.domain.Role;
 import com.fontys.kwetter.domain.User;
 import com.fontys.kwetter.exceptions.FollowException;
-import com.fontys.kwetter.utils.PasswordEncrypt;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,7 +14,7 @@ import java.util.logging.Logger;
 
 public class UserTest {
 
-  private static final Logger LOGGER = Logger.getLogger(PasswordEncrypt.class.getName());
+  private static final Logger LOGGER = Logger.getLogger(UserTest.class.getName());
   private List<User> users;
 
   @Before
