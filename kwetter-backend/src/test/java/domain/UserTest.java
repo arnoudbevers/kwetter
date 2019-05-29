@@ -51,11 +51,7 @@ public class UserTest {
       Assert.assertEquals(u.getEmail(), "test" + i + "@mail.com");
       Assert.assertEquals(u.getRole(), "User");
       Assert.assertEquals(u.getPassword(), "password" + i);
-<<<<<<< HEAD
-//      Assert.assertEquals(u.getPicture(), "www.picture" + i + ".com");
-=======
 //       Assert.assertEquals(u.getPicture(), "www.picture" + i + ".com");
->>>>>>> a6000dd9520b6c3742cfba902ce51fc4d71f0f68
       Assert.assertEquals(u.getKweets(), new ArrayList<>());
       Assert.assertEquals(9, u.getFollowers().size());
       Assert.assertEquals(9, u.getFollowing().size());
@@ -71,19 +67,11 @@ public class UserTest {
     for (int i = 0; i < users.size(); i++) {
       User u = users.get(i);
       for (int j = 0; j < users.size(); j++) {
-<<<<<<< HEAD
-        if(i != j) {
-          try {
-            u.follow(users.get(j));
-          } catch (FollowException e) {
-            e.printStackTrace();
-=======
         if (i != j) {
           try {
             u.follow(users.get(j));
           } catch (FollowException ex) {
             LOGGER.log(Level.SEVERE, ex.toString(), ex);
->>>>>>> a6000dd9520b6c3742cfba902ce51fc4d71f0f68
           }
         }
       }
