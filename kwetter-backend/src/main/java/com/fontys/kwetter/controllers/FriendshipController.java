@@ -19,6 +19,11 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+<<<<<<< HEAD
+=======
+import java.util.logging.Level;
+import java.util.logging.Logger;
+>>>>>>> a6000dd9520b6c3742cfba902ce51fc4d71f0f68
 
 /**
  * API controller used to call all 'friendship' related calls.
@@ -32,6 +37,7 @@ import javax.ws.rs.core.Response;
 @RequestScoped
 @Path("friendships")
 public class FriendshipController {
+  private static final Logger LOGGER = Logger.getLogger(FriendshipController.class.getName());
 
   @Inject
   @Named("friendshipService")
@@ -48,24 +54,25 @@ public class FriendshipController {
    * @param friendship List containing the two users who are creating a relation.
    * @return Returns the followed user when successful. Returns a string with failure condition when not successful.
    */
-  @POST @Path("create")
+  @POST
+  @Path("create")
   @Consumes(MediaType.APPLICATION_JSON)
   public Response createFriendship(Friendship friendship) {
     try {
       friendshipService.createFriendship(friendship);
       final String jsonResult = mapper.writeValueAsString(friendship);
       return Response.ok(jsonResult, MediaType.APPLICATION_JSON).build();
-    } catch (FollowException e) {
-      e.printStackTrace();
-      return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
-    }
-    catch (EJBTransactionRolledbackException | JsonProcessingException | PersistenceException e) {
+    } catch (FollowException ex) {
+      LOGGER.log(Level.SEVERE, ex.toString(), ex);
+      return Response.status(Response.Status.BAD_REQUEST).entity(ex.getMessage()).build();
+    } catch (EJBTransactionRolledbackException | JsonProcessingException | PersistenceException e) {
       e.printStackTrace();
       return Response.status(Response.Status.BAD_REQUEST).entity("Something went wrong when creating friendship!").build();
     }
   }
 
-  @POST @Path("destroy")
+  @POST
+  @Path("destroy")
   @Consumes("application/json")
   public Response deleteFriendship(Friendship friendship) {
     try {

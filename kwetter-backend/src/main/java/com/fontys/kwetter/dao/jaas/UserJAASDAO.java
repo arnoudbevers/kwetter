@@ -1,5 +1,6 @@
 package com.fontys.kwetter.dao.jaas;
 
+import com.fontys.kwetter.controllers.FriendshipController;
 import com.fontys.kwetter.domain.Group;
 import com.fontys.kwetter.domain.User;
 import com.fontys.kwetter.utils.AuthenticationUtils;
@@ -20,6 +21,8 @@ import java.util.logging.Logger;
 @Stateless
 public class UserJAASDAO {
 
+  private static final Logger LOGGER = Logger.getLogger(UserJAASDAO.class.getName());
+
   @PersistenceContext
   private EntityManager em;
 
@@ -27,8 +30,7 @@ public class UserJAASDAO {
     try {
       user.setPassword(AuthenticationUtils.encodeSHA256(user.getPassword()));
     } catch (Exception e) {
-      Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, e);
-      e.printStackTrace();
+      LOGGER.log(Level.SEVERE, e.toString(), e);
     }
     Group group = new Group();
     group.setEmail(user.getEmail());
