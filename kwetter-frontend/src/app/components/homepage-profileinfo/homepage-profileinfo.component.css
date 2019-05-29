@@ -1,0 +1,22 @@
+.card {
+  max-width: 300px;
+}
+.homepage-profilecard .profile-name {
+  color: #007BFF;
+}
+
+.card-img-top {
+  width: 100%;
+  height: 15vw;
+  object-fit: cover;
+}
+
+.profilecard-statLabel {
+  font-weight: bold;
+  color: #657786;
+}
+
+.card-body [class^="col-"] .left, .right {
+ vertical-align: bottom;
+ display: inline-block;
+}  

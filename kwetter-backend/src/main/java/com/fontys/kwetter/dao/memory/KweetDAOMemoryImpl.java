@@ -38,7 +38,7 @@ public class KweetDAOMemoryImpl implements KweetDAO {
   @Override
   public Kweet getKweetById(int id) {
     for (Kweet k : allKweets) {
-      if (k.getId().equals(id)) {
+      if (new Long(id).equals(k.getId())) {
         return k;
       }
     }

@@ -4,12 +4,16 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Base64;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Arnoud Bevers
  * @project kwetter
  */
 public class PasswordEncrypt {
+
+  private static final Logger LOGGER = Logger.getLogger(PasswordEncrypt.class.getName());
 
   private PasswordEncrypt() {
     throw new IllegalStateException("Utility class");
@@ -48,8 +52,10 @@ public class PasswordEncrypt {
    */
   public static HashedPassword hashPassword(String pwdtoHash, String salt) {
 
-    MessageDigest messageDigest = null;
+    MessageDigest messageDigest;
     byte[] byteData;
+    byte[] hashedPwd;
+
 
     if (salt.isEmpty() || salt == null) {
       // Then the user has not registered yet, and the hash is generated
@@ -69,23 +75,19 @@ public class PasswordEncrypt {
       messageDigest = MessageDigest.getInstance("SHA-512");
       messageDigest.update(byteData);
       messageDigest.update(pwdtoHash.getBytes());
-    } catch (NoSuchAlgorithmException | NullPointerException ex) {
-      ex.printStackTrace();
-    }
-    byte[] hashedPwd;
-    try {
       hashedPwd = messageDigest.digest();
-    } catch (NullPointerException ex) {
-      return null;
+      StringBuilder sb = new StringBuilder();
+      // Byte array (salt) is used to encrypt the passwords.
+      // Since the array is randomly generated, no two passwords are hashed the same.
+      for (int i = 0; i < hashedPwd.length; i++) {
+        sb.append(Integer.toString((hashedPwd[i] & 0xff) + 0x100, 16).substring(1));
+      }
+      return new HashedPassword(sb.toString(), encode64(byteData));
+    } catch (NoSuchAlgorithmException | NullPointerException ex) {
+      LOGGER.log(Level.SEVERE, ex.toString(), ex);
     }
-    StringBuilder sb = new StringBuilder();
-    // Byte array (salt) is used to encrypt the passwords.
-    // Since the array is randomly generated, no two passwords are hashed the same.
-    for (int i = 0; i < hashedPwd.length; i++) {
-      sb.append(Integer.toString((hashedPwd[i] & 0xff) + 0x100, 16).substring(1));
-    }
+    return null;
     // Returns instance of object, used to store the hashed password and the salt.
-    return new HashedPassword(sb.toString(), encode64(byteData));
   }
 }
 

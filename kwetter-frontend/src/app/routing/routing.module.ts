@@ -5,11 +5,12 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 // Components
 import { LoginComponent } from "../components/login/login.component";
 import { HomepageComponent } from '../components/homepage/homepage.component';
+import { RegisterComponent } from '../components/register/register.component';
 
 const appRoutes: Routes = [
-  // { path: "", redirectTo: "account/login", pathMatch: 'full' },
   { path: "", component: HomepageComponent },
-  { path: "account/login", component: LoginComponent }
+  { path: "account/login", component: LoginComponent },
+  { path: "account/register", component: RegisterComponent }
 ];
 
 @NgModule({

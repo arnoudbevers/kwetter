@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/app/services/user/user.service';
 import { User } from '../../models/user';
 import { StorageService } from 'src/app/services/storage/storage.service';
+import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
 
 @Component({
   selector: 'app-homepage',
@@ -11,17 +12,19 @@ import { StorageService } from 'src/app/services/storage/storage.service';
 export class HomepageComponent implements OnInit {
   private currentUser: User;
 
-  constructor(private storageService: StorageService, private userService: UserService) { }
+  constructor(private storageService: StorageService, private userService: UserService, private authService: AuthenticationService) {
+    if (authService.isLoggedIn())
+      this.getCurrentUser();
+  }
 
   ngOnInit() {
-    this.getCurrentUser();
   }
 
   getCurrentUser() {
+    console.log('getting current user');
     this.userService.getUser(this.storageService.getItem('kwetter_uuid')).subscribe(response => {
       this.userService.setCurrentUser(response);
-      this.currentUser = this.userService.getCurrentUser();
-      console.log(this.currentUser);
+      this.currentUser = response;
     });
   }
 

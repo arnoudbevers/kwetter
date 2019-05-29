@@ -1,0 +1,42 @@
+<div class="homepage-profilecard card" style="width: 18rem;">
+  <img src="../../../assets/images/Photo 2.png" class="card-img-top img-thumbnail" alt="profile-picture">
+  <div class="card-body">
+    <div class="row">
+      <h5 class="card-title profile-name">{{ currentUser?.username }}</h5>
+    </div>
+    <div class="row">
+      <h6 class="card-subtitle mb-2 text-muted">@{{ currentUser?.username }}</h6>
+    </div>
+    <div class="row">
+      <p class="card-text">
+        {{ currentUser?.bio }}
+      </p>
+    </div>
+    <div class="row">
+      <div class="col-4">
+        <div class="row">
+          <span class="profilecard-statLabel">Kweets</span>
+        </div>
+        <div class="row">
+          <p>{{ currentUser?.kweets.length }}</p>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="row">
+          <span class="profilecard-statLabel">Following</span>
+        </div>
+        <div class="row">
+          <p>{{ currentUser?.following.length }}</p>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="row">
+          <span class="profilecard-statLabel">Followers</span>
+        </div>
+        <div class="row">
+          <p>{{ currentUser?.followers.length }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

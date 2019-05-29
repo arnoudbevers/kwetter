@@ -3,7 +3,6 @@ package com.fontys.kwetter.beans;
 import com.fontys.kwetter.dao.jaas.UserJAASDAO;
 import com.fontys.kwetter.domain.Role;
 import com.fontys.kwetter.domain.User;
-import com.fontys.kwetter.services.UserService;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -13,13 +12,14 @@ import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ComponentSystemEvent;
 import javax.inject.Inject;
-import javax.inject.Named;
 import java.io.Serializable;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @ManagedBean
 @SessionScoped
 public class RegisterView implements Serializable {
+  private static final Logger LOGGER = Logger.getLogger(RegisterView.class.getName());
 
   private static final long serialVersionUID = 1685823449195612778L;
   private static Logger log = Logger.getLogger(RegisterView.class.getName());
@@ -60,8 +60,7 @@ public class RegisterView implements Serializable {
         facesContext.renderResponse();
       }
     } catch (Exception ex) {
-      System.out.println("EXCEPTION...  ");
-      ex.printStackTrace();
+      LOGGER.log(Level.SEVERE, ex.toString(), ex);
     }
 
   }

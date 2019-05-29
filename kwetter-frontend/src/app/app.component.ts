@@ -10,9 +10,7 @@ import { Router } from '@angular/router';
 export class AppComponent {
   title = 'Kwetter';
   constructor(authService: AuthenticationService, router: Router) {
-    if(authService.isLoggedIn()) {
-      router.navigate(['']);
-    } else {
+    if(!authService.isLoggedIn()) {
       router.navigate(['account/login']);
     }
   }

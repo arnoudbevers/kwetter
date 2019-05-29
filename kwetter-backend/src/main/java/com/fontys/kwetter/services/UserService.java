@@ -54,4 +54,7 @@ public class UserService {
     return userDAO.register(user);
   }
 
+  public User updateUser(User user) {
+    return userDAO.editUser(user);
+  }
 }

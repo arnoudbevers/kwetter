@@ -165,6 +165,26 @@ public class User {
     return location;
   }
 
+  public void setLocation(String location) {
+    this.location = location;
+  }
+
+  public String getWebsiteUrl() {
+    return websiteUrl;
+  }
+
+  public void setWebsiteUrl(String websiteUrl) {
+    this.websiteUrl = websiteUrl;
+  }
+
+  public String getBio() {
+    return bio;
+  }
+
+  public void setBio(String bio) {
+    this.bio = bio;
+  }
+
   public String getRole() {
     return this.role;
   }
@@ -209,13 +229,13 @@ public class User {
 
   /**
    * Follows a user.
+   *
    * @param user The user to follow.
    */
   public void follow(User user) throws FollowException {
     if (user.equals(this)) {
       throw new FollowException("User cannot follow itself!");
-    }
-    else if(this.following.contains(user)) {
+    } else if (this.following.contains(user)) {
       throw new FollowException("User has already followed this user!");
     }
     this.following.add(user);
@@ -239,11 +259,14 @@ public class User {
   public String toString() {
     return "User{" +
             "id=" + id +
+            ", uuid='" + uuid + '\'' +
             ", username='" + username + '\'' +
             ", email='" + email + '\'' +
-            ", password='" + password + '\'' +
             ", picture='" + picture + '\'' +
             ", role='" + role + '\'' +
+            ", location='" + location + '\'' +
+            ", websiteUrl='" + websiteUrl + '\'' +
+            ", bio='" + bio + '\'' +
             '}';
   }
 

@@ -9,6 +9,8 @@ import javax.ejb.Stateful;
 import javax.enterprise.inject.Default;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Arnoud Bevers
@@ -17,6 +19,8 @@ import java.util.List;
 @Stateful
 @Default
 public class UserDAOMemoryImpl implements UserDAO {
+  private static final Logger LOGGER = Logger.getLogger(UserDAOMemoryImpl.class.getName());
+
   private List<User> allUsers = new ArrayList<>();
 
   @Override
@@ -79,8 +83,8 @@ public class UserDAOMemoryImpl implements UserDAO {
   public void followUser(User user, User userToFollow) {
     try {
       user.follow(userToFollow);
-    } catch (FollowException e) {
-      e.printStackTrace();
+    } catch (FollowException ex) {
+      LOGGER.log(Level.SEVERE, ex.toString(), ex);
     }
     editUser(user);
     editUser(userToFollow);
@@ -99,12 +103,13 @@ public class UserDAOMemoryImpl implements UserDAO {
   }
 
   @Override
-  public void editUser(User user) {
+  public User editUser(User user) {
     for (User u : allUsers) {
       if (u.equals(user)) {
         allUsers.set(allUsers.indexOf(u), user);
       }
     }
+    return user;
   }
 
   @Override
