@@ -11,7 +11,6 @@ import javax.ejb.Stateful;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
