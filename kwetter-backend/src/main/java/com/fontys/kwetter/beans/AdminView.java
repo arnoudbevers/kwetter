@@ -9,6 +9,8 @@ import javax.faces.bean.SessionScoped;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Arnoud Bevers
@@ -17,6 +19,7 @@ import java.util.List;
 @ManagedBean
 @SessionScoped
 public class AdminView {
+  private static final Logger LOGGER = Logger.getLogger(AdminView.class.getName());
 
   @Inject
   private UserJAASDAO userJAASDAO;
@@ -31,7 +34,7 @@ public class AdminView {
     try {
       this.users = userJAASDAO.getAllUsers();
     } catch (Exception ex) {
-      ex.printStackTrace();
+      LOGGER.log(Level.SEVERE, ex.toString(), ex);
     }
   }
 
@@ -40,9 +43,10 @@ public class AdminView {
       this.userJAASDAO.deleteUser(id);
       getAllUsers();
     } catch (Exception ex) {
-      ex.printStackTrace();
+      LOGGER.log(Level.SEVERE, ex.toString(), ex);
     }
   }
+
   public List<User> getUsers() {
     return users;
   }

@@ -13,11 +13,13 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ComponentSystemEvent;
 import javax.inject.Inject;
 import java.io.Serializable;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @ManagedBean
 @SessionScoped
 public class RegisterView implements Serializable {
+  private static final Logger LOGGER = Logger.getLogger(RegisterView.class.getName());
 
   private static final long serialVersionUID = 1685823449195612778L;
   private static Logger log = Logger.getLogger(RegisterView.class.getName());
@@ -58,8 +60,7 @@ public class RegisterView implements Serializable {
         facesContext.renderResponse();
       }
     } catch (Exception ex) {
-      System.out.println("EXCEPTION...  ");
-      ex.printStackTrace();
+      LOGGER.log(Level.SEVERE, ex.toString(), ex);
     }
 
   }
