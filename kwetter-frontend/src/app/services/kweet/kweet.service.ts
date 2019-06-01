@@ -14,16 +14,20 @@ export class KweetService extends ApiService {
 
   constructor(http: HttpClient, private storageService: StorageService) {
     super(http);
-
-    // this.dataStore = { timeline: [] };
-    // this._timeline = <BehaviorSubject<Kweet[]>>new BehaviorSubject([]);
-    // this.timeline = this._timeline.asObservable();
   }
 
   getAll(uuid: string) {
     return this.getHttpClient()
-      .get<Kweet[]>(`${this.getApiUrl()}/users/${uuid}/kweets`)
-      .subscribe(data => (this.timeline = data));
+      .get<Kweet[]>(`${this.getApiUrl()}/users/${uuid}/kweets`);
+  }
+
+  getTimeline(uuid: string) {
+    return this.getHttpClient()
+      .get<Kweet[]>(`${this.getApiUrl()}/users/${uuid}/timeline`)
+      .subscribe(data => {
+        this.timeline = data;
+        console.log(this.timeline);
+      });
   }
 
   postKweet(kweet: Kweet) {

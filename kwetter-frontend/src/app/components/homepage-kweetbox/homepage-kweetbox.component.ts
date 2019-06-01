@@ -22,5 +22,6 @@ export class HomepageKweetboxComponent implements OnInit {
     const message = $('#kweetInput').val();
     const kweet = new Kweet(message, moment().unix(), this.currentUser);
     this.kweetService.postKweet(kweet);
+    $('#kweetInput').empty();
   }
 }
