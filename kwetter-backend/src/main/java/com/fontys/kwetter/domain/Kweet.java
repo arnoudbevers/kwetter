@@ -1,11 +1,7 @@
 package com.fontys.kwetter.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import javax.persistence.*;
-import java.sql.Timestamp;
-import java.util.List;
+import java.util.Comparator;
 
 /**
  * Kweet object - similar to a Tweet.
@@ -20,7 +16,7 @@ import java.util.List;
         @NamedQuery(name = "kweet.getById",
                 query = "SELECT k FROM Kweet k where k.id = :id"),
         @NamedQuery(name = "kweet.getForUser",
-                query = "SELECT k FROM Kweet k where k.sender = :sender"),
+                query = "SELECT k FROM Kweet k where k.sender = :sender order by k.sent desc"),
         @NamedQuery(name = "kweet.search",
                 query = "SELECT k FROM Kweet k where k.message LIKE CONCAT('%', :searchString, '%')")
 })
@@ -31,19 +27,18 @@ public class Kweet {
 
   @Column(length = 140, nullable = false)
   private String message;
-  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
-  private Timestamp sent;
+  //  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
+  private long sent;
 
   // TODO: Vragen hoe je die met JPA persist
 //    @OneToMany(mappedBy = "kweet")
 //    private List<User> likes;
 
   @ManyToOne
-  @JsonBackReference
   private User sender;
 
   public Kweet() {
-    this.sent = new Timestamp(System.currentTimeMillis());
+    this.sent = System.currentTimeMillis() / 1000L;
   }
 
   public Kweet(String message, User sender) {
@@ -68,11 +63,11 @@ public class Kweet {
     this.message = message;
   }
 
-  public Timestamp getSent() {
+  public long getSent() {
     return sent;
   }
 
-  public void setSent(Timestamp sent) {
+  public void setSent(long sent) {
     this.sent = sent;
   }
 
@@ -104,5 +99,12 @@ public class Kweet {
             ", sent=" + sent +
             ", sender=" + sender +
             '}';
+  }
+
+  public static class KweetComparator implements Comparator<Kweet> {
+    @Override
+    public int compare(Kweet subject, Kweet other) {
+      return Long.compare(other.getSent(), subject.getSent());
+    }
   }
 }

@@ -1,4 +1,4 @@
-package com.fontys.kwetter.utils;
+package com.fontys.kwetter.security;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

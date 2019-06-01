@@ -1,15 +1,16 @@
 package com.fontys.kwetter.services;
 
+import com.fontys.kwetter.dao.KweetDAO;
 import com.fontys.kwetter.dao.UserDAO;
-import com.fontys.kwetter.dao.jpa.UserDAOJPAImpl;
+import com.fontys.kwetter.domain.Kweet;
 import com.fontys.kwetter.domain.User;
-import com.fontys.kwetter.utils.HashedPassword;
-import com.fontys.kwetter.utils.PasswordEncrypt;
+import com.fontys.kwetter.security.HashedPassword;
+import com.fontys.kwetter.security.PasswordEncrypt;
 
-import javax.ejb.EJB;
 import javax.ejb.Stateful;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,6 +25,9 @@ public class UserService {
 
   @Inject @Named("userDAO")
   private UserDAO userDAO;
+
+  @Inject @Named("kweetDAO")
+  private KweetDAO kweetDAO;
 
   public void createUser(User user) {
     HashedPassword hashedPassword = PasswordEncrypt.hashPassword(user.getPassword(), "");
@@ -56,5 +60,24 @@ public class UserService {
 
   public User updateUser(User user) {
     return userDAO.editUser(user);
+  }
+
+  public List<Kweet> getKweetsForUser(User user) {
+    List<Kweet> kweets = kweetDAO.getKweetsForUser(user);
+    for (Kweet k : kweets) {
+      k.setSender(user);
+    }
+    return kweets;
+  }
+
+  public List<Kweet> getTimeline(User user) {
+    List<Kweet> timeline = new ArrayList<>();
+    for(User u : user.getFollowing()) {
+      timeline.addAll(this.getKweetsForUser(u)); //Add kweets for each following
+    }
+    timeline.addAll(this.getKweetsForUser(user)); //Add users own kweets
+    timeline.sort(new Kweet.KweetComparator());
+    // Sort timeline
+    return timeline;
   }
 }

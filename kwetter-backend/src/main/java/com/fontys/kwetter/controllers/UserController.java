@@ -2,7 +2,10 @@ package com.fontys.kwetter.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fontys.kwetter.api.JWTTokenNeeded;
+import com.fontys.kwetter.domain.Kweet;
 import com.fontys.kwetter.domain.User;
+import com.fontys.kwetter.dto.KweetDTO;
 import com.fontys.kwetter.dto.UserDTO;
 import com.fontys.kwetter.services.KweetService;
 import com.fontys.kwetter.services.UserService;
@@ -78,11 +81,12 @@ public class UserController {
 
   @GET
   @Path("{uuid}")
+  @JWTTokenNeeded
   public Response getUserById(@PathParam("uuid") String uuid) {
     User user;
     try {
       user = userService.getUserByUUID(uuid);
-      user.setKweets(kweetService.getKweetsForUser(user));
+      user.setKweets(userService.getKweetsForUser(user));
       user = userDTO.simplifyUser(user);
       if (user == null) {
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Could not find user by id " + uuid + "!").build();
@@ -90,7 +94,7 @@ public class UserController {
       UserDTO userDto = modelMapper.map(user, UserDTO.class);
       final String jsonResult = objectMapper.writeValueAsString(userDto);
       return Response.ok(jsonResult, MediaType.APPLICATION_JSON).build();
-    } catch (EJBTransactionRolledbackException | JsonProcessingException | PersistenceException e) {
+  } catch (EJBTransactionRolledbackException | JsonProcessingException | PersistenceException e) {
       e.printStackTrace();
       return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Something went wrong when fetching user!").build();
     }
@@ -106,15 +110,44 @@ public class UserController {
       return Response.ok(jsonResult, MediaType.APPLICATION_JSON).build();
     } catch (EJBTransactionRolledbackException | JsonProcessingException | PersistenceException e) {
       e.printStackTrace();
-      return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Something went wrong when fetching user!").build();
+      return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Something went wrong when updating user!").build();
     }
+  }
+
+
+  @GET
+  @Path("{uuid}/kweets")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getKweetsForUser(@PathParam("uuid") String uuid) {
+    try {
+      User user = userService.getUserByUUID(uuid);
+      user = userDTO.simplifyUser(user);
+      List<Kweet> kweets = userService.getKweetsForUser(user);
+      KweetDTO[] kweetDTOs = modelMapper.map(kweets, KweetDTO[].class);
+      final String jsonResult = objectMapper.writeValueAsString(kweetDTOs);
+      return Response.ok(jsonResult, MediaType.APPLICATION_JSON).build();
+    } catch (EJBTransactionRolledbackException | JsonProcessingException |PersistenceException e) {
+      e.printStackTrace();
+      return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Something went wrong when fetching kweets for user!").build();
+    }
+
   }
 
   @GET
   @Path("{uuid}/timeline")
   @Produces(MediaType.APPLICATION_JSON)
-  public Response getTimelineForUser() {
-    return Response.ok().build();
+  public Response getTimelineForUser(@PathParam("uuid") String uuid) {
+    try {
+      User user = userService.getUserByUUID(uuid);
+      user = userDTO.simplifyUser(user);
+      List<Kweet> timeline = userService.getTimeline(user);
+      KweetDTO[] kweetDTOs = modelMapper.map(timeline, KweetDTO[].class);
+      final String jsonResult = objectMapper.writeValueAsString(kweetDTOs);
+      return Response.ok(jsonResult,MediaType.APPLICATION_JSON).build();
+    } catch(EJBTransactionRolledbackException | JsonProcessingException | PersistenceException e) {
+      e.printStackTrace();
+      return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Something went wrong when fetching the timeline for user!").build();
+    }
   }
 
   @GET
@@ -135,18 +168,4 @@ public class UserController {
     }
   }
 
-
-//  @POST
-//  @Consumes(MediaType.APPLICATION_JSON)
-//  @Produces(MediaType.APPLICATION_JSON)
-//  public Response register(User user) {
-//    try {
-//      User registeredUser = userService.register(user);
-//      final String jsonResult = objectMapper.writeValueAsString(userDTO.simplifyUser(registeredUser));
-//      return Response.ok(jsonResult, MediaType.APPLICATION_JSON).build();
-//    } catch (EJBTransactionRolledbackException | JsonProcessingException | PersistenceException e) {
-//      e.printStackTrace();
-//      return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Something went wrong when registering user!").build();
-//    }
-//  }
 }

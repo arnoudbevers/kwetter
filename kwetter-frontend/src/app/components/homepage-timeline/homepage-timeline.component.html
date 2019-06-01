@@ -1,3 +1,14 @@
-<p>
-  homepage-timeline works!
-</p>
+<div class="kweet" *ngFor="let k of this.kweetService.timeline">
+  <div class="card">
+    <div class="card-header">
+      <span> @{{ k.sender.username }} </span>
+    </div>
+    <div class="card-body">
+      <span>{{ k.message }}</span>
+    </div>
+    <div class="card-footer">
+      <span>Sent at {{ convertDate(k.sent) }}</span>
+    </div>
+  </div>
+  <br />
+</div>

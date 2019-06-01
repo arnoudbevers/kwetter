@@ -1,14 +1,9 @@
-package com.fontys.kwetter.api;
+package com.fontys.kwetter.api.filters;
 
-import java.io.IOException;
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * Servlet Filter implementation class CORSFilter
@@ -35,7 +30,7 @@ public class CORSFilter implements Filter {
           throws IOException, ServletException {
 
     HttpServletRequest request = (HttpServletRequest) servletRequest;
-    System.out.println("CORSFilter HTTP Request: " + request.getMethod());
+    System.out.println("Filtering HTTP request of method " + request.getMethod());
 
     // Authorize (allow) all domains to consume the content
     ((HttpServletResponse) servletResponse).addHeader("Access-Control-Allow-Origin", "*");

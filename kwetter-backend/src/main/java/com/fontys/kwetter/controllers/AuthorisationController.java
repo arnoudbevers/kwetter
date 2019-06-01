@@ -1,24 +1,17 @@
 package com.fontys.kwetter.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.fontys.kwetter.domain.User;
 import com.fontys.kwetter.domain.api.Credentials;
-import com.fontys.kwetter.security.JWTValidator;
+import com.fontys.kwetter.security.JWTGenerator;
 import com.fontys.kwetter.services.UserService;
-import com.fontys.kwetter.utils.SessionUtils;
 import org.json.JSONObject;
 
 import javax.ejb.EJBTransactionRolledbackException;
 import javax.enterprise.context.RequestScoped;
-import javax.enterprise.context.SessionScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.PersistenceException;
-import javax.servlet.http.HttpSession;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -26,7 +19,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.Serializable;
-import java.util.UUID;
 
 /**
  * Controller for all authorisation related methods (logging in, registering etc.)
@@ -58,7 +50,7 @@ public class AuthorisationController implements Serializable {
         return Response.status(400).entity("Username and password are incorrect!").build();
       }
       // 3. Use username and UUID in JWT generator
-      String jwt = JWTValidator.createJWT(user.getUsername(), user.getUuid());
+      String jwt = JWTGenerator.createJWT(user.getUuid());
       JSONObject json = new JSONObject();
       json.put("jwt_token", jwt);
       json.put("uuid", user.getUuid());

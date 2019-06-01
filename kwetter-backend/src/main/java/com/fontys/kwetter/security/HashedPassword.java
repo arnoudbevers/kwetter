@@ -1,4 +1,4 @@
-package com.fontys.kwetter.utils;
+package com.fontys.kwetter.security;
 
 /**
  * @author Arnoud Bevers

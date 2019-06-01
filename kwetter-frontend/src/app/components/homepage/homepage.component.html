@@ -5,8 +5,9 @@
       <homepage-profileinfo [currentUser]="currentUser"></homepage-profileinfo>
     </div>
     <div class="col-10">
-      <homepage-kweetbox></homepage-kweetbox>
-      <homepage-timeline></homepage-timeline>
+      <homepage-kweetbox [currentUser]="currentUser"></homepage-kweetbox>
+      <br />
+      <homepage-timeline [currentUser]="currentUser"></homepage-timeline>
     </div>
   </div>
 </div>

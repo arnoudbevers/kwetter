@@ -5,7 +5,6 @@ import com.fontys.kwetter.domain.User;
 
 import javax.ejb.Stateful;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 /**
