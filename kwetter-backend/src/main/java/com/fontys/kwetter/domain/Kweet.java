@@ -3,6 +3,7 @@ package com.fontys.kwetter.domain;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
+import java.util.Comparator;
 
 /**
  * Kweet object - similar to a Tweet.
@@ -36,7 +37,6 @@ public class Kweet {
 //    private List<User> likes;
 
   @ManyToOne
-  @JsonBackReference
   private User sender;
 
   public Kweet() {
@@ -101,5 +101,12 @@ public class Kweet {
             ", sent=" + sent +
             ", sender=" + sender +
             '}';
+  }
+
+  public static class KweetComparator implements Comparator<Kweet> {
+    @Override
+    public int compare(Kweet subject, Kweet other) {
+      return Long.compare(other.getSent(), subject.getSent());
+    }
   }
 }
