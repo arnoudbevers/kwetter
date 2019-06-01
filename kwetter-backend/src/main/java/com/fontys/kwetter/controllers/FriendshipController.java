@@ -19,11 +19,8 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-<<<<<<< HEAD
-=======
 import java.util.logging.Level;
 import java.util.logging.Logger;
->>>>>>> 980ed8ca54f6490c6ff71cbaed501c755c6f519c
 
 /**
  * API controller used to call all 'friendship' related calls.
