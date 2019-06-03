@@ -1,15 +1,15 @@
 import { Kweet } from './kweet';
 
 export class User {
-    private id: number;
-    private uuid: String;
-    private username: String;
-    private email: String;
-    private picture: String;
-    private location: String;
-    private websiteUrl: String;
-    private bio: String;
-    private kweets: Kweet[];
-    private following: User[];
-    private followers: User[];
+    id: number;
+    uuid: String;
+    username: String;
+    email: String;
+    picture: String;
+    location: String;
+    websiteUrl: String;
+    bio: String;
+    kweets: Kweet[];
+    following: User[];
+    followers: User[];
 }

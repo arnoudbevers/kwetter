@@ -48,6 +48,7 @@ public class UserController {
 
   @POST
   @Consumes("application/json")
+  @JWTTokenNeeded
   public Response createUser(User user) {
     try {
       userService.createUser(user);
@@ -63,6 +64,7 @@ public class UserController {
 
   @GET
   @Produces(MediaType.APPLICATION_JSON)
+  @JWTTokenNeeded
   public Response getAllUsers() {
     try {
       final List<User> allUsers = userService.getAllUsers();
@@ -83,9 +85,8 @@ public class UserController {
   @Path("{uuid}")
   @JWTTokenNeeded
   public Response getUserById(@PathParam("uuid") String uuid) {
-    User user;
     try {
-      user = userService.getUserByUUID(uuid);
+      User user = userService.getUserByUUID(uuid);
       user.setKweets(userService.getKweetsForUser(user));
       user = userDTO.simplifyUser(user);
       if (user == null) {
@@ -102,6 +103,7 @@ public class UserController {
 
   @PUT
   @Path("{uuid}")
+  @JWTTokenNeeded
   public Response updateUserById(@PathParam("uuid") String uuid, User user) {
     try {
       user = userService.updateUser(user);
@@ -118,6 +120,7 @@ public class UserController {
   @GET
   @Path("{uuid}/kweets")
   @Produces(MediaType.APPLICATION_JSON)
+  @JWTTokenNeeded
   public Response getKweetsForUser(@PathParam("uuid") String uuid) {
     try {
       User user = userService.getUserByUUID(uuid);
@@ -136,6 +139,7 @@ public class UserController {
   @GET
   @Path("{uuid}/timeline")
   @Produces(MediaType.APPLICATION_JSON)
+  @JWTTokenNeeded
   public Response getTimelineForUser(@PathParam("uuid") String uuid) {
     try {
       User user = userService.getUserByUUID(uuid);
@@ -152,6 +156,7 @@ public class UserController {
 
   @GET
   @Path("search/{username}")
+  @JWTTokenNeeded
   public Response getUserByUsername(@PathParam("username") String username) {
     try {
       final List<User> users = userService.getUserByUsername(username);

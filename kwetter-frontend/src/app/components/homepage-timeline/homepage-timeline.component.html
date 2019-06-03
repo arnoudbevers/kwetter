@@ -1,4 +1,4 @@
-<div class="kweet" *ngFor="let k of this.kweetService.timeline">
+<!-- <div class="kweet" *ngFor="let k of this.kweetService.timeline">
   <div class="card">
     <div class="card-header">
       <span> @{{ k.sender.username }} </span>
@@ -11,4 +11,15 @@
     </div>
   </div>
   <br />
-</div>
+</div> -->
+
+<div class="list-group">
+    <a *ngFor="let kweet of this.kweetService.timeline"
+      class="list-group-item list-group-item-action flex-column align-items-start">
+      <div class="d-flex w-100 justify-content-between">
+        <h5 class="mb-1">@{{ kweet.sender?.username }}</h5>
+      </div>
+      <p class="mb-1">{{ kweet.message }}</p>
+      <small>{{ kweet.sent | date:"DD-MM-YYYY, HH:mm" }}</small>
+    </a>
+  </div>
