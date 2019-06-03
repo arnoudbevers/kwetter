@@ -24,9 +24,13 @@ import { HomepageProfileinfoComponent } from './components/homepage-profileinfo/
 import { HomepageKweetboxComponent } from './components/homepage-kweetbox/homepage-kweetbox.component';
 import { HomepageTimelineComponent } from './components/homepage-timeline/homepage-timeline.component';
 import { RegisterComponent } from './components/register/register.component';
+import { ProfileComponent } from './components/profile/profile.component';
+import { ProfileProfilecardComponent } from './components/profile-profilecard/profile-profilecard.component';
+import { ProfileKweetsComponent } from './components/profile-kweets/profile-kweets.component';
+import { DatePipe } from './pipes/date.pipe';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, NavbarComponent, HomepageComponent, HomepageProfileinfoComponent, HomepageKweetboxComponent, HomepageTimelineComponent, RegisterComponent],
+  declarations: [AppComponent, LoginComponent, NavbarComponent, HomepageComponent, HomepageProfileinfoComponent, HomepageKweetboxComponent, HomepageTimelineComponent, RegisterComponent, ProfileComponent, ProfileProfilecardComponent, ProfileKweetsComponent, DatePipe],
   imports: [
     BrowserModule,
     RoutingModule,

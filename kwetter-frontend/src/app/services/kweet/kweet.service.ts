@@ -26,15 +26,15 @@ export class KweetService extends ApiService {
       .get<Kweet[]>(`${this.getApiUrl()}/users/${uuid}/timeline`)
       .subscribe(data => {
         this.timeline = data;
-        console.log(this.timeline);
       });
   }
 
   postKweet(kweet: Kweet) {
-    this.getHttpClient()
+    return this.getHttpClient()
       .post<Kweet>(`${this.getApiUrl()}/kweets`, kweet, this.getHttpOptions())
-      .subscribe(data => {
-        this.timeline.push(data as Kweet);
-      });
+      .pipe(map(data => {
+        this.timeline.unshift(data as Kweet);
+        return data;
+      }));
   }
 }

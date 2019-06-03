@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, Output } from "@angular/core";
 import { User } from "src/app/models/user";
 import { KweetService } from "src/app/services/kweet/kweet.service";
 import { StorageService } from "src/app/services/storage/storage.service";
