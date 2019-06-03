@@ -1,3 +1,15 @@
-<profile-profilecard [profileUser]="profileUser"></profile-profilecard>
 <br />
-<profile-kweets [profileUser]="profileUser"></profile-kweets>
+
+<div class="container-fluid">
+  <br />
+  <div class="row">
+    <div class="col-3">
+      <profile-profilecard [profileUser]="profileUser"></profile-profilecard>
+      <br />
+      <profile-details [profileUser]="profileUser"></profile-details>
+    </div>
+    <div class="col-9">
+      <profile-kweets [profileUser]="profileUser"></profile-kweets>
+    </div>
+  </div>
+</div>

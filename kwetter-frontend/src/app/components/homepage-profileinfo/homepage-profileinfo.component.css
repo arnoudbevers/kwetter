@@ -14,6 +14,11 @@
 .profilecard-statLabel {
   font-weight: bold;
   color: #657786;
+  font-size: 13px;
+}
+
+.profilecard-stat {
+  font-size: 13px;
 }
 
 .card-body [class^="col-"] .left, .right {

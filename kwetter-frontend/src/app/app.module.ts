@@ -28,9 +28,10 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { ProfileProfilecardComponent } from './components/profile-profilecard/profile-profilecard.component';
 import { ProfileKweetsComponent } from './components/profile-kweets/profile-kweets.component';
 import { DatePipe } from './pipes/date.pipe';
+import { ProfileDetailsComponent } from './components/profile-details/profile-details.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, NavbarComponent, HomepageComponent, HomepageProfileinfoComponent, HomepageKweetboxComponent, HomepageTimelineComponent, RegisterComponent, ProfileComponent, ProfileProfilecardComponent, ProfileKweetsComponent, DatePipe],
+  declarations: [AppComponent, LoginComponent, NavbarComponent, HomepageComponent, HomepageProfileinfoComponent, HomepageKweetboxComponent, HomepageTimelineComponent, RegisterComponent, ProfileComponent, ProfileProfilecardComponent, ProfileKweetsComponent, DatePipe, ProfileDetailsComponent],
   imports: [
     BrowserModule,
     RoutingModule,
