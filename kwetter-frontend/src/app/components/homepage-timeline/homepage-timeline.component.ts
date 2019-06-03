@@ -22,8 +22,4 @@ export class HomepageTimelineComponent implements OnInit {
     this.kweetService
       .getTimeline(this.storageService.getItem("kwetter_uuid"));
   }
-
-  convertDate(unix: number) {
-    return moment.unix(unix).format("DD-MM-YYYY, HH:mm");
-  }
 }
