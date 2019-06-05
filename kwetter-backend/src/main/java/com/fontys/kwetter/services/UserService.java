@@ -67,6 +67,7 @@ public class UserService {
     for (Kweet k : kweets) {
       k.setSender(user);
     }
+    kweets.sort(new Kweet.KweetComparator());
     return kweets;
   }
 
