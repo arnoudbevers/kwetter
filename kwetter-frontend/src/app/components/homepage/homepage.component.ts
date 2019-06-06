@@ -21,11 +21,9 @@ export class HomepageComponent implements OnInit {
   }
 
   getCurrentUser() {
-    this.userService.getUser(this.storageService.getItem('kwetter_uuid')).subscribe(response => {
+    this.userService.getUserByUUID(this.storageService.getItem('kwetter_uuid')).subscribe(response => {
       this.userService.setCurrentUser(response);
       this.currentUser = response;
-      console.log('response', response);
-      console.log('currentUser', this.currentUser);
     });
   }
 
