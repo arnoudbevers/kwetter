@@ -7,9 +7,12 @@
       <br />
       <profile-details [profileUser]="profileUser"></profile-details>
     </div>
-    <div class="col-9">
+    <div class="col-6">
       <profile-kweets [profileUser]="profileUser"></profile-kweets>
     </div>
+    <div class="col-3">
+        <profile-friendships [profileUser]="profileUser"></profile-friendships>
+      </div>
   </div>
 </div>
 <div *ngIf="profileUser == undefined">
