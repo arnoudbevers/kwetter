@@ -10,8 +10,8 @@
       }}</a>
     </div>
   </div>
-  <div class="card-body">
-    <a href="#" class="card-link">Follow</a>
-    <a href="#" class="card-link">Another link</a>
+  <div *ngIf="profileUser?.uuid !== this.userService.getCurrentUser().uuid" class="card-body">
+      <button *ngIf="!checkIfFollows(profileUser)" type="button" class="btn btn-primary" (click)="follow()">Follow</button>
+      <button *ngIf="checkIfFollows(profileUser)" type="button" class="btn btn-primary" (click)="unfollow()">Unfollow</button>       
   </div>
 </div>

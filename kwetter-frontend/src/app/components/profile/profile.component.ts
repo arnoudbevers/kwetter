@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user/user.service';
 import { ActivatedRoute } from '@angular/router';
+import { Friendship } from 'src/app/models/friendship';
 
 @Component({
   selector: 'profile',
@@ -14,10 +15,9 @@ export class ProfileComponent implements OnInit {
   constructor(private route: ActivatedRoute, private userService: UserService) { }
 
   ngOnInit() {
-    this.userService.getUserByUsername(this.route.snapshot.paramMap.get("username"))
+    this.userService.getUserByUUID(this.route.snapshot.paramMap.get("id"))
       .subscribe(data => {
-        this.profileUser = data[0];
-        console.log(this.profileUser);
+        this.profileUser = data;
       });
   }
 

@@ -20,10 +20,11 @@ export class UserService extends ApiService {
   }
 
   getCurrentUser() {
-    if (this._currentUser !== undefined) return this._currentUser;
-    else {
-      return this.getUserByUUID(this.storageService.getItem("kwetter_uuid"));
-    }
+    // if (this._currentUser !== undefined) 
+    return this._currentUser;
+    // else {
+    //   return this.getUserByUUID(this.storageService.getItem("kwetter_uuid"));
+    // }
   }
 
   // TODO: null check
