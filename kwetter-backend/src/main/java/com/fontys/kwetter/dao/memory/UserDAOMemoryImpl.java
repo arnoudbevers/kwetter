@@ -49,6 +49,16 @@ public class UserDAOMemoryImpl implements UserDAO {
   }
 
   @Override
+  public User getUserByUsername(String username) {
+    for (User u : allUsers) {
+      if (u.getUsername().equals(username)) {
+        return u;
+      }
+    }
+    return null;
+  }
+
+  @Override
   public List<User> searchUsersByUsername(String username) {
     List<User> foundUsers = new ArrayList<>();
     for (User u : allUsers) {

@@ -1,22 +1,15 @@
 <div id="user-following">
   <h3>Following</h3>
   <ul class="list-group">
-    <a
-      class="list-group-item list-group-item-action"
-      *ngFor="let user of profileUser?.following"
-      ><a [routerLink]="'/user/' + user.uuid">@{{ user.username }} </a></a
-    >
+    <a class="list-group-item list-group-item-action" *ngFor="let user of profileUser?.following"><a
+        [routerLink]="'/user/' + user.username">@{{ user.username }} </a></a>
   </ul>
 </div>
 <br />
 <div id="user-followers">
   <h3>Followers</h3>
   <ul class="list-group">
-    <a
-      class="list-group-item list-group-item-action"
-      *ngFor="let user of profileUser?.followers"
-      [routerLink]="'user/' + user.uuid"
-      >@{{ user.username }}</a
-    >
+    <a class="list-group-item list-group-item-action" *ngFor="let user of profileUser?.followers">
+      <a [routerLink]="'/user/' + user.username">@{{ user.username }}</a></a>
   </ul>
 </div>

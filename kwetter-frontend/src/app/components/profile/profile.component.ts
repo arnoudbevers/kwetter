@@ -12,13 +12,17 @@ import { Friendship } from 'src/app/models/friendship';
 export class ProfileComponent implements OnInit {
 
   private profileUser: User;
-  constructor(private route: ActivatedRoute, private userService: UserService) { }
+  constructor(private route: ActivatedRoute, private userService: UserService) {
+
+  }
 
   ngOnInit() {
-    this.userService.getUserByUUID(this.route.snapshot.paramMap.get("id"))
-      .subscribe(data => {
-        this.profileUser = data;
-      });
+    this.route.params.subscribe(routeParams => {
+      this.userService.getUserByUsername(this.route.snapshot.paramMap.get("username"))
+        .subscribe(data => {
+          this.profileUser = data;
+        });
+    });
   }
 
 }
