@@ -33,8 +33,8 @@ public class UserTest {
         if (j != i) {
           try {
             u.follow(users.get(j));
-          } catch (FollowException e) {
-            e.printStackTrace();
+          } catch (FollowException ex) {
+            LOGGER.log(Level.SEVERE, ex.toString(), ex);
           }
         }
       }
