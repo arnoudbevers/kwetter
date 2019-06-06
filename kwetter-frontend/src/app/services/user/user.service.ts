@@ -10,16 +10,25 @@ import { Observable } from 'rxjs';
   providedIn: "root"
 })
 export class UserService extends ApiService {
+
   private _currentUser: User;
 
   constructor(http: HttpClient, private storageService: StorageService) {
     super(http);
-    this.getUser(this.storageService.getItem('kwetter_uuid')).subscribe(data => {
+    this.getUserByUUID(this.storageService.getItem('kwetter_uuid')).subscribe(data => {
       this._currentUser = data;
     });
   }
 
-  getUser(uuid: String) {
+  getCurrentUser() {
+    return this._currentUser;
+  }
+
+  setCurrentUser(user: User) {
+    this._currentUser = user;
+  }
+
+  getUserByUUID(uuid: String) {
     return this.getHttpClient()
       .get<User>(`${this.getApiUrl()}/users/${uuid}`, this.getHttpOptions())
       .pipe(
@@ -29,15 +38,23 @@ export class UserService extends ApiService {
       );
   }
 
-  getCurrentUser() {
-    if (this._currentUser !== undefined) return this._currentUser;
-    else {
-      return this.getUser(this.storageService.getItem("kwetter_uuid"));
-    }
+  getUserByUsername(username: String) {
+    return this.getHttpClient()
+      .get<User>(`${this.getApiUrl()}/users/search/${username}`, this.getHttpOptions())
+      .pipe(
+        map(user => {
+          return user;
+        })
+      );
   }
 
-  // TODO: null check
-  setCurrentUser(user: User) {
-    this._currentUser = user;
+  searchByUsername(searchString: string) {
+    return this.getHttpClient()
+      .get<User[]>(`${this.getApiUrl()}/users/searchquery/${searchString}`, this.getHttpOptions())
+      .pipe(
+        map(users => {
+          return users;
+        })
+      );
   }
 }

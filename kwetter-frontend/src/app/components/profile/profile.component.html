@@ -1,3 +1,20 @@
-<profile-profilecard [profileUser]="profileUser"></profile-profilecard>
 <br />
-<profile-kweets [profileUser]="profileUser"></profile-kweets>
+<div *ngIf="profileUser !== undefined" class="container-fluid">
+  <br />
+  <div class="row">
+    <div class="col-3">
+      <profile-profilecard [profileUser]="profileUser"></profile-profilecard>
+      <br />
+      <profile-details [profileUser]="profileUser"></profile-details>
+    </div>
+    <div class="col-6">
+      <profile-kweets [profileUser]="profileUser"></profile-kweets>
+    </div>
+    <div class="col-3">
+      <profile-friendships [profileUser]="profileUser"></profile-friendships>
+    </div>
+  </div>
+</div>
+<div *ngIf="profileUser == undefined">
+  <p>Hey dummy, this user doesn't exist!</p>
+</div>

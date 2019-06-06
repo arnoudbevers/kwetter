@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "5a3fa9be-2810-4f65-a4e9-7384f049a65c",
+		"_postman_id": "5d302679-acd6-4164-84ab-dcf1d08aeb72",
 		"name": "JEA6 - Kwetter",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -97,18 +97,52 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
-							"raw": "{{apiHost}}/users/2",
+							"raw": "{{apiHost}}/users/9f423177-6230-43d1-8b51-1df7602e6772",
 							"host": [
 								"{{apiHost}}"
 							],
 							"path": [
 								"users",
-								"2"
+								"9f423177-6230-43d1-8b51-1df7602e6772"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/users/{id}/timeline",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiHost}}/users/9f423177-6230-43d1-8b51-1df7602e6772/timeline",
+							"host": [
+								"{{apiHost}}"
+							],
+							"path": [
+								"users",
+								"9f423177-6230-43d1-8b51-1df7602e6772",
+								"timeline"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/users/{id}/kweets",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiHost}}/users/9f423177-6230-43d1-8b51-1df7602e6772/kweets",
+							"host": [
+								"{{apiHost}}"
+							],
+							"path": [
+								"users",
+								"9f423177-6230-43d1-8b51-1df7602e6772",
+								"kweets"
 							]
 						}
 					},
@@ -119,10 +153,6 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "{{apiHost}}/users/search/a",
 							"host": [
@@ -142,10 +172,6 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "{{apiHost}}/users",
 							"host": [
@@ -196,10 +222,6 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "{{apiHost}}/kweets",
 							"host": [
@@ -217,10 +239,6 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "{{apiHost}}/kweets/search/test",
 							"host": [
@@ -254,7 +272,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"following\" : \"f6cb9ee9-1dc6-44d5-b9bb-4606e5d35757\",\n\t\"followed\": \"64df26fe-b62a-4b7b-933e-e6c82c67f72a\"\n}"
+							"raw": "{\n\t\"following\" : \"9f423177-6230-43d1-8b51-1df7602e6772\",\n\t\"followed\": \"6d0c8391-624f-4a70-a776-4e1c31ea1add\"\n}"
 						},
 						"url": {
 							"raw": "{{apiHost}}/friendships/create",
@@ -283,7 +301,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"following\" : \"f6cb9ee9-1dc6-44d5-b9bb-4606e5d35757\",\n\t\"followed\": \"64df26fe-b62a-4b7b-933e-e6c82c67f72a\"\n}"
+							"raw": "{\n\t\"following\" : \"9f423177-6230-43d1-8b51-1df7602e6772\",\n\t\"followed\": \"6d0c8391-624f-4a70-a776-4e1c31ea1add\"\n}"
 						},
 						"url": {
 							"raw": "{{apiHost}}/friendships/destroy",
@@ -305,6 +323,19 @@
 			"item": [
 				{
 					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1f713369-a5ed-478f-b7d2-c10ca75ced1f",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"pm.environment.set(\"jwt_token\", data.jwt_token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [

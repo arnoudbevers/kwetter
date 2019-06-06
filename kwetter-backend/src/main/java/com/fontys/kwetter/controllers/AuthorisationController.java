@@ -47,7 +47,7 @@ public class AuthorisationController implements Serializable {
       User user = userService.logIn(credentials.getUsername(), credentials.getPassword());
       // 2. Check if user is null - this means login has failed!
       if(user == null) {
-        return Response.status(400).entity("Username and password are incorrect!").build();
+        return Response.status(400).entity("The username and password combination is incorrect!").build();
       }
       // 3. Use username and UUID in JWT generator
       String jwt = JWTGenerator.createJWT(user.getUuid());

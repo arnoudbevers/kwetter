@@ -1,23 +1,9 @@
-<!-- <div class="kweet" *ngFor="let k of this.kweetService.timeline">
-  <div class="card">
-    <div class="card-header">
-      <span> @{{ k.sender.username }} </span>
-    </div>
-    <div class="card-body">
-      <span>{{ k.message }}</span>
-    </div>
-    <div class="card-footer">
-      <span>Sent at {{ convertDate(k.sent) }}</span>
-    </div>
-  </div>
-  <br />
-</div> -->
-
+<h4>Timeline</h4>
 <div class="list-group">
     <a *ngFor="let kweet of this.kweetService.timeline"
       class="list-group-item list-group-item-action flex-column align-items-start">
       <div class="d-flex w-100 justify-content-between">
-        <h5 class="mb-1">@{{ kweet.sender?.username }}</h5>
+        <h5 class="mb-1"><a [routerLink]="'user/' + kweet.sender?.username">@{{ kweet.sender?.username }}</a></h5>
       </div>
       <p class="mb-1">{{ kweet.message }}</p>
       <small>{{ kweet.sent | date:"DD-MM-YYYY, HH:mm" }}</small>

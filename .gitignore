@@ -133,3 +133,4 @@ testem.log
 
 #System Files
 .DS_Store
+kwetter-backend/target/kwetter/META-INF/MANIFEST.MF

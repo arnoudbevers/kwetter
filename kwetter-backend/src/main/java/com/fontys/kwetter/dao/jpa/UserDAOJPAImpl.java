@@ -57,6 +57,18 @@ public class UserDAOJPAImpl implements UserDAO {
   }
 
   @Override
+  public User getUserByUsername(String username) {
+    Query query = em.createNamedQuery("user.getByUsername", User.class);
+    query.setParameter("username", username);
+    try {
+      return (User) query.getSingleResult();
+    } catch (NoResultException e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  @Override
   public List<User> searchUsersByUsername(String username) {
     Query query = em.createNamedQuery("user.searchByUserName", User.class);
     query.setParameter("searchString", "%" + username + "%");
