@@ -12,4 +12,7 @@ export class User {
     kweets: Kweet[];
     following: User[];
     followers: User[];
+    password: string;
+
+    constructor() {}
 }
