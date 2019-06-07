@@ -112,7 +112,7 @@ hs_err_pid*
 /app/**/*.js.map
 
 # dependencies
-/node_modules
+**/node_modules
 /bower_components
 
 # IDEs and editors
@@ -133,4 +133,3 @@ testem.log
 
 #System Files
 .DS_Store
-kwetter-backend/target/kwetter/META-INF/MANIFEST.MF

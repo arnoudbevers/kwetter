@@ -76,10 +76,8 @@ public class AuthorisationController implements Serializable {
   @Produces(MediaType.APPLICATION_JSON)
   @Path("register")
   public Response register(User user) {
-    System.out.println(user);
     try {
       user = userService.register(user);
-      System.out.println(user);
       user = userDTO.simplifyUser(user);
       UserDTO userDTO = modelMapper.map(user, UserDTO.class);
       final String jsonResult = objectMapper.writeValueAsString(userDTO);
