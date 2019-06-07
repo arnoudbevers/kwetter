@@ -18,6 +18,12 @@ pipeline {
                 sh "mvn -f ${WORKSPACE}/kwetter-backend/ -B -DskipTests clean package"
             }
         }
+        stage('Backend test') {
+            steps {
+              sh "mvn -f ${WORKSPACE}/kwetter-backend/ clean jacoco:prepare-agent install jacoco:report"
+              sh "mvn -f ${WORKSPACE}/kwetter-backend/ test"
+            }
+        }
         stage('SonarQube') {
             environment {
                 scannerHome = tool 'SonarQubeScanner'
@@ -31,11 +37,7 @@ pipeline {
                 }
             }
         }
-        stage('Test') {
-            steps {
-                sh "mvn -f ${WORKSPACE}/kwetter-backend/ test"
-            }
-        }
+    
         stage('Deploy') {
             steps {
                 echo 'Deploying....'

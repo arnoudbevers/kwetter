@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FriendshipController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Kwetter application - backend</a> &gt; <a href="index.source.html" class="el_package">com.fontys.kwetter.controllers</a> &gt; <span class="el_source">FriendshipController.java</span></div><h1>FriendshipController.java</h1><pre class="source lang-java linenums">package com.fontys.kwetter.controllers;
+
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fontys.kwetter.domain.api.Friendship;
+import com.fontys.kwetter.dto.UserDTO;
+import com.fontys.kwetter.exceptions.FollowException;
+import com.fontys.kwetter.services.FriendshipService;
+
+import javax.ejb.EJB;
+import javax.ejb.EJBTransactionRolledbackException;
+import javax.faces.bean.RequestScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.persistence.PersistenceException;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/**
+ * API controller used to call all 'friendship' related calls.
+ * Friendships are the relations between users - following and followers.
+ * Uses Services to communicate with the data storage option.
+ *
+ * @author Arnoud Bevers
+ * @project kwetter
+ */
+@Named
+@RequestScoped
+@Path(&quot;friendships&quot;)
+<span class="nc" id="L36">public class FriendshipController {</span>
+<span class="nc" id="L37">  private static final Logger LOGGER = Logger.getLogger(FriendshipController.class.getName());</span>
+
+  @Inject
+  @Named(&quot;friendshipService&quot;)
+  private FriendshipService friendshipService;
+
+  @EJB
+  private UserDTO userDTO;
+
+<span class="nc" id="L46">  private ObjectMapper mapper = new ObjectMapper();</span>
+
+  /**
+   * Creates a friendship between two users.
+   *
+   * @param friendship List containing the two users who are creating a relation.
+   * @return Returns the followed user when successful. Returns a string with failure condition when not successful.
+   */
+  @POST
+  @Path(&quot;create&quot;)
+  @Consumes(MediaType.APPLICATION_JSON)
+  public Response createFriendship(Friendship friendship) {
+    try {
+<span class="nc" id="L59">      friendshipService.createFriendship(friendship);</span>
+<span class="nc" id="L60">      final String jsonResult = mapper.writeValueAsString(friendship);</span>
+<span class="nc" id="L61">      return Response.ok(jsonResult, MediaType.APPLICATION_JSON).build();</span>
+<span class="nc" id="L62">    } catch (FollowException ex) {</span>
+<span class="nc" id="L63">      LOGGER.log(Level.SEVERE, ex.toString(), ex);</span>
+<span class="nc" id="L64">      return Response.status(Response.Status.BAD_REQUEST).entity(ex.getMessage()).build();</span>
+<span class="nc" id="L65">    } catch (EJBTransactionRolledbackException | JsonProcessingException | PersistenceException e) {</span>
+<span class="nc" id="L66">      e.printStackTrace();</span>
+<span class="nc" id="L67">      return Response.status(Response.Status.BAD_REQUEST).entity(&quot;Something went wrong when creating friendship!&quot;).build();</span>
+    }
+  }
+
+  @POST
+  @Path(&quot;destroy&quot;)
+  @Consumes(&quot;application/json&quot;)
+  public Response deleteFriendship(Friendship friendship) {
+    try {
+<span class="nc" id="L76">      friendshipService.destroyFriendship(friendship);</span>
+<span class="nc" id="L77">      final String jsonResult = mapper.writeValueAsString(friendship);</span>
+<span class="nc" id="L78">      return Response.ok(jsonResult, MediaType.APPLICATION_JSON).build();</span>
+<span class="nc" id="L79">    } catch (EJBTransactionRolledbackException | JsonProcessingException | PersistenceException e) {</span>
+<span class="nc" id="L80">      e.printStackTrace();</span>
+<span class="nc" id="L81">      return Response.status(Response.Status.BAD_REQUEST).entity(&quot;Something went wrong when destroying friendship!&quot;).build();</span>
+    }
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
