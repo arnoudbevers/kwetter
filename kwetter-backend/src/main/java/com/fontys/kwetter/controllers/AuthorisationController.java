@@ -1,12 +1,16 @@
 package com.fontys.kwetter.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fontys.kwetter.domain.User;
 import com.fontys.kwetter.domain.api.Credentials;
+import com.fontys.kwetter.dto.UserDTO;
 import com.fontys.kwetter.security.JWTGenerator;
 import com.fontys.kwetter.services.UserService;
 import org.json.JSONObject;
+import org.modelmapper.ModelMapper;
 
+import javax.ejb.EJB;
 import javax.ejb.EJBTransactionRolledbackException;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -37,6 +41,12 @@ public class AuthorisationController implements Serializable {
   private UserService userService;
   private ObjectMapper mapper = new ObjectMapper();
 
+  @EJB
+  private UserDTO userDTO;
+
+  private ObjectMapper objectMapper = new ObjectMapper();
+  private ModelMapper modelMapper = new ModelMapper();
+
   @POST
   @Path("login")
   @Consumes(MediaType.APPLICATION_JSON)
@@ -65,8 +75,18 @@ public class AuthorisationController implements Serializable {
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
   @Path("register")
-  public Response register() {
-    // TODO: Implement register()
-    return Response.ok().build();
+  public Response register(User user) {
+    System.out.println(user);
+    try {
+      user = userService.register(user);
+      System.out.println(user);
+      user = userDTO.simplifyUser(user);
+      UserDTO userDTO = modelMapper.map(user, UserDTO.class);
+      final String jsonResult = objectMapper.writeValueAsString(userDTO);
+      return Response.ok(jsonResult, MediaType.APPLICATION_JSON).build();
+    } catch (EJBTransactionRolledbackException | JsonProcessingException | PersistenceException e) {
+      e.printStackTrace();
+      return Response.status(Response.Status.BAD_REQUEST).entity("Something went wrong when registering user!").build();
+    }
   }
 }

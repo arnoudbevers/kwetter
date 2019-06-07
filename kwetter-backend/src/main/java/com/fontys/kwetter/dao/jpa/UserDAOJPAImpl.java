@@ -137,16 +137,16 @@ public class UserDAOJPAImpl implements UserDAO {
 
   @Override
   public User register(User user) {
-    if (searchUsersByUsername(user.getUsername()) != null) {
+    if (searchUsersByUsername(user.getUsername()).size() != 0) {
       return null;
     }
     // Encrypt password
     HashedPassword hashedPassword = PasswordEncrypt.hashPassword(user.getPassword(), "");
     user.setPassword(hashedPassword.getPassword());
     user.setSalt(hashedPassword.getSalt());
-    addUser(user);
+    this.addUser(user);
     // This makes sure a UUID gets returned
-    return searchUsersByUsername(user.getUsername()).get(0);
+    return getUserByUsername(user.getUsername());
   }
 
 }
