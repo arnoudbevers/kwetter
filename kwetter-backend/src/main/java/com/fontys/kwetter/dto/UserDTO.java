@@ -125,7 +125,6 @@ public class UserDTO {
    * @return
    */
   public User simplifyUser(User user) {
-    System.out.println(user);
     for (User u : user.getFollowers()) {
       u.setKweets(new ArrayList<>());
       u.setFollowers(new ArrayList<>());

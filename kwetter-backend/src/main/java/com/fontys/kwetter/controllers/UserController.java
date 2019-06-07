@@ -162,6 +162,7 @@ public class UserController {
       if (user == null) {
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Could not find users by username" + username + "!").build();
       }
+      user.setKweets(userService.getKweetsForUser(user));
       user = userDTO.simplifyUser(user);
       UserDTO userDto = modelMapper.map(user, UserDTO.class);
       final String jsonResult = objectMapper.writeValueAsString(userDto);
