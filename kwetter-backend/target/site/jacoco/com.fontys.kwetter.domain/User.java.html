@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>User.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Kwetter application - backend</a> &gt; <a href="index.source.html" class="el_package">com.fontys.kwetter.domain</a> &gt; <span class="el_source">User.java</span></div><h1>User.java</h1><pre class="source lang-java linenums">package com.fontys.kwetter.domain;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fontys.kwetter.exceptions.FollowException;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
+
+/**
+ * User object containing the personal information of a user on the system.
+ *
+ * @author Arnoud Bevers
+ * @project kwetter
+ */
+@Entity
+@NamedQueries({
+        @NamedQuery(name = &quot;user.getAll&quot;, query = &quot;select u from User as u&quot;),
+        @NamedQuery(name = &quot;user.getById&quot;, query = &quot;select u from User as u where u.id = :id&quot;),
+        @NamedQuery(name = &quot;user.getByUUID&quot;, query = &quot;select u from User as u where u.uuid = :uuid&quot;),
+        @NamedQuery(name = &quot;user.getByUsername&quot;, query = &quot;select u from User as u where u.username = :username&quot;),
+        @NamedQuery(name = &quot;user.getByEmail&quot;, query = &quot;select u from User as u where u.email = :email&quot;),
+        @NamedQuery(name = &quot;user.getSaltForUsername&quot;, query = &quot;select u from User as u where u.email = :email&quot;),
+        @NamedQuery(name = &quot;user.searchByUserName&quot;, query = &quot;select u from User as u where u.username LIKE :searchString&quot;),
+        @NamedQuery(name = &quot;user.login&quot;, query = &quot;select u from User as u where u.username = :username AND u.password = :password&quot;),
+        @NamedQuery(name = &quot;user.remove&quot;, query = &quot;delete from User as u where u.id = :id&quot;)
+})
+public class User {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
+
+  // TODO: Handle UUID registration
+  // TODO: Save as String or UUID?
+  @Column
+  private String uuid;
+
+  @Column(nullable = false, unique = true, length = 20)
+  private String username;
+  @Column(nullable = false, unique = true)
+  private String email;
+  @JsonIgnore
+  @Column(nullable = false)
+  private String password;
+
+  @Column
+  private String salt;
+  @Column
+  private String picture;
+  @Column
+  private String role;
+
+  /* User details */
+  @Column
+  private String location;
+  @Column
+  private String websiteUrl;
+  @Column(length = 160)
+  private String bio;
+
+  @LazyCollection(LazyCollectionOption.FALSE)
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = &quot;sender&quot;, fetch = FetchType.LAZY)
+//  @JsonManagedReference
+  private List&lt;Kweet&gt; kweets;
+
+  @LazyCollection(LazyCollectionOption.FALSE)
+  @ManyToMany(cascade = CascadeType.PERSIST, mappedBy = &quot;followers&quot;)
+  private List&lt;User&gt; following;
+  @LazyCollection(LazyCollectionOption.FALSE)
+  @ManyToMany
+  private List&lt;User&gt; followers;
+
+  // Constructor needed for JPA implementation
+<span class="nc" id="L79">  public User() {</span>
+<span class="nc" id="L80">    this.uuid = UUID.randomUUID().toString();</span>
+<span class="nc" id="L81">    this.kweets = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L82">    this.following = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L83">    this.followers = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L84">  }</span>
+
+  public User(Role role, String email, String username) {
+<span class="fc" id="L87">    super();</span>
+<span class="fc" id="L88">    this.uuid = UUID.randomUUID().toString();</span>
+<span class="fc" id="L89">    this.role = role.toString();</span>
+<span class="fc" id="L90">    this.email = email;</span>
+<span class="fc" id="L91">    this.username = username;</span>
+<span class="fc" id="L92">    this.kweets = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L93">    this.following = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L94">    this.followers = new ArrayList&lt;&gt;();</span>
+
+<span class="fc" id="L96">    this.location = &quot;&quot;;</span>
+<span class="fc" id="L97">    this.websiteUrl = &quot;&quot;;</span>
+<span class="fc" id="L98">    this.bio = &quot;&quot;;</span>
+<span class="fc" id="L99">    this.picture = &quot;&quot;;</span>
+<span class="fc" id="L100">  }</span>
+
+  public User(Role role, String email, String username, String password) {
+<span class="fc" id="L103">    this(role, email, username);</span>
+<span class="fc" id="L104">    this.password = password;</span>
+<span class="fc" id="L105">  }</span>
+
+  public Long getId() {
+<span class="fc" id="L108">    return id;</span>
+  }
+
+  public void setId(Long id) {
+<span class="fc" id="L112">    this.id = id;</span>
+<span class="fc" id="L113">  }</span>
+
+  public String getUuid() {
+<span class="nc" id="L116">    return uuid;</span>
+  }
+
+  public void setUuid(String uuid) {
+<span class="nc" id="L120">    this.uuid = uuid;</span>
+<span class="nc" id="L121">  }</span>
+
+  public String getUsername() {
+<span class="fc" id="L124">    return username;</span>
+  }
+
+  public void setUsername(String username) {
+<span class="nc" id="L128">    this.username = username;</span>
+<span class="nc" id="L129">  }</span>
+
+  public String getPassword() {
+<span class="fc" id="L132">    return password;</span>
+  }
+
+  public void setPassword(String password) {
+<span class="nc" id="L136">    this.password = password;</span>
+<span class="nc" id="L137">  }</span>
+
+  public String getSalt() {
+<span class="nc" id="L140">    return salt;</span>
+  }
+
+  public void setSalt(String salt) {
+<span class="nc" id="L144">    this.salt = salt;</span>
+<span class="nc" id="L145">  }</span>
+
+  public String getEmail() {
+<span class="fc" id="L148">    return email;</span>
+  }
+
+  public void setEmail(String email) {
+<span class="nc" id="L152">    this.email = email;</span>
+<span class="nc" id="L153">  }</span>
+
+  public String getPicture() {
+<span class="nc" id="L156">    return picture;</span>
+  }
+
+  public void setPicture(String picture) {
+<span class="nc" id="L160">    this.picture = picture;</span>
+<span class="nc" id="L161">  }</span>
+
+  public String getLocation() {
+<span class="nc" id="L164">    return location;</span>
+  }
+
+  public void setLocation(String location) {
+<span class="nc" id="L168">    this.location = location;</span>
+<span class="nc" id="L169">  }</span>
+
+  public String getWebsiteUrl() {
+<span class="nc" id="L172">    return websiteUrl;</span>
+  }
+
+  public void setWebsiteUrl(String websiteUrl) {
+<span class="nc" id="L176">    this.websiteUrl = websiteUrl;</span>
+<span class="nc" id="L177">  }</span>
+
+  public String getBio() {
+<span class="nc" id="L180">    return bio;</span>
+  }
+
+  public void setBio(String bio) {
+<span class="nc" id="L184">    this.bio = bio;</span>
+<span class="nc" id="L185">  }</span>
+
+  public String getRole() {
+<span class="fc" id="L188">    return this.role;</span>
+  }
+
+  public void setRole(Role role) {
+<span class="nc" id="L192">    this.role = role.toString();</span>
+<span class="nc" id="L193">  }</span>
+
+  public List&lt;Kweet&gt; getKweets() {
+<span class="fc" id="L196">    return kweets;</span>
+  }
+
+  public void setKweets(List&lt;Kweet&gt; kweets) {
+<span class="nc" id="L200">    this.kweets = kweets;</span>
+<span class="nc" id="L201">  }</span>
+
+  public List&lt;User&gt; getFollowing() {
+<span class="fc" id="L204">    return following;</span>
+  }
+
+  public void setFollowing(List&lt;User&gt; following) {
+<span class="fc" id="L208">    this.following = following;</span>
+<span class="fc" id="L209">  }</span>
+
+  public List&lt;User&gt; getFollowers() {
+<span class="fc" id="L212">    return followers;</span>
+  }
+
+  public void setFollowers(List&lt;User&gt; followers) {
+<span class="fc" id="L216">    this.followers = followers;</span>
+<span class="fc" id="L217">  }</span>
+
+
+  public void postKweet(Kweet kweet) {
+<span class="nc" id="L221">    this.kweets.add(kweet);</span>
+<span class="nc" id="L222">  }</span>
+
+//    public void likeKweet(Kweet kweet) {
+//        kweet.addLike(this);
+//    }
+
+
+  /**
+   * Follows a user.
+   *
+   * @param user The user to follow.
+   */
+  public void follow(User user) throws FollowException {
+<span class="fc bfc" id="L235" title="All 2 branches covered.">    if (user.equals(this)) {</span>
+<span class="fc" id="L236">      throw new FollowException(&quot;User cannot follow itself!&quot;);</span>
+<span class="pc bpc" id="L237" title="1 of 2 branches missed.">    } else if (this.following.contains(user)) {</span>
+<span class="nc" id="L238">      throw new FollowException(&quot;User has already followed this user!&quot;);</span>
+    }
+<span class="fc" id="L240">    this.following.add(user);</span>
+<span class="fc" id="L241">    user.addFollower(this);</span>
+<span class="fc" id="L242">  }</span>
+
+  public void unfollow(User follow) {
+<span class="nc" id="L245">    this.following.remove(follow);</span>
+<span class="nc" id="L246">    follow.removeFollower(this);</span>
+<span class="nc" id="L247">  }</span>
+
+  private void addFollower(User user) {
+<span class="fc" id="L250">    this.followers.add(user);</span>
+<span class="fc" id="L251">  }</span>
+
+  private void removeFollower(User follower) {
+<span class="nc" id="L254">    this.followers.remove(follower);</span>
+<span class="nc" id="L255">  }</span>
+
+  @Override
+  public String toString() {
+<span class="nc" id="L259">    return &quot;User{&quot; +</span>
+            &quot;id=&quot; + id +
+            &quot;, uuid='&quot; + uuid + '\'' +
+            &quot;, username='&quot; + username + '\'' +
+            &quot;, email='&quot; + email + '\'' +
+            &quot;, picture='&quot; + picture + '\'' +
+            &quot;, role='&quot; + role + '\'' +
+            &quot;, location='&quot; + location + '\'' +
+            &quot;, websiteUrl='&quot; + websiteUrl + '\'' +
+            &quot;, bio='&quot; + bio + '\'' +
+            '}';
+  }
+
+  @Override
+  public boolean equals(Object o) {
+<span class="fc bfc" id="L274" title="All 2 branches covered.">    if (this == o) return true;</span>
+<span class="pc bpc" id="L275" title="2 of 4 branches missed.">    if (o == null || getClass() != o.getClass()) return false;</span>
+<span class="fc" id="L276">    User user = (User) o;</span>
+<span class="pc bpc" id="L277" title="1 of 2 branches missed.">    return id.equals(user.getId()) &amp;&amp;</span>
+<span class="nc bnc" id="L278" title="All 2 branches missed.">            uuid.equals(user.getUuid()) &amp;&amp;</span>
+<span class="nc bnc" id="L279" title="All 2 branches missed.">            username.equals(user.getUsername()) &amp;&amp;</span>
+<span class="pc bnc" id="L280" title="All 2 branches missed.">            email.equals(user.getEmail());</span>
+  }
+
+  @Override
+  public int hashCode() {
+<span class="nc" id="L285">    return Objects.hash(id, username, email, password, picture, role, location, websiteUrl, bio);</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

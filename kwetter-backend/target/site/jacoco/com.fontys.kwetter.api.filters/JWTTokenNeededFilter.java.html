@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JWTTokenNeededFilter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Kwetter application - backend</a> &gt; <a href="index.source.html" class="el_package">com.fontys.kwetter.api.filters</a> &gt; <span class="el_source">JWTTokenNeededFilter.java</span></div><h1>JWTTokenNeededFilter.java</h1><pre class="source lang-java linenums">package com.fontys.kwetter.api.filters;
+
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.fontys.kwetter.api.JWTTokenNeeded;
+
+import javax.annotation.Priority;
+import javax.ws.rs.Priorities;
+import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.container.ContainerRequestFilter;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.ext.Provider;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/**
+ * @author Arnoud Bevers
+ * @project kwetter-backend
+ */
+@Provider
+@JWTTokenNeeded
+@Priority(Priorities.AUTHENTICATION)
+<span class="nc" id="L27">public class JWTTokenNeededFilter implements ContainerRequestFilter {</span>
+
+<span class="nc" id="L29">  private static final Logger LOGGER = Logger.getLogger(JWTTokenNeededFilter.class.getName());</span>
+
+  @Override
+  public void filter(ContainerRequestContext requestContext)  {
+    // TODO: Validate JWS tokens with KeyGenerator
+    try {
+      //Get the authorization header from the request
+<span class="nc" id="L36">      String authorizationHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);</span>
+      //Trim the bearer token from that header
+<span class="nc" id="L38">      String jwt_token = authorizationHeader.substring(&quot;Bearer&quot;.length()).trim();</span>
+<span class="nc" id="L39">      Algorithm algorithm = Algorithm.HMAC256(&quot;secret&quot;);</span>
+<span class="nc" id="L40">      JWTVerifier verifier = JWT.require(algorithm)</span>
+<span class="nc" id="L41">              .withIssuer(&quot;kwetter_arnoud_bevers&quot;)</span>
+<span class="nc" id="L42">              .build();</span>
+<span class="nc" id="L43">      DecodedJWT decodedJWT = verifier.verify(jwt_token);</span>
+<span class="nc" id="L44">      LOGGER.log(Level.INFO, &quot;Valid JWT token: &quot; + decodedJWT.getToken());</span>
+<span class="nc" id="L45">    } catch (JWTVerificationException  | NullPointerException ex) {</span>
+<span class="nc" id="L46">      LOGGER.log(Level.SEVERE, ex.toString(), ex);</span>
+<span class="nc" id="L47">      requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());</span>
+<span class="nc" id="L48">    }</span>
+<span class="nc" id="L49">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

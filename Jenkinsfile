@@ -33,7 +33,8 @@ pipeline {
         }
         stage('Test') {
             steps {
-                sh "mvn -f ${WORKSPACE}/kwetter-backend/ test"
+              sh "mvn -f ${WORKSPACE}/kwetter-backend/ clean jacoco:prepare-agent install jacoco:report"
+              sh "mvn -f ${WORKSPACE}/kwetter-backend/ test"
             }
         }
         stage('Deploy') {
