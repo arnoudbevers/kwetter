@@ -36,8 +36,12 @@ public class UserService {
     userDAO.addUser(user);
   }
 
-  public List<User> getUserByUsername(String username) {
+  public List<User> searchUsersByUsername(String username) {
     return userDAO.searchUsersByUsername(username);
+  }
+
+  public User getUserByUsername(String username) {
+    return userDAO.getUserByUsername(username);
   }
 
   public User getUserById(int id) {
@@ -67,6 +71,7 @@ public class UserService {
     for (Kweet k : kweets) {
       k.setSender(user);
     }
+    kweets.sort(new Kweet.KweetComparator());
     return kweets;
   }
 

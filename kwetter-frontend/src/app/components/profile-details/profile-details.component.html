@@ -1,13 +1,19 @@
 <div class="card">
   <div class="card-body">
     <h5 class="card-title">Further details</h5>
-    <p>Name: {{ profileUser?.username || "-" }} </p>
+    <p>Name: {{ profileUser?.username || "-" }}</p>
     <p>Location: {{ profileUser?.location || "-" }}</p>
-    <span>Website: </span><a href="https://{{ profileUser?.websiteUrl }}"
-      target="_blank">{{ profileUser?.websiteUrl || "-" }}</a>
+    <div *ngIf="profileUser?.websiteUrl !== null">
+      <span>Website: </span>
+      <a href="https://{{ profileUser?.websiteUrl }}" target="_blank">{{
+        profileUser?.websiteUrl
+      }}</a>
+    </div>
   </div>
-  <div class="card-body">
-    <a href="#" class="card-link">Follow</a>
-    <a href="#" class="card-link">Another link</a>
+  <div *ngIf="profileUser?.uuid !== this.userService.getCurrentUser().uuid" class="card-body">
+    <button *ngIf="!checkIfFollows(profileUser)" type="button" class="btn btn-primary"
+      (click)="follow()">Follow</button>
+    <button *ngIf="checkIfFollows(profileUser)" type="button" class="btn btn-primary"
+      (click)="unfollow()">Unfollow</button>
   </div>
 </div>

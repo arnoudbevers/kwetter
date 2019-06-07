@@ -25,8 +25,6 @@ public class KweetService {
     kweetDAO.postKweet(kweet);
   }
 
-
-
   // TODO: Add indexing to this method (e.g. get kweets by groups of 1000)
   public List<Kweet> getAllKweets() {
     return kweetDAO.getAll();
