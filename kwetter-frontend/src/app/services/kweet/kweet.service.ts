@@ -17,24 +17,25 @@ export class KweetService extends ApiService {
   }
 
   getAll(uuid: string) {
-    return this.getHttpClient()
-      .get<Kweet[]>(`${this.getApiUrl()}/users/${uuid}/kweets`);
+    return this.getHttpClient().get<Kweet[]>(
+      `${this.getApiUrl()}/users/${uuid}/kweets`
+    );
   }
 
   getTimeline(uuid: string) {
     return this.getHttpClient()
       .get<Kweet[]>(`${this.getApiUrl()}/users/${uuid}/timeline`)
-      .subscribe(data => {
-        this.timeline = data;
-      });
+      .pipe(map(data => data));
   }
 
   postKweet(kweet: Kweet) {
     return this.getHttpClient()
       .post<Kweet>(`${this.getApiUrl()}/kweets`, kweet, this.getHttpOptions())
-      .pipe(map(data => {
-        this.timeline.unshift(data as Kweet);
-        return data;
-      }));
+      .pipe(
+        map(data => {
+          this.timeline.unshift(data as Kweet);
+          return data;
+        })
+      );
   }
 }
