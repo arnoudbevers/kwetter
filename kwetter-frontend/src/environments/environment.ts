@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  socketUrl: 'ws://localhost:3001',
-  socketDistUrl: 'ws://localhost:3001/dist'
+  socketUrl: 'ws://kwetter_websockets:3001',
+  socketDistUrl: 'ws://kwetter_websockets:3001/dist'
 };
 
 /*

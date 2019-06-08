@@ -8,7 +8,7 @@ import { catchError, tap, map } from 'rxjs/operators';
 const httpOptions = {
   headers: new HttpHeaders({'Content-Type': 'application/json'})
 };
-const apiUrl = 'http://localhost:8080/kwetter/api';
+const apiUrl = 'http://kwetter_backend:8080/kwetter/api';
 
 @Injectable({
   providedIn: 'root'
