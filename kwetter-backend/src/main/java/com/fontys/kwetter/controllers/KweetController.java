@@ -49,8 +49,8 @@ public class KweetController {
   @Consumes("application/json")
   public Response postKweet(Kweet kweet) {
     try {
-      final List<User> senderList = userService.getUserByUsername(kweet.getSender().getUsername());
-      kweet.setSender(userDTO.simplifyUser(senderList.get(senderList.size() - 1)) );
+      final User sender = userService.getUserByUsername(kweet.getSender().getUsername());
+      kweet.setSender(userDTO.simplifyUser(sender));
       kweetService.postKweet(kweet);
       KweetDTO kweetDTO = modelMapper.map(kweet, KweetDTO.class);
       final String json = mapper.writeValueAsString(kweetDTO);

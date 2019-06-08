@@ -33,8 +33,8 @@ public class UserTest {
         if (j != i) {
           try {
             u.follow(users.get(j));
-          } catch (FollowException e) {
-            e.printStackTrace();
+          } catch (FollowException ex) {
+            LOGGER.log(Level.SEVERE, ex.toString(), ex);
           }
         }
       }
@@ -50,7 +50,6 @@ public class UserTest {
       Assert.assertEquals(u.getEmail(), "test" + i + "@mail.com");
       Assert.assertEquals(u.getRole(), "User");
       Assert.assertEquals(u.getPassword(), "password" + i);
-//       Assert.assertEquals(u.getPicture(), "www.picture" + i + ".com");
       Assert.assertEquals(u.getKweets(), new ArrayList<>());
       Assert.assertEquals(9, u.getFollowers().size());
       Assert.assertEquals(9, u.getFollowing().size());

@@ -48,12 +48,13 @@ public class UserController {
 
   @POST
   @Consumes("application/json")
+  @JWTTokenNeeded
   public Response createUser(User user) {
     try {
       userService.createUser(user);
-      List<User> allUsers = userService.getUserByUsername(user.getUsername());
-      final User registeredUser = allUsers.get(allUsers.size() - 1);
-      final String jsonResult = objectMapper.writeValueAsString(registeredUser);
+      user = userService.getUserByUsername(user.getUsername());
+      user = userDTO.simplifyUser(user);
+      final String jsonResult = objectMapper.writeValueAsString(user);
       return Response.ok(jsonResult, MediaType.APPLICATION_JSON).build();
     } catch (EJBTransactionRolledbackException | JsonProcessingException | PersistenceException e) {
       e.printStackTrace();
@@ -63,6 +64,7 @@ public class UserController {
 
   @GET
   @Produces(MediaType.APPLICATION_JSON)
+  @JWTTokenNeeded
   public Response getAllUsers() {
     try {
       final List<User> allUsers = userService.getAllUsers();
@@ -83,9 +85,8 @@ public class UserController {
   @Path("{uuid}")
   @JWTTokenNeeded
   public Response getUserById(@PathParam("uuid") String uuid) {
-    User user;
     try {
-      user = userService.getUserByUUID(uuid);
+      User user = userService.getUserByUUID(uuid);
       user.setKweets(userService.getKweetsForUser(user));
       user = userDTO.simplifyUser(user);
       if (user == null) {
@@ -102,6 +103,7 @@ public class UserController {
 
   @PUT
   @Path("{uuid}")
+  @JWTTokenNeeded
   public Response updateUserById(@PathParam("uuid") String uuid, User user) {
     try {
       user = userService.updateUser(user);
@@ -118,6 +120,7 @@ public class UserController {
   @GET
   @Path("{uuid}/kweets")
   @Produces(MediaType.APPLICATION_JSON)
+  @JWTTokenNeeded
   public Response getKweetsForUser(@PathParam("uuid") String uuid) {
     try {
       User user = userService.getUserByUUID(uuid);
@@ -130,12 +133,12 @@ public class UserController {
       e.printStackTrace();
       return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Something went wrong when fetching kweets for user!").build();
     }
-
   }
 
   @GET
   @Path("{uuid}/timeline")
   @Produces(MediaType.APPLICATION_JSON)
+  @JWTTokenNeeded
   public Response getTimelineForUser(@PathParam("uuid") String uuid) {
     try {
       User user = userService.getUserByUUID(uuid);
@@ -152,11 +155,32 @@ public class UserController {
 
   @GET
   @Path("search/{username}")
-  public Response getUserByUsername(@PathParam("username") String username) {
+  @JWTTokenNeeded
+  public Response searchUserByUsername(@PathParam("username") String username) {
     try {
-      final List<User> users = userService.getUserByUsername(username);
+      User user = userService.getUserByUsername(username);
+      if (user == null) {
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Could not find users by username" + username + "!").build();
+      }
+      user.setKweets(userService.getKweetsForUser(user));
+      user = userDTO.simplifyUser(user);
+      UserDTO userDto = modelMapper.map(user, UserDTO.class);
+      final String jsonResult = objectMapper.writeValueAsString(userDto);
+      return Response.ok(jsonResult, MediaType.APPLICATION_JSON).build();
+    } catch (EJBTransactionRolledbackException | JsonProcessingException | PersistenceException e) {
+      e.printStackTrace();
+      return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Something went wrong when fetching users by username " + username + "!").build();
+    }
+  }
+
+  @GET
+  @Path("searchquery/{input}")
+  @JWTTokenNeeded
+  public Response searchUsersByInput(@PathParam("input") String input) {
+    try {
+      final List<User> users = userService.searchUsersByUsername(input);
       if (users == null) {
-        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Could not find user by username " + username + "!").build();
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Could not find users by input" + input + "!").build();
       }
       users.forEach(user -> userDTO.simplifyUser(user));
       UserDTO[] userDto = modelMapper.map(users, UserDTO[].class);
@@ -164,8 +188,7 @@ public class UserController {
       return Response.ok(jsonResult, MediaType.APPLICATION_JSON).build();
     } catch (EJBTransactionRolledbackException | JsonProcessingException | PersistenceException e) {
       e.printStackTrace();
-      return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Something went wrong when fetching user by username " + username + "!").build();
+      return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Something went wrong when fetching users by input " + input + "!").build();
     }
   }
-
 }

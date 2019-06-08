@@ -30,7 +30,7 @@ public class JWTTokenNeededFilter implements ContainerRequestFilter {
 
   @Override
   public void filter(ContainerRequestContext requestContext)  {
-    // TODO: Validate JWS tokens with KyeGenerator
+    // TODO: Validate JWS tokens with KeyGenerator
     try {
       //Get the authorization header from the request
       String authorizationHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);

@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Kwetter application - backend</a> &gt; <a href="index.source.html" class="el_package">com.fontys.kwetter.controllers</a> &gt; <span class="el_source">UserController.java</span></div><h1>UserController.java</h1><pre class="source lang-java linenums">package com.fontys.kwetter.controllers;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fontys.kwetter.api.JWTTokenNeeded;
+import com.fontys.kwetter.domain.Kweet;
+import com.fontys.kwetter.domain.User;
+import com.fontys.kwetter.dto.KweetDTO;
+import com.fontys.kwetter.dto.UserDTO;
+import com.fontys.kwetter.services.KweetService;
+import com.fontys.kwetter.services.UserService;
+import org.modelmapper.ModelMapper;
+
+import javax.ejb.EJB;
+import javax.ejb.EJBTransactionRolledbackException;
+import javax.faces.bean.RequestScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.persistence.PersistenceException;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.util.List;
+
+/**
+ * API controller used to call all User model related calls.
+ * Uses Service to communicate with the data storage option.
+ *
+ * @author Arnoud Bevers
+ * @project kwetter
+ */
+@Named(&quot;userController&quot;)
+@RequestScoped
+@Path(&quot;users&quot;)
+<span class="nc" id="L35">public class UserController {</span>
+
+  @Inject
+  @Named(&quot;userService&quot;)
+  private UserService userService;
+  @Inject
+  @Named(&quot;kweetService&quot;)
+  private KweetService kweetService;
+  @EJB
+  private UserDTO userDTO;
+
+<span class="nc" id="L46">  private ObjectMapper objectMapper = new ObjectMapper();</span>
+<span class="nc" id="L47">  private ModelMapper modelMapper = new ModelMapper();</span>
+
+  @POST
+  @Consumes(&quot;application/json&quot;)
+  @JWTTokenNeeded
+  public Response createUser(User user) {
+    try {
+<span class="nc" id="L54">      userService.createUser(user);</span>
+<span class="nc" id="L55">      user = userService.getUserByUsername(user.getUsername());</span>
+<span class="nc" id="L56">      user = userDTO.simplifyUser(user);</span>
+<span class="nc" id="L57">      final String jsonResult = objectMapper.writeValueAsString(user);</span>
+<span class="nc" id="L58">      return Response.ok(jsonResult, MediaType.APPLICATION_JSON).build();</span>
+<span class="nc" id="L59">    } catch (EJBTransactionRolledbackException | JsonProcessingException | PersistenceException e) {</span>
+<span class="nc" id="L60">      e.printStackTrace();</span>
+<span class="nc" id="L61">      return Response.status(Response.Status.BAD_REQUEST).entity(&quot;Something went wrong when registering user!&quot;).build();</span>
+    }
+  }
+
+  @GET
+  @Produces(MediaType.APPLICATION_JSON)
+  @JWTTokenNeeded
+  public Response getAllUsers() {
+    try {
+<span class="nc" id="L70">      final List&lt;User&gt; allUsers = userService.getAllUsers();</span>
+<span class="nc bnc" id="L71" title="All 2 branches missed.">      if (allUsers == null) {</span>
+<span class="nc" id="L72">        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(&quot;No users exist!&quot;).build();</span>
+      }
+<span class="nc" id="L74">      allUsers.forEach(user -&gt; user = userDTO.simplifyUser(user));</span>
+<span class="nc" id="L75">      UserDTO[] userDto = modelMapper.map(allUsers, UserDTO[].class);</span>
+<span class="nc" id="L76">      final String jsonResult = objectMapper.writeValueAsString(userDto);</span>
+<span class="nc" id="L77">      return Response.ok(jsonResult, MediaType.APPLICATION_JSON_TYPE).build();</span>
+<span class="nc" id="L78">    } catch (EJBTransactionRolledbackException | JsonProcessingException | PersistenceException e) {</span>
+<span class="nc" id="L79">      e.printStackTrace();</span>
+<span class="nc" id="L80">      return Response.status(Response.Status.BAD_REQUEST).entity(&quot;Something went wrong when fetching all users!&quot;).build();</span>
+    }
+  }
+
+  @GET
+  @Path(&quot;{uuid}&quot;)
+  @JWTTokenNeeded
+  public Response getUserById(@PathParam(&quot;uuid&quot;) String uuid) {
+    try {
+<span class="nc" id="L89">      User user = userService.getUserByUUID(uuid);</span>
+<span class="nc" id="L90">      user.setKweets(userService.getKweetsForUser(user));</span>
+<span class="nc" id="L91">      user = userDTO.simplifyUser(user);</span>
+<span class="nc bnc" id="L92" title="All 2 branches missed.">      if (user == null) {</span>
+<span class="nc" id="L93">        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(&quot;Could not find user by id &quot; + uuid + &quot;!&quot;).build();</span>
+      }
+<span class="nc" id="L95">      UserDTO userDto = modelMapper.map(user, UserDTO.class);</span>
+<span class="nc" id="L96">      final String jsonResult = objectMapper.writeValueAsString(userDto);</span>
+<span class="nc" id="L97">      return Response.ok(jsonResult, MediaType.APPLICATION_JSON).build();</span>
+<span class="nc" id="L98">  } catch (EJBTransactionRolledbackException | JsonProcessingException | PersistenceException e) {</span>
+<span class="nc" id="L99">      e.printStackTrace();</span>
+<span class="nc" id="L100">      return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(&quot;Something went wrong when fetching user!&quot;).build();</span>
+    }
+  }
+
+  @PUT
+  @Path(&quot;{uuid}&quot;)
+  @JWTTokenNeeded
+  public Response updateUserById(@PathParam(&quot;uuid&quot;) String uuid, User user) {
+    try {
+<span class="nc" id="L109">      user = userService.updateUser(user);</span>
+<span class="nc" id="L110">      UserDTO userDto = modelMapper.map(user, UserDTO.class);</span>
+<span class="nc" id="L111">      final String jsonResult = objectMapper.writeValueAsString(userDto);</span>
+<span class="nc" id="L112">      return Response.ok(jsonResult, MediaType.APPLICATION_JSON).build();</span>
+<span class="nc" id="L113">    } catch (EJBTransactionRolledbackException | JsonProcessingException | PersistenceException e) {</span>
+<span class="nc" id="L114">      e.printStackTrace();</span>
+<span class="nc" id="L115">      return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(&quot;Something went wrong when updating user!&quot;).build();</span>
+    }
+  }
+
+
+  @GET
+  @Path(&quot;{uuid}/kweets&quot;)
+  @Produces(MediaType.APPLICATION_JSON)
+  @JWTTokenNeeded
+  public Response getKweetsForUser(@PathParam(&quot;uuid&quot;) String uuid) {
+    try {
+<span class="nc" id="L126">      User user = userService.getUserByUUID(uuid);</span>
+<span class="nc" id="L127">      user = userDTO.simplifyUser(user);</span>
+<span class="nc" id="L128">      List&lt;Kweet&gt; kweets = userService.getKweetsForUser(user);</span>
+<span class="nc" id="L129">      KweetDTO[] kweetDTOs = modelMapper.map(kweets, KweetDTO[].class);</span>
+<span class="nc" id="L130">      final String jsonResult = objectMapper.writeValueAsString(kweetDTOs);</span>
+<span class="nc" id="L131">      return Response.ok(jsonResult, MediaType.APPLICATION_JSON).build();</span>
+<span class="nc" id="L132">    } catch (EJBTransactionRolledbackException | JsonProcessingException |PersistenceException e) {</span>
+<span class="nc" id="L133">      e.printStackTrace();</span>
+<span class="nc" id="L134">      return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(&quot;Something went wrong when fetching kweets for user!&quot;).build();</span>
+    }
+  }
+
+  @GET
+  @Path(&quot;{uuid}/timeline&quot;)
+  @Produces(MediaType.APPLICATION_JSON)
+  @JWTTokenNeeded
+  public Response getTimelineForUser(@PathParam(&quot;uuid&quot;) String uuid) {
+    try {
+<span class="nc" id="L144">      User user = userService.getUserByUUID(uuid);</span>
+<span class="nc" id="L145">      user = userDTO.simplifyUser(user);</span>
+<span class="nc" id="L146">      List&lt;Kweet&gt; timeline = userService.getTimeline(user);</span>
+<span class="nc" id="L147">      KweetDTO[] kweetDTOs = modelMapper.map(timeline, KweetDTO[].class);</span>
+<span class="nc" id="L148">      final String jsonResult = objectMapper.writeValueAsString(kweetDTOs);</span>
+<span class="nc" id="L149">      return Response.ok(jsonResult,MediaType.APPLICATION_JSON).build();</span>
+<span class="nc" id="L150">    } catch(EJBTransactionRolledbackException | JsonProcessingException | PersistenceException e) {</span>
+<span class="nc" id="L151">      e.printStackTrace();</span>
+<span class="nc" id="L152">      return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(&quot;Something went wrong when fetching the timeline for user!&quot;).build();</span>
+    }
+  }
+
+  @GET
+  @Path(&quot;search/{username}&quot;)
+  @JWTTokenNeeded
+  public Response searchUserByUsername(@PathParam(&quot;username&quot;) String username) {
+    try {
+<span class="nc" id="L161">      User user = userService.getUserByUsername(username);</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">      if (user == null) {</span>
+<span class="nc" id="L163">        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(&quot;Could not find users by username&quot; + username + &quot;!&quot;).build();</span>
+      }
+<span class="nc" id="L165">      user.setKweets(userService.getKweetsForUser(user));</span>
+<span class="nc" id="L166">      user = userDTO.simplifyUser(user);</span>
+<span class="nc" id="L167">      UserDTO userDto = modelMapper.map(user, UserDTO.class);</span>
+<span class="nc" id="L168">      final String jsonResult = objectMapper.writeValueAsString(userDto);</span>
+<span class="nc" id="L169">      return Response.ok(jsonResult, MediaType.APPLICATION_JSON).build();</span>
+<span class="nc" id="L170">    } catch (EJBTransactionRolledbackException | JsonProcessingException | PersistenceException e) {</span>
+<span class="nc" id="L171">      e.printStackTrace();</span>
+<span class="nc" id="L172">      return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(&quot;Something went wrong when fetching users by username &quot; + username + &quot;!&quot;).build();</span>
+    }
+  }
+
+  @GET
+  @Path(&quot;searchquery/{input}&quot;)
+  @JWTTokenNeeded
+  public Response searchUsersByInput(@PathParam(&quot;input&quot;) String input) {
+    try {
+<span class="nc" id="L181">      final List&lt;User&gt; users = userService.searchUsersByUsername(input);</span>
+<span class="nc bnc" id="L182" title="All 2 branches missed.">      if (users == null) {</span>
+<span class="nc" id="L183">        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(&quot;Could not find users by input&quot; + input + &quot;!&quot;).build();</span>
+      }
+<span class="nc" id="L185">      users.forEach(user -&gt; userDTO.simplifyUser(user));</span>
+<span class="nc" id="L186">      UserDTO[] userDto = modelMapper.map(users, UserDTO[].class);</span>
+<span class="nc" id="L187">      final String jsonResult = objectMapper.writeValueAsString(userDto);</span>
+<span class="nc" id="L188">      return Response.ok(jsonResult, MediaType.APPLICATION_JSON).build();</span>
+<span class="nc" id="L189">    } catch (EJBTransactionRolledbackException | JsonProcessingException | PersistenceException e) {</span>
+<span class="nc" id="L190">      e.printStackTrace();</span>
+<span class="nc" id="L191">      return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(&quot;Something went wrong when fetching users by input &quot; + input + &quot;!&quot;).build();</span>
+    }
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

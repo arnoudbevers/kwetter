@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserDAOMemoryImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Kwetter application - backend</a> &gt; <a href="index.source.html" class="el_package">com.fontys.kwetter.dao.memory</a> &gt; <span class="el_source">UserDAOMemoryImpl.java</span></div><h1>UserDAOMemoryImpl.java</h1><pre class="source lang-java linenums">package com.fontys.kwetter.dao.memory;
+
+import com.fontys.kwetter.dao.UserDAO;
+import com.fontys.kwetter.domain.Role;
+import com.fontys.kwetter.domain.User;
+import com.fontys.kwetter.exceptions.FollowException;
+
+import javax.ejb.Stateful;
+import javax.enterprise.inject.Default;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/**
+ * @author Arnoud Bevers
+ * @project kwetter
+ */
+@Stateful
+@Default
+<span class="nc" id="L21">public class UserDAOMemoryImpl implements UserDAO {</span>
+<span class="nc" id="L22">  private static final Logger LOGGER = Logger.getLogger(UserDAOMemoryImpl.class.getName());</span>
+
+<span class="nc" id="L24">  private List&lt;User&gt; allUsers = new ArrayList&lt;&gt;();</span>
+
+  @Override
+  public List&lt;User&gt; getAll() {
+<span class="nc" id="L28">    return allUsers;</span>
+  }
+
+  @Override
+  public User getUserById(int id) {
+<span class="nc bnc" id="L33" title="All 2 branches missed.">    for (User u : allUsers) {</span>
+<span class="nc bnc" id="L34" title="All 2 branches missed.">      if (u.getId().equals(Long.valueOf(id))) {</span>
+<span class="nc" id="L35">        return u;</span>
+      }
+<span class="nc" id="L37">    }</span>
+<span class="nc" id="L38">    return null;</span>
+  }
+
+  @Override
+  public User getUserByUUID(String uuid) {
+<span class="nc bnc" id="L43" title="All 2 branches missed.">    for (User u : allUsers) {</span>
+<span class="nc bnc" id="L44" title="All 2 branches missed.">      if (u.getUuid().equals(uuid)) {</span>
+<span class="nc" id="L45">        return u;</span>
+      }
+<span class="nc" id="L47">    }</span>
+<span class="nc" id="L48">    return null;</span>
+  }
+
+  @Override
+  public User getUserByUsername(String username) {
+<span class="nc bnc" id="L53" title="All 2 branches missed.">    for (User u : allUsers) {</span>
+<span class="nc bnc" id="L54" title="All 2 branches missed.">      if (u.getUsername().equals(username)) {</span>
+<span class="nc" id="L55">        return u;</span>
+      }
+<span class="nc" id="L57">    }</span>
+<span class="nc" id="L58">    return null;</span>
+  }
+
+  @Override
+  public List&lt;User&gt; searchUsersByUsername(String username) {
+<span class="nc" id="L63">    List&lt;User&gt; foundUsers = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L64" title="All 2 branches missed.">    for (User u : allUsers) {</span>
+<span class="nc bnc" id="L65" title="All 2 branches missed.">      if (u.getUsername().contains(username)) {</span>
+<span class="nc" id="L66">        foundUsers.add(u);</span>
+      }
+<span class="nc" id="L68">    }</span>
+<span class="nc" id="L69">    return foundUsers;</span>
+  }
+
+  @Override
+  public List&lt;User&gt; getFollowingForUser(User user) {
+<span class="nc bnc" id="L74" title="All 2 branches missed.">    for (User u : allUsers) {</span>
+<span class="nc bnc" id="L75" title="All 2 branches missed.">      if (user.equals(u)) {</span>
+<span class="nc" id="L76">        return u.getFollowing();</span>
+      }
+<span class="nc" id="L78">    }</span>
+<span class="nc" id="L79">    return null;</span>
+  }
+
+  @Override
+  public List&lt;User&gt; getFollowersForUser(User user) {
+<span class="nc bnc" id="L84" title="All 2 branches missed.">    for (User u : allUsers) {</span>
+<span class="nc bnc" id="L85" title="All 2 branches missed.">      if (user.equals(u)) {</span>
+<span class="nc" id="L86">        return u.getFollowing();</span>
+      }
+<span class="nc" id="L88">    }</span>
+<span class="nc" id="L89">    return null;</span>
+  }
+
+  @Override
+  public void followUser(User user, User userToFollow) {
+    try {
+<span class="nc" id="L95">      user.follow(userToFollow);</span>
+<span class="nc" id="L96">    } catch (FollowException ex) {</span>
+<span class="nc" id="L97">      LOGGER.log(Level.SEVERE, ex.toString(), ex);</span>
+<span class="nc" id="L98">    }</span>
+<span class="nc" id="L99">    editUser(user);</span>
+<span class="nc" id="L100">    editUser(userToFollow);</span>
+<span class="nc" id="L101">  }</span>
+
+  @Override
+  public void unfollowUser(User user, User userToUnfollow) {
+<span class="nc" id="L105">    user.unfollow(userToUnfollow);</span>
+<span class="nc" id="L106">    editUser(user);</span>
+<span class="nc" id="L107">    editUser(userToUnfollow);</span>
+<span class="nc" id="L108">  }</span>
+
+  @Override
+  public void addUser(User user) {
+<span class="nc" id="L112">    allUsers.add(user);</span>
+<span class="nc" id="L113">  }</span>
+
+  @Override
+  public User editUser(User user) {
+<span class="nc bnc" id="L117" title="All 2 branches missed.">    for (User u : allUsers) {</span>
+<span class="nc bnc" id="L118" title="All 2 branches missed.">      if (u.equals(user)) {</span>
+<span class="nc" id="L119">        allUsers.set(allUsers.indexOf(u), user);</span>
+      }
+<span class="nc" id="L121">    }</span>
+<span class="nc" id="L122">    return user;</span>
+  }
+
+  @Override
+  public void removeUser(User user) {
+<span class="nc" id="L127">    allUsers.remove(user);</span>
+<span class="nc" id="L128">  }</span>
+
+  @Override
+  public User login(String username, String password) {
+<span class="nc bnc" id="L132" title="All 2 branches missed.">    for (User u : allUsers) {</span>
+<span class="nc bnc" id="L133" title="All 4 branches missed.">      if (u.getUsername().equals(username) &amp;&amp; u.getPassword().equals(password)) {</span>
+<span class="nc" id="L134">        return u;</span>
+      }
+<span class="nc" id="L136">    }</span>
+<span class="nc" id="L137">    return null;</span>
+  }
+
+  @Override
+  public User register(User user) {
+<span class="nc bnc" id="L142" title="All 2 branches missed.">    for (User u : allUsers) {</span>
+<span class="nc bnc" id="L143" title="All 4 branches missed.">      if (u.getUsername().equals(user.getUsername()) || u.getEmail().equals(user.getEmail())) {</span>
+<span class="nc" id="L144">        return null;</span>
+      }
+<span class="nc" id="L146">    }</span>
+<span class="nc" id="L147">    allUsers.add(new User(Role.USER, user.getUsername(), user.getEmail(), user.getPassword()));</span>
+<span class="nc" id="L148">    return allUsers.get(allUsers.size() - 1);</span>
+  }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>KweetController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Kwetter application - backend</a> &gt; <a href="index.source.html" class="el_package">com.fontys.kwetter.controllers</a> &gt; <span class="el_source">KweetController.java</span></div><h1>KweetController.java</h1><pre class="source lang-java linenums">package com.fontys.kwetter.controllers;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fontys.kwetter.domain.Kweet;
+import com.fontys.kwetter.domain.User;
+import com.fontys.kwetter.dto.KweetDTO;
+import com.fontys.kwetter.dto.UserDTO;
+import com.fontys.kwetter.services.KweetService;
+import com.fontys.kwetter.services.UserService;
+import org.modelmapper.ModelMapper;
+
+import javax.ejb.EJB;
+import javax.ejb.EJBTransactionRolledbackException;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.persistence.PersistenceException;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.util.List;
+
+/**
+ * API controller used to call all Kweet model related calls.
+ * Uses Service to communicate with the data storage option.
+ *
+ * @author Arnoud Bevers
+ * @project kwetter
+ */
+@Named
+@RequestScoped
+@Path(&quot;kweets&quot;)
+<span class="nc" id="L34">public class KweetController {</span>
+
+  @Inject
+  @Named(&quot;kweetService&quot;)
+  private KweetService kweetService;
+  @Inject
+  @Named(&quot;userService&quot;)
+  private UserService userService;
+  @EJB
+  private UserDTO userDTO;
+<span class="nc" id="L44">  private ObjectMapper mapper = new ObjectMapper();</span>
+<span class="nc" id="L45">  private ModelMapper modelMapper = new ModelMapper();</span>
+
+  @POST
+  @Produces(&quot;application/json&quot;)
+  @Consumes(&quot;application/json&quot;)
+  public Response postKweet(Kweet kweet) {
+    try {
+<span class="nc" id="L52">      final User sender = userService.getUserByUsername(kweet.getSender().getUsername());</span>
+<span class="nc" id="L53">      kweet.setSender(userDTO.simplifyUser(sender));</span>
+<span class="nc" id="L54">      kweetService.postKweet(kweet);</span>
+<span class="nc" id="L55">      KweetDTO kweetDTO = modelMapper.map(kweet, KweetDTO.class);</span>
+<span class="nc" id="L56">      final String json = mapper.writeValueAsString(kweetDTO);</span>
+<span class="nc" id="L57">      return Response.ok(json, MediaType.APPLICATION_JSON).build();</span>
+<span class="nc" id="L58">    } catch (EJBTransactionRolledbackException | JsonProcessingException | PersistenceException e) {</span>
+<span class="nc" id="L59">      e.printStackTrace();</span>
+<span class="nc" id="L60">      return Response.status(Response.Status.BAD_REQUEST).entity(&quot;Something went wrong when posting kweet!&quot;).build();</span>
+    }
+  }
+
+  @GET
+  @Path(&quot;/search/{searchString}&quot;)
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response searchKweets(@PathParam(&quot;searchString&quot;) String searchString) {
+    try {
+<span class="nc" id="L69">      final List&lt;Kweet&gt; kweetsForSearchString = kweetService.searchKweets(searchString);</span>
+<span class="nc" id="L70">      final String json = mapper.writeValueAsString(kweetsForSearchString);</span>
+<span class="nc" id="L71">      return Response.ok(json, MediaType.APPLICATION_JSON).build();</span>
+<span class="nc" id="L72">    } catch (EJBTransactionRolledbackException | JsonProcessingException | PersistenceException e) {</span>
+<span class="nc" id="L73">      e.printStackTrace();</span>
+<span class="nc" id="L74">      return Response.status(Response.Status.BAD_REQUEST).entity(&quot;Something went wrong when searching for kweet!&quot;).build();</span>
+    }
+  }
+
+  @GET
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getAllKweets() {
+    try {
+<span class="nc" id="L82">      final List&lt;Kweet&gt; allKweets = kweetService.getAllKweets();</span>
+<span class="nc" id="L83">      final String json = mapper.writeValueAsString(allKweets);</span>
+<span class="nc" id="L84">      return Response.ok(json, MediaType.APPLICATION_JSON).build();</span>
+<span class="nc" id="L85">    } catch (EJBTransactionRolledbackException | JsonProcessingException | PersistenceException e) {</span>
+<span class="nc" id="L86">      e.printStackTrace();</span>
+<span class="nc" id="L87">      return Response.status(Response.Status.BAD_REQUEST).entity(&quot;Something went wrong when fetching all kweets!&quot;).build();</span>
+    }
+  }
+
+  @GET
+  @Path(&quot;/{userId}&quot;)
+  public Response getKweetsForUser() {
+    // TODO: Implement getKweetsForUser()
+<span class="nc" id="L95">    return Response.ok().build();</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
