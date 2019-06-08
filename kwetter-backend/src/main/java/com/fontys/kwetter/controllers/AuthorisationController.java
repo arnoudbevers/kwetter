@@ -79,7 +79,7 @@ public class AuthorisationController implements Serializable {
     try {
       user = userService.register(user);
       user = userDTO.simplifyUser(user);
-      UserDTO userDTO = modelMapper.map(user, UserDTO.class);
+      userDTO = modelMapper.map(user, UserDTO.class);
       final String jsonResult = objectMapper.writeValueAsString(userDTO);
       return Response.ok(jsonResult, MediaType.APPLICATION_JSON).build();
     } catch (EJBTransactionRolledbackException | JsonProcessingException | PersistenceException e) {
