@@ -137,7 +137,7 @@ public class UserDAOJPAImpl implements UserDAO {
 
   @Override
   public User register(User user) {
-    if (searchUsersByUsername(user.getUsername()).size() != 0) {
+    if (searchUsersByUsername(user.getUsername()).isEmpty()) {
       return null;
     }
     // Encrypt password
