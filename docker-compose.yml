@@ -1,7 +1,7 @@
 version: '3'
 services: 
   kwetter_db:
-    image: mysql
+    image: mysql:8.0
     container_name: kwetter_db
     command: --default-authentication-plugin=mysql_native_password
     environment: 
@@ -45,4 +45,8 @@ services:
      - "kwetter_websockets:kwetter_websockets"
     depends_on:
       - kwetter_backend
+<<<<<<< HEAD
       - kwetter_websockets
+=======
+      - kwetter_websockets
+>>>>>>> b8714a62cbe6ae71bdd14bcda3735807146fa5b0
