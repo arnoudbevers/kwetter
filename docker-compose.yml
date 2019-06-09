@@ -45,8 +45,4 @@ services:
      - "kwetter_websockets:kwetter_websockets"
     depends_on:
       - kwetter_backend
-<<<<<<< HEAD
       - kwetter_websockets
-=======
-      - kwetter_websockets
->>>>>>> b8714a62cbe6ae71bdd14bcda3735807146fa5b0
