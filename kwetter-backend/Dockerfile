@@ -18,7 +18,7 @@ RUN apt-get update && \
   rm mysql-connector-java_8.0.15-1debian9_all.deb && \
   mvn install && \
   mvn compile && \
-  cp ./target/kwetter.war $DEPLOY_DIR/kwetter.war
+  cp ./target/kwetter.war ${DEPLOY_DIR}/kwetter.war
 
 USER payara
 

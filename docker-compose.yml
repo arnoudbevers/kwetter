@@ -25,7 +25,7 @@ services:
       - 8181:8181
       - 9009:9009
     volumes:
-      - ./artifact:/opt/payara/deployments
+      - kwetter_payara_artifact:/opt/payara/deployments
     links:
       - "kwetter_db:kwetter_db"
     depends_on:
@@ -46,3 +46,5 @@ services:
     depends_on:
       - kwetter_backend
       - kwetter_websockets
+volumes:
+  kwetter_payara_artifact:
