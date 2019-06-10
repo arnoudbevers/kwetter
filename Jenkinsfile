@@ -26,13 +26,13 @@ pipeline {
 					steps {
 						dir('kwetter-backend') {
 							// sh 'docker build -f kwetter-backend/Dockerfile -t arnoudbevers/kwetter-backend:latest .'
-							sh 'docker build -t arnoudbevers/kwetter-backend:latest'
+							sh 'docker build -t arnoudbevers/kwetter-backend:latest .'
 						}
 						dir('kwetter-frontend'){
-							sh 'docker build -t arnoudbevers/kwetter-frontend:latest'
+							sh 'docker build -t arnoudbevers/kwetter-frontend:latest .'
 						}
 						dir('kwetter-websockets') {
-							sh 'docker build -t arnoudbevers/kwetter-websockets:latest'
+							sh 'docker build -t arnoudbevers/kwetter-websockets:latest .'
 						}
 					}
 			}
