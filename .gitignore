@@ -107,10 +107,10 @@ hs_err_pid*
 ### Angular ###
 ## Angular ##
 # compiled output
-/dist
-/tmp
-/app/**/*.js
-/app/**/*.js.map
+*/dist
+*/tmp
+*/app/**/*.js
+*/app/**/*.js.map
 
 # dependencies
 **/node_modules
