@@ -6,6 +6,7 @@ VOLUME [ "/java" ]
 WORKDIR /java
 COPY . /java
 
+RUN echo $(ls -a)
 EXPOSE 4848
 EXPOSE 8080
 
