@@ -53,14 +53,17 @@ pipeline {
 							branch 'master'
 					}
 					steps {
-						withRegistry([url: "https://hub.docker.com" , credentialsId: "c64b17f6-0e70-4328-8cb3-741a9fd359d1"]) {
-							echo 'Pushing backend..'
-							sh 'docker push arnoudbevers/kwetter-backend:latest'
-							echo 'Tagging and pushing frontend..'
-							sh 'docker push arnoudbevers/kwetter-frontend:latest'
-							echo 'Tagging and pushing websockets..'
-							sh 'docker push arnoudbevers/kwetter-websockets:latest'
+						script {
+							docker.withRegistry([url: "https://hub.docker.com" , credentialsId: "c64b17f6-0e70-4328-8cb3-741a9fd359d1"]) {
+								echo 'Pushing backend..'
+								sh 'docker push arnoudbevers/kwetter-backend:latest'
+								echo 'Tagging and pushing frontend..'
+								sh 'docker push arnoudbevers/kwetter-frontend:latest'
+								echo 'Tagging and pushing websockets..'
+								sh 'docker push arnoudbevers/kwetter-websockets:latest'
+							}
 						}
+				
 					}
 			}
 	}
