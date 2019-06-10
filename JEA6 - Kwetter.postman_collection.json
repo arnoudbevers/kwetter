@@ -1,0 +1,369 @@
+{
+	"info": {
+		"_postman_id": "5d302679-acd6-4164-84ab-dcf1d08aeb72",
+		"name": "JEA6 - Kwetter",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "/users - User1",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"arnoudbevers\",\n\t\"email\": \"arnoudbevers@mail.com\",\n\t\"password\": \"qw12QW!@\",\n\t\"role\": \"USER\",\n\t\"picture\": \"www.testURL.com\"\n}"
+						},
+						"url": {
+							"raw": "{{apiHost}}/users",
+							"host": [
+								"{{apiHost}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/users - User2",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"levibuck\",\n\t\"email\": \"levibuck@mail.com\",\n\t\"password\": \"qw12QW!@\",\n\t\"role\": \"USER\",\n\t\"picture\": \"www.testURL.com\"\n}"
+						},
+						"url": {
+							"raw": "{{apiHost}}/users",
+							"host": [
+								"{{apiHost}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/users - User3",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"basjoosten\",\n\t\"email\": \"basjoosten@mail.com\",\n\t\"password\": \"qw12QW!@\",\n\t\"role\": \"USER\",\n\t\"picture\": \"www.testURL.com\"\n}"
+						},
+						"url": {
+							"raw": "{{apiHost}}/users",
+							"host": [
+								"{{apiHost}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/users/{id}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiHost}}/users/9f423177-6230-43d1-8b51-1df7602e6772",
+							"host": [
+								"{{apiHost}}"
+							],
+							"path": [
+								"users",
+								"9f423177-6230-43d1-8b51-1df7602e6772"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/users/{id}/timeline",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiHost}}/users/9f423177-6230-43d1-8b51-1df7602e6772/timeline",
+							"host": [
+								"{{apiHost}}"
+							],
+							"path": [
+								"users",
+								"9f423177-6230-43d1-8b51-1df7602e6772",
+								"timeline"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/users/{id}/kweets",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiHost}}/users/9f423177-6230-43d1-8b51-1df7602e6772/kweets",
+							"host": [
+								"{{apiHost}}"
+							],
+							"path": [
+								"users",
+								"9f423177-6230-43d1-8b51-1df7602e6772",
+								"kweets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/users/{username}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiHost}}/users/search/a",
+							"host": [
+								"{{apiHost}}"
+							],
+							"path": [
+								"users",
+								"search",
+								"a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiHost}}/users",
+							"host": [
+								"{{apiHost}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Kweet",
+			"item": [
+				{
+					"name": "/kweets",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"message\": \"This is a test tweet! #cool\",\n    \"sender\": {\n        \"role\": \"USER\",\n        \"email\": \"arnoudbevers@mail.com\",\n        \"username\": \"arnoudbevers\"\n    }\n}"
+						},
+						"url": {
+							"raw": "{{apiHost}}/kweets",
+							"host": [
+								"{{apiHost}}"
+							],
+							"path": [
+								"kweets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/kweets",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiHost}}/kweets",
+							"host": [
+								"{{apiHost}}"
+							],
+							"path": [
+								"kweets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/kweets/search",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiHost}}/kweets/search/test",
+							"host": [
+								"{{apiHost}}"
+							],
+							"path": [
+								"kweets",
+								"search",
+								"test"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Friendship",
+			"item": [
+				{
+					"name": "/friendship/create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"following\" : \"9f423177-6230-43d1-8b51-1df7602e6772\",\n\t\"followed\": \"6d0c8391-624f-4a70-a776-4e1c31ea1add\"\n}"
+						},
+						"url": {
+							"raw": "{{apiHost}}/friendships/create",
+							"host": [
+								"{{apiHost}}"
+							],
+							"path": [
+								"friendships",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/friendship/destroy",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"following\" : \"9f423177-6230-43d1-8b51-1df7602e6772\",\n\t\"followed\": \"6d0c8391-624f-4a70-a776-4e1c31ea1add\"\n}"
+						},
+						"url": {
+							"raw": "{{apiHost}}/friendships/destroy",
+							"host": [
+								"{{apiHost}}"
+							],
+							"path": [
+								"friendships",
+								"destroy"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Authorisation",
+			"item": [
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1f713369-a5ed-478f-b7d2-c10ca75ced1f",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"pm.environment.set(\"jwt_token\", data.jwt_token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"arnoudbevers\",\n\t\"password\": \"qw12QW!@\"\n}"
+						},
+						"url": {
+							"raw": "{{apiHost}}/auth/login",
+							"host": [
+								"{{apiHost}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

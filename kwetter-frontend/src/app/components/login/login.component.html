@@ -1,0 +1,20 @@
+<br />
+<div class="container">
+  <div class="row justify-content-md-center">
+    <form (ngSubmit)="login()">
+      <div class="form-group row">
+        <label for="input_email">Username</label>
+        <input type="text" class="form-control" id="input_username" placeholder="Username" />
+      </div>
+      <div class="form-group row">
+        <label for="input_password">Password</label>
+        <input type="password" class="form-control" id="input_password" placeholder="Password" />
+      </div>
+      <div class="loginform_button">
+        <button type="submit" class="btn btn-primary">Login</button>
+      </div>
+      <br />
+      <a [routerLink]="['/account/register']">Don't have an account? Register here.</a>
+    </form>
+  </div>
+</div>

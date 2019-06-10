@@ -1,0 +1,25 @@
+<div class="homepage-profilecard card" style="width:18rem;">
+  <img src="../../../assets/images/bonky.png" class="card-img-top img-thumbnail" alt="profile-picture">
+  <div class="card-body">
+    <h5 class="card-title profile-name">{{ currentUser?.username }}</h5>
+    <h6 class="card-subtitle mb-2 text-muted">@{{ currentUser?.username }}</h6>
+    <p class="card-text">
+      {{ currentUser?.bio }}
+    </p>
+    <div class="dropdown-divider"></div>
+    <div class="row">
+      <div class="col-4">
+        <span class="profilecard-statLabel">Kweets</span>
+        <p class="profilecard-stat">{{ currentUser?.kweets.length }}</p>
+      </div>
+      <div class="col-4">
+        <span class="profilecard-statLabel">Following</span>
+        <p class="profilecard-stat">{{ currentUser?.following.length }}</p>
+      </div>
+      <div class="col-4">
+        <span class="profilecard-statLabel">Followers</span>
+        <p class="profilecard-stat">{{ currentUser?.followers.length }}</p>
+      </div>
+    </div>
+  </div>
+</div>
