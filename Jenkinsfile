@@ -25,13 +25,13 @@ pipeline {
 			stage('Build Docker images') {
 					steps {
 						dir('kwetter-backend') {
-							sh 'docker build -t arnoudbevers/kwetter-backend:latest .'
+							sh 'docker build -t arnoudbevers/kwetter-backend:${env.BUILD_ID} .'
 						}
 						dir('kwetter-frontend'){
-							sh 'docker build -t arnoudbevers/kwetter-frontend:latest .'
+							sh 'docker build -t arnoudbevers/kwetter-frontend:${env.BUILD_ID} .'
 						}
 						dir('kwetter-websockets') {
-							sh 'docker build -t arnoudbevers/kwetter-websockets:latest .'
+							sh 'docker build -t arnoudbevers/kwetter-websockets:${env.BUILD_ID} .'
 						}
 					}
 			}
@@ -54,12 +54,15 @@ pipeline {
 					}
 					steps {
 						script {
-							docker.withRegistry([url: "https://hub.docker.com" , credentialsId: "c64b17f6-0e70-4328-8cb3-741a9fd359d1"]) {
+							docker.withRegistry('https://hub.docker.com' , 'c64b17f6-0e70-4328-8cb3-741a9fd359d1') {
 								echo 'Pushing backend..'
+								sh 'docker push arnoudbevers/kwetter-backend:${env.BUILD_ID}'
 								sh 'docker push arnoudbevers/kwetter-backend:latest'
 								echo 'Tagging and pushing frontend..'
+								sh 'docker push arnoudbevers/kwetter-frontend:${env.BUILD_ID}'
 								sh 'docker push arnoudbevers/kwetter-frontend:latest'
 								echo 'Tagging and pushing websockets..'
+								sh 'docker push arnoudbevers/kwetter-websockets:${env.BUILD_ID}'
 								sh 'docker push arnoudbevers/kwetter-websockets:latest'
 							}
 						}
