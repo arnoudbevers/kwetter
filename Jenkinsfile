@@ -53,7 +53,6 @@ pipeline {
 							branch 'master'
 					}
 					steps {
-						script {
 							withRegistry('https://hub.docker.com' , 'c64b17f6-0e70-4328-8cb3-741a9fd359d1') {
 								echo 'Pushing backend..'
 								sh 'docker push arnoudbevers/kwetter-backend:${env.BUILD_ID}'
@@ -65,7 +64,6 @@ pipeline {
 								sh 'docker push arnoudbevers/kwetter-websockets:${env.BUILD_ID}'
 								sh 'docker push arnoudbevers/kwetter-websockets:latest'
 							}
-						}
 					}
 			}
 	}
