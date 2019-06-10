@@ -63,7 +63,7 @@ public class FriendshipController {
       LOGGER.log(Level.SEVERE, ex.toString(), ex);
       return Response.status(Response.Status.BAD_REQUEST).entity(ex.getMessage()).build();
     } catch (EJBTransactionRolledbackException | JsonProcessingException | PersistenceException e) {
-      e.printStackTrace();
+      LOGGER.log(Level.SEVERE, e.toString(), e);
       return Response.status(Response.Status.BAD_REQUEST).entity("Something went wrong when creating friendship!").build();
     }
   }

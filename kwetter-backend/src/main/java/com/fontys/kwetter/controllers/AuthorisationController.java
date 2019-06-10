@@ -23,6 +23,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Controller for all authorisation related methods (logging in, registering etc.)
@@ -36,6 +38,7 @@ import java.io.Serializable;
 @RequestScoped
 @Path("auth")
 public class AuthorisationController implements Serializable {
+  private static final Logger LOGGER = Logger.getLogger(AuthorisationController.class.getName());
 
   @Inject @Named("userService")
   private UserService userService;
@@ -66,7 +69,7 @@ public class AuthorisationController implements Serializable {
       json.put("uuid", user.getUuid());
       return Response.ok(json.toString(), MediaType.APPLICATION_JSON).build();
     } catch (EJBTransactionRolledbackException | PersistenceException e) {
-      e.printStackTrace();
+      LOGGER.log(Level.SEVERE, e.toString(), e);
       return Response.status(Response.Status.BAD_REQUEST).entity("Something went wrong when logging in!").build();
     }
   }
@@ -83,7 +86,7 @@ public class AuthorisationController implements Serializable {
       final String jsonResult = objectMapper.writeValueAsString(userDTO);
       return Response.ok(jsonResult, MediaType.APPLICATION_JSON).build();
     } catch (EJBTransactionRolledbackException | JsonProcessingException | PersistenceException e) {
-      e.printStackTrace();
+      LOGGER.log(Level.SEVERE, e.toString(), e);
       return Response.status(Response.Status.BAD_REQUEST).entity("Something went wrong when registering user!").build();
     }
   }
