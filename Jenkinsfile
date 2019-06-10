@@ -24,9 +24,16 @@ pipeline {
 			}
 			stage('Build Docker images') {
 					steps {
-							sh 'docker build -f kwetter-backend/Dockerfile -t arnoudbevers/kwetter-backend:latest .'
-							sh 'docker build -f kwetter-frontend/Dockerfile -t arnoudbevers/kwetter-frontend:latest .'
-							sh 'docker build -f kwetter-websockets/Dockerfile -t arnoudbevers/kwetter-websockets:latest .'
+						dir('kwetter-backend') {
+							// sh 'docker build -f kwetter-backend/Dockerfile -t arnoudbevers/kwetter-backend:latest .'
+							sh 'docker build -t arnoudbevers/kwetter-backend:latest'
+						}
+						dir('kwetter-frontend'){
+							sh 'docker build -t arnoudbevers/kwetter-frontend:latest'
+						}
+						dir('kwetter-websockets') {
+							sh 'docker build -t arnoudbevers/kwetter-websockets:latest'
+						}
 					}
 			}
 			stage('SonarQube') {
