@@ -3,7 +3,6 @@ pipeline {
 	tools {
 			maven 'maven'
 			jdk 'jdk'
-			docker 'docker'
 	}
 	stages {
 			stage('Checkout SCM'){
@@ -24,11 +23,14 @@ pipeline {
 					}
 			}
 			stage('Build Docker images') {
+				node('docker'){
 					steps {
 							sh 'docker build -f kwetter-backend/Dockerfile -t arnoudbevers/kwetter-backend:latest .'
 							sh 'docker build -f kwetter-frontend/Dockerfile -t arnoudbevers/kwetter-frontend:latest .'
 							sh 'docker build -f kwetter-websockets/Dockerfile -t arnoudbevers/kwetter-websockets:latest .'
 					}
+				}
+				
 			}
 			stage('SonarQube') {
 					environment {
@@ -47,16 +49,19 @@ pipeline {
 					when {
 							branch 'master'
 					}
-					steps {
-						withDockerRegistry([ credentialsId: "c64b17f6-0e70-4328-8cb3-741a9fd359d1", url: "https://cloud.docker.com/repository/docker/abevers/personal" ]) {
-							echo 'Pushing backend..'
-							sh 'docker push arnoudbevers/kwetter-backend:latest'
-							echo 'Tagging and pushing frontend..'
-							sh 'docker push arnoudbevers/kwetter-frontend:latest'
-							echo 'Tagging and pushing websockets..'
-							sh 'docker push arnoudbevers/kwetter-websockets:latest'
+					node('docker') {
+						steps {
+							withDockerRegistry([ credentialsId: "c64b17f6-0e70-4328-8cb3-741a9fd359d1", url: "https://cloud.docker.com/repository/docker/abevers/personal" ]) {
+								echo 'Pushing backend..'
+								sh 'docker push arnoudbevers/kwetter-backend:latest'
+								echo 'Tagging and pushing frontend..'
+								sh 'docker push arnoudbevers/kwetter-frontend:latest'
+								echo 'Tagging and pushing websockets..'
+								sh 'docker push arnoudbevers/kwetter-websockets:latest'
+							}
 						}
 					}
+					
 			}
 	}
 	post {
