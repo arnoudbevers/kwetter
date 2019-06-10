@@ -25,7 +25,6 @@ pipeline {
 			stage('Build Docker images') {
 					steps {
 						dir('kwetter-backend') {
-							// sh 'docker build -f kwetter-backend/Dockerfile -t arnoudbevers/kwetter-backend:latest .'
 							sh 'docker build -t arnoudbevers/kwetter-backend:latest .'
 						}
 						dir('kwetter-frontend'){
@@ -54,7 +53,7 @@ pipeline {
 							branch 'master'
 					}
 					steps {
-						withDockerRegistry([ credentialsId: "c64b17f6-0e70-4328-8cb3-741a9fd359d1", url: "https://cloud.docker.com/repository/docker/abevers/personal" ]) {
+						withDockerRegistry([ credentialsId: "c64b17f6-0e70-4328-8cb3-741a9fd359d1" ]) {
 							echo 'Pushing backend..'
 							sh 'docker push arnoudbevers/kwetter-backend:latest'
 							echo 'Tagging and pushing frontend..'
