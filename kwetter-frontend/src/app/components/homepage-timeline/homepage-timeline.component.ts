@@ -24,9 +24,7 @@ export class HomepageTimelineComponent implements OnInit {
     private socketService: SocketService
   ) {
     this.socket = this.socketService.open(environment.socketDistUrl);
-    console.log(this.socket);
     this.socket.messages.subscribe(message => {
-      console.log("new message!", message);
       this.timeline.unshift(JSON.parse(message) as Kweet);
     });
   }
