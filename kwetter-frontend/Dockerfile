@@ -10,8 +10,4 @@ COPY . /app/
 
 EXPOSE 4200
 
-<<<<<<< HEAD
 CMD ["npm", "start"]
-=======
-CMD ["npm", "start"]
->>>>>>> b8714a62cbe6ae71bdd14bcda3735807146fa5b0
