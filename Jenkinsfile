@@ -12,14 +12,14 @@ pipeline {
 			}
 			stage('Package backend') {
 					steps {
-							sh "mvn -f ${WORKSPACE}/kwetter-backend/ -B -DskipTests clean package"
+							sh 'mvn -f ${WORKSPACE}/kwetter-backend/ -B -DskipTests clean package'
 					}
 			}
 			
 			stage('Backend test') {
 					steps {
-						sh "mvn -f ${WORKSPACE}/kwetter-backend/ clean jacoco:prepare-agent install jacoco:report"
-						sh "mvn -f ${WORKSPACE}/kwetter-backend/ test"
+						sh 'mvn -f ${WORKSPACE}/kwetter-backend/ clean jacoco:prepare-agent install jacoco:report'
+						sh 'mvn -f ${WORKSPACE}/kwetter-backend/ test'
 					}
 			}
 			stage('Build Docker images') {
@@ -41,7 +41,7 @@ pipeline {
 					}
 					steps {
 							withSonarQubeEnv('SonarQube') {
-									sh "${scannerHome}/bin/sonar-scanner"
+									sh '${scannerHome}/bin/sonar-scanner'
 							}
 							timeout(time: 5, unit: 'MINUTES') {
 									waitForQualityGate abortPipeline: true
@@ -58,10 +58,10 @@ pipeline {
 								echo 'Pushing backend..'
 								sh 'docker push arnoudbevers/kwetter-backend:${env.BUILD_ID}'
 								sh 'docker push arnoudbevers/kwetter-backend:latest'
-								echo 'Tagging and pushing frontend..'
+								echo 'Pushing frontend..'
 								sh 'docker push arnoudbevers/kwetter-frontend:${env.BUILD_ID}'
 								sh 'docker push arnoudbevers/kwetter-frontend:latest'
-								echo 'Tagging and pushing websockets..'
+								echo 'Pushing and pushing websockets..'
 								sh 'docker push arnoudbevers/kwetter-websockets:${env.BUILD_ID}'
 								sh 'docker push arnoudbevers/kwetter-websockets:latest'
 							}
@@ -72,9 +72,9 @@ pipeline {
 	}
 	post {
 		always {
-			emailext body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}",
+			emailext body: '${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}',
 					recipientProviders: [[$class: 'DevelopersRecipientProvider']],
-					subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
+					subject: 'Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}'
 		}
 	}
 }
