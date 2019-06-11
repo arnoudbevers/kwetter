@@ -10,8 +10,7 @@ services:
     volumes:
       - ./database:/var/lib/mysql
   kwetter_backend:
-    image: abevers/kwetter-backend
-    build: kwetter-backend
+    image: abevers/kwetter-backend:latest
     container_name: kwetter_backend
     environment: 
       - JDBC_NAME=kwetter
@@ -32,14 +31,12 @@ services:
     depends_on:
       - kwetter_db
   kwetter_websockets:
-    image: abevers/kwetter-websockets
-    build: kwetter-websockets
+    image: abevers/kwetter-websockets:latest
     container_name: kwetter_websockets
     ports:
       - 3001:3001
   kwetter_frontend:
-    image: abevers/kwetter-frontend
-    build: kwetter-frontend
+    image: abevers/kwetter-frontend:latest
     container_name: kwetter_frontend
     ports:
       - 4200:4200
