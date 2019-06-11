@@ -104,7 +104,7 @@ public class AuthorisationController implements Serializable {
       builder.entity(validateString);
       return builder.build();
     } catch (Exception e) {
-      e.printStackTrace();
+      LOGGER.log(Level.SEVERE, e.toString(), e);
       return Response.status(Response.Status.BAD_REQUEST).entity("Something went wrong when validating recaptcha!").build();
     }
   }

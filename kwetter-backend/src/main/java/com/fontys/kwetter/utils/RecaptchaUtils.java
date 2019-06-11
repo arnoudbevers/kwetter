@@ -43,8 +43,8 @@ public class RecaptchaUtils {
       }
       return (result.toString());
     } catch (Exception e) {
-//      LOGGER.log(Level.SEVERE, e.toString(), e);
-      e.printStackTrace();
+      LOGGER.log(Level.SEVERE, e.toString(), e);
+//      e.printStackTrace();
       return null;
     }
   }
