@@ -7,6 +7,7 @@ import com.fontys.kwetter.domain.api.Credentials;
 import com.fontys.kwetter.dto.UserDTO;
 import com.fontys.kwetter.security.JWTGenerator;
 import com.fontys.kwetter.services.UserService;
+import com.fontys.kwetter.utils.RecaptchaUtils;
 import org.json.JSONObject;
 import org.modelmapper.ModelMapper;
 
@@ -16,10 +17,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.PersistenceException;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.Serializable;
@@ -40,8 +38,12 @@ import java.util.logging.Logger;
 public class AuthorisationController implements Serializable {
   private static final Logger LOGGER = Logger.getLogger(AuthorisationController.class.getName());
 
-  @Inject @Named("userService")
+  @Inject
+  @Named("userService")
   private UserService userService;
+
+  @Inject
+  private RecaptchaUtils recaptchaUtils;
   private ObjectMapper mapper = new ObjectMapper();
 
   @EJB
@@ -59,7 +61,7 @@ public class AuthorisationController implements Serializable {
       // 1. Call login method - return User object
       User user = userService.logIn(credentials.getUsername(), credentials.getPassword());
       // 2. Check if user is null - this means login has failed!
-      if(user == null) {
+      if (user == null) {
         return Response.status(400).entity("The username and password combination is incorrect!").build();
       }
       // 3. Use username and UUID in JWT generator
@@ -88,6 +90,22 @@ public class AuthorisationController implements Serializable {
     } catch (EJBTransactionRolledbackException | JsonProcessingException | PersistenceException e) {
       LOGGER.log(Level.SEVERE, e.toString(), e);
       return Response.status(Response.Status.BAD_REQUEST).entity("Something went wrong when registering user!").build();
+    }
+  }
+
+  @GET
+  @Produces(MediaType.APPLICATION_JSON)
+  @Path("recaptcha/{response}")
+  public Response validateRecaptcha(@PathParam("response") String response) {
+    try {
+      System.out.println(">>> I AM HERE!!");
+      String validateString = recaptchaUtils.validateCaptcha(response);
+      Response.ResponseBuilder builder = Response.status(Response.Status.OK);
+      builder.entity(validateString);
+      return builder.build();
+    } catch (Exception e) {
+      e.printStackTrace();
+      return Response.status(Response.Status.BAD_REQUEST).entity("Something went wrong when validating recaptcha!").build();
     }
   }
 }

@@ -5,6 +5,7 @@ import { NgModule } from "@angular/core";
 import { RoutingModule } from "./routing/routing.module";
 import { HttpClientModule } from "@angular/common/http";
 import { JwtModule } from "@auth0/angular-jwt";
+import { RecaptchaModule } from "ng-recaptcha";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms"; // <== add the imports!
 
 //Angular Material Modules
@@ -55,6 +56,7 @@ import { ProfileFriendshipsComponent } from './components/profile-friendships/pr
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    RecaptchaModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: function tokenGetter() {
