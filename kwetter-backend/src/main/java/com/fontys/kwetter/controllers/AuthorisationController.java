@@ -44,7 +44,6 @@ public class AuthorisationController implements Serializable {
 
   @Inject
   private RecaptchaUtils recaptchaUtils;
-  private ObjectMapper mapper = new ObjectMapper();
 
   @EJB
   private UserDTO userDTO;
@@ -83,6 +82,9 @@ public class AuthorisationController implements Serializable {
   public Response register(User user) {
     try {
       user = userService.register(user);
+      if(user == null) {
+        return Response.status(Response.Status.BAD_REQUEST).entity("A user with this username already exists!").build();
+      }
       user = userDTO.simplifyUser(user);
       userDTO = modelMapper.map(user, UserDTO.class);
       final String jsonResult = objectMapper.writeValueAsString(userDTO);
@@ -98,7 +100,6 @@ public class AuthorisationController implements Serializable {
   @Path("recaptcha/{response}")
   public Response validateRecaptcha(@PathParam("response") String response) {
     try {
-      System.out.println(">>> I AM HERE!!");
       String validateString = recaptchaUtils.validateCaptcha(response);
       Response.ResponseBuilder builder = Response.status(Response.Status.OK);
       builder.entity(validateString);
