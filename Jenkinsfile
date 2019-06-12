@@ -73,10 +73,18 @@
 				}
 		}
 		post {
-			always {
+			success {
 				emailext body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}",
 						recipientProviders: [[$class: "DevelopersRecipientProvider"]],
 						subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
 			}
+      failure {
+				emailext body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}",
+						recipientProviders: [[$class: "CulpritsRecipientProvider"]],
+						subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
+			}
+      always {
+        archiveArtifacts '*'
+      }
 		}
 	}
