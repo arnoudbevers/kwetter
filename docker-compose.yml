@@ -26,8 +26,6 @@ services:
       - 9009:9009
     volumes:
       - kwetter_payara_artifact:/opt/payara/deployments
-    links:
-      - "kwetter_db:kwetter_db"
     depends_on:
       - kwetter_db
   kwetter_websockets:
@@ -40,9 +38,6 @@ services:
     container_name: kwetter_frontend
     ports:
       - 4200:4200
-    links:
-     - "kwetter_backend:kwetter_backend"
-     - "kwetter_websockets:kwetter_websockets"
     depends_on:
       - kwetter_backend
       - kwetter_websockets
