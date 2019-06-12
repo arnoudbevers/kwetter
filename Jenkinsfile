@@ -51,21 +51,31 @@
 								}
 						}
 				}
-				stage("Publish Docker") {
+        stage("Publish build version to docker") {
+          steps {
+            script {
+              docker.withRegistry("", "c64b17f6-0e70-4328-8cb3-741a9fd359d1") {
+              echo "Pushing build version ofbackend.."
+              sh "docker push abevers/kwetter-backend:${BUILD_ID}"
+              echo "Pushing build version of frontend.."
+              sh "docker push abevers/kwetter-frontend:${BUILD_ID}"
+              echo "Pushing build version of websockets.."
+              sh "docker push abevers/kwetter-websockets:${BUILD_ID}"
+            }
+          }
+        }
+				stage("Publish latest version to docker") {
 						when {
-								branch "master"
+								branch "develop"
 						}
 						steps {
 							script {
 								docker.withRegistry("", "c64b17f6-0e70-4328-8cb3-741a9fd359d1") {
-									echo "Pushing backend.."
-									sh "docker push abevers/kwetter-backend:${BUILD_ID}"
+									echo "Pushing latest version of backend.."
 									sh "docker push abevers/kwetter-backend:latest"
-									echo "Pushing frontend.."
-									sh "docker push abevers/kwetter-frontend:${BUILD_ID}"
+									echo "Pushing latest version of frontend.."
 									sh "docker push abevers/kwetter-frontend:latest"
-									echo "Pushing and pushing websockets.."
-									sh "docker push abevers/kwetter-websockets:${BUILD_ID}"
+									echo "Pushing latest version of websockets.."
 									sh "docker push abevers/kwetter-websockets:latest"
 								}
 							}
