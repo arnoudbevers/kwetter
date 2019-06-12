@@ -5,7 +5,7 @@
 				jdk "jdk"
 		}
 		stages {
-				stage("Checkout SCM") 	{
+				stage("Checkout SCM") {
 						steps {
 								checkout scm
 						}
@@ -15,7 +15,6 @@
 								sh "mvn -f ${WORKSPACE}/kwetter-backend/ -B -DskipTests clean package"
 						}
 				}
-				
 				stage("Backend test") {
 						steps {
 							sh "mvn -f ${WORKSPACE}/kwetter-backend/ clean jacoco:prepare-agent install jacoco:report"
@@ -51,31 +50,21 @@
 								}
 						}
 				}
-        stage("Publish build version to docker") {
-          steps {
-            script {
-              docker.withRegistry("", "c64b17f6-0e70-4328-8cb3-741a9fd359d1") {
-              echo "Pushing build version ofbackend.."
-              sh "docker push abevers/kwetter-backend:${BUILD_ID}"
-              echo "Pushing build version of frontend.."
-              sh "docker push abevers/kwetter-frontend:${BUILD_ID}"
-              echo "Pushing build version of websockets.."
-              sh "docker push abevers/kwetter-websockets:${BUILD_ID}"
-            }
-          }
-        }
 				stage("Publish latest version to docker") {
 						when {
-								branch "develop"
+							branch "develop"
 						}
 						steps {
 							script {
 								docker.withRegistry("", "c64b17f6-0e70-4328-8cb3-741a9fd359d1") {
-									echo "Pushing latest version of backend.."
+									echo "Pushing backend.."
+									sh "docker push abevers/kwetter-backend:${BUILD_ID}"
 									sh "docker push abevers/kwetter-backend:latest"
-									echo "Pushing latest version of frontend.."
+									echo "Pushing frontend.."
+									sh "docker push abevers/kwetter-frontend:${BUILD_ID}"
 									sh "docker push abevers/kwetter-frontend:latest"
-									echo "Pushing latest version of websockets.."
+									echo "Pushing and pushing websockets.."
+									sh "docker push abevers/kwetter-websockets:${BUILD_ID}"
 									sh "docker push abevers/kwetter-websockets:latest"
 								}
 							}
@@ -93,8 +82,6 @@
 						recipientProviders: [[$class: "CulpritsRecipientProvider"]],
 						subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
 			}
-      always {
-        archiveArtifacts '*'
-      }
 		}
 	}
+}
