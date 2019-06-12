@@ -35,7 +35,7 @@ import java.util.logging.Logger;
 @Named
 @RequestScoped
 @Path("auth")
-public class AuthorisationController implements Serializable {
+public class AuthorisationController {
   private static final Logger LOGGER = Logger.getLogger(AuthorisationController.class.getName());
 
   @Inject
