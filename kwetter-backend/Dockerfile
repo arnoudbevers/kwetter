@@ -1,12 +1,11 @@
 FROM payara/server-full
 
-MAINTAINER Arnoud "arnoud@arnoudbevers.com"
+MAINTAINER Arnoud Bevers "arnoud@arnoudbevers.com"
 
 VOLUME [ "/java" ]  
 WORKDIR /java
 COPY . /java
 
-RUN echo $(ls -a)
 EXPOSE 4848
 EXPOSE 8080
 

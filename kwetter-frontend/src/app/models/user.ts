@@ -14,5 +14,12 @@ export class User {
     followers: User[];
     password: string;
 
-    constructor() {}
+    constructor(username: string, email: string, location: string, websiteUrl: string, bio: string, password: string) {
+      this.username = username;
+      this.email = email;
+      this.location = location;
+      this.websiteUrl = websiteUrl;
+      this.bio = bio;
+      this.password = password;
+    }
 }
