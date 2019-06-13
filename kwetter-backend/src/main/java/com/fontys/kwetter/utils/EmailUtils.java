@@ -21,7 +21,6 @@ public class EmailUtils {
 
   public void sendWelcomeEmail(User user) throws MessagingException {
     Message message = new MimeMessage(mailSession);
-    System.out.println("Trying to send email from " + mailSession.getProperties().toString()  );
     message.setSubject("Verify email");
     message.setRecipient(Message.RecipientType.TO, new InternetAddress(user.getEmail()));
     message.setText(String.format("Welcome %s to Kwetter!", user.getUsername()));

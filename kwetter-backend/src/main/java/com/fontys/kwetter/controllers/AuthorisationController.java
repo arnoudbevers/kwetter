@@ -96,7 +96,7 @@ public class AuthorisationController {
     } catch (MessagingException e) {
       e.printStackTrace();
       LOGGER.log(Level.SEVERE, e.toString(), e);
-      return Response.status(Response.Status.BAD_REQUEST).entity(String.format("Could not send email to %s", user.getEmail())).build();
+      return Response.status(Response.Status.BAD_REQUEST).entity("Could not send verification email!").build();
     } catch (EJBTransactionRolledbackException | JsonProcessingException | PersistenceException e) {
       LOGGER.log(Level.SEVERE, e.toString(), e);
       return Response.status(Response.Status.BAD_REQUEST).entity("Something went wrong when registering user!").build();
