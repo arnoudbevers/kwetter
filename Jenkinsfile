@@ -5,7 +5,7 @@
 				jdk "jdk"
 		}
 		stages {
-				stage("Checkout SCM") 	{
+				stage("Checkout SCM") {
 						steps {
 								checkout scm
 						}
@@ -15,7 +15,6 @@
 								sh "mvn -f ${WORKSPACE}/kwetter-backend/ -B -DskipTests clean package"
 						}
 				}
-				
 				stage("Backend test") {
 						steps {
 							sh "mvn -f ${WORKSPACE}/kwetter-backend/ clean jacoco:prepare-agent install jacoco:report"
@@ -51,9 +50,9 @@
 								}
 						}
 				}
-				stage("Publish Docker") {
+				stage("Publish latest version to docker") {
 						when {
-								branch "master"
+							branch "develop"
 						}
 						steps {
 							script {
@@ -73,10 +72,15 @@
 				}
 		}
 		post {
-			always {
+			success {
 				emailext body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}",
 						recipientProviders: [[$class: "DevelopersRecipientProvider"]],
 						subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
 			}
+      failure {
+				emailext body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}",
+						recipientProviders: [[$class: "CulpritsRecipientProvider"]],
+						subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
+			}
 		}
-	}
+}

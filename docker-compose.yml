@@ -2,16 +2,16 @@ version: '3'
 services: 
   kwetter_db:
     image: mysql:8.0
-    container_name: kwetter_db
     command: --default-authentication-plugin=mysql_native_password
     environment: 
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=kwetter
     volumes:
       - ./database:/var/lib/mysql
+    networks:
+      - kwetter
   kwetter_backend:
     image: abevers/kwetter-backend:latest
-    container_name: kwetter_backend
     environment: 
       - JDBC_NAME=kwetter
       - DATABASE_USER=root
@@ -26,26 +26,22 @@ services:
       - 9009:9009
     volumes:
       - kwetter_payara_artifact:/opt/payara/deployments
-    links:
-      - "kwetter_db:kwetter_db"
-    depends_on:
-      - kwetter_db
+    networks:
+      - kwetter
   kwetter_websockets:
     image: abevers/kwetter-websockets:latest
-    container_name: kwetter_websockets
     ports:
       - 3001:3001
+    networks:
+      - kwetter
   kwetter_frontend:
     image: abevers/kwetter-frontend:latest
-    container_name: kwetter_frontend
     ports:
       - 4200:4200
-    links:
-     - "kwetter_backend:kwetter_backend"
-     - "kwetter_websockets:kwetter_websockets"
-    depends_on:
-      - kwetter_backend
-      - kwetter_websockets
+    networks:
+      - kwetter
 volumes:
   kwetter_payara_artifact:
-
+networks:
+  kwetter:
+      driver: bridge
