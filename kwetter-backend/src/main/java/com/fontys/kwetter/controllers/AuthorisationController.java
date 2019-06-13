@@ -7,6 +7,7 @@ import com.fontys.kwetter.domain.api.Credentials;
 import com.fontys.kwetter.dto.UserDTO;
 import com.fontys.kwetter.security.JWTGenerator;
 import com.fontys.kwetter.services.UserService;
+import com.fontys.kwetter.utils.EmailUtils;
 import com.fontys.kwetter.utils.RecaptchaUtils;
 import org.json.JSONObject;
 import org.modelmapper.ModelMapper;
@@ -16,6 +17,7 @@ import javax.ejb.EJBTransactionRolledbackException;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.mail.MessagingException;
 import javax.persistence.PersistenceException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -43,6 +45,8 @@ public class AuthorisationController {
 
   @Inject
   private RecaptchaUtils recaptchaUtils;
+  @Inject
+  private EmailUtils emailUtils;
 
   @EJB
   private UserDTO userDTO;
@@ -81,13 +85,18 @@ public class AuthorisationController {
   public Response register(User user) {
     try {
       user = userService.register(user);
-      if(user == null) {
+      if (user == null) {
         return Response.status(Response.Status.BAD_REQUEST).entity("A user with this username already exists!").build();
       }
       user = userDTO.simplifyUser(user);
+      emailUtils.sendWelcomeEmail(user);
       userDTO = modelMapper.map(user, UserDTO.class);
       final String jsonResult = objectMapper.writeValueAsString(userDTO);
       return Response.ok(jsonResult, MediaType.APPLICATION_JSON).build();
+    } catch (MessagingException e) {
+      e.printStackTrace();
+      LOGGER.log(Level.SEVERE, e.toString(), e);
+      return Response.status(Response.Status.BAD_REQUEST).entity(String.format("Could not send email to %s", user.getEmail())).build();
     } catch (EJBTransactionRolledbackException | JsonProcessingException | PersistenceException e) {
       LOGGER.log(Level.SEVERE, e.toString(), e);
       return Response.status(Response.Status.BAD_REQUEST).entity("Something went wrong when registering user!").build();
