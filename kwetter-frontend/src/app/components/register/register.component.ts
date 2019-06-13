@@ -49,6 +49,9 @@ export class RegisterComponent implements OnInit {
       console.error("Form is invalid!");
       return;
     } 
+    // else if (!this.recaptchaSuccess) {
+    //   console.error("Cannot register without successful recaptcha!");
+    // } 
     else {
       this.user = new User(
         this.f.username.value,
