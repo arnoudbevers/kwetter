@@ -7,7 +7,7 @@ import { HttpClientModule } from "@angular/common/http";
 import { JwtModule } from "@auth0/angular-jwt";
 import { RecaptchaModule } from "ng-recaptcha";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms"; // <== add the imports!
-import { ToastrModule } from 'ngx-toastr';
+import { ToastrModule } from "ngx-toastr";
 
 //Angular Material Modules
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
@@ -18,7 +18,6 @@ import { AppComponent } from "./app.component";
 import { LoginComponent } from "./components/login/login.component";
 import { NavbarComponent } from "./components/navbar/navbar.component";
 import { VerifyComponent } from "./components/verify/verify.component";
-
 
 // Serivces
 import { StorageService } from "./services/storage/storage.service";
@@ -32,7 +31,7 @@ import { ProfileProfilecardComponent } from "./components/profile-profilecard/pr
 import { ProfileKweetsComponent } from "./components/profile-kweets/profile-kweets.component";
 import { DatePipe } from "./pipes/date.pipe";
 import { ProfileDetailsComponent } from "./components/profile-details/profile-details.component";
-import { ProfileFriendshipsComponent } from './components/profile-friendships/profile-friendships.component';
+import { ProfileFriendshipsComponent } from "./components/profile-friendships/profile-friendships.component";
 
 @NgModule({
   declarations: [
@@ -61,7 +60,10 @@ import { ProfileFriendshipsComponent } from './components/profile-friendships/pr
     FormsModule,
     ReactiveFormsModule,
     RecaptchaModule,
-    ToastrModule,
+    ToastrModule.forRoot({
+      timeOut: 5000,
+      positionClass: "toast-top-right"
+    }),
     JwtModule.forRoot({
       config: {
         tokenGetter: function tokenGetter() {
