@@ -44,4 +44,10 @@ export class AuthenticationService extends ApiService {
       .post(`${this.getApiUrl()}/auth/register`, user, this.getHttpOptions())
       .pipe(map(user => user));
   }
+
+  verify(uuid: string) {
+    return this.getHttpClient()
+      .get(`${this.getApiUrl()}/auth/verify/${uuid}`, this.getHttpOptions())
+      .pipe(map(user => user));
+  }
 }

@@ -85,4 +85,10 @@ public class UserService {
     // Sort timeline
     return timeline;
   }
+
+  public void verifyUser(String uuid) {
+    User user = this.getUserByUUID(uuid);
+    user.setValidated(true);
+    this.userDAO.editUser(user);
+  }
 }

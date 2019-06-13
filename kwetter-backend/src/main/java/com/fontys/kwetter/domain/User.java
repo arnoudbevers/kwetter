@@ -63,6 +63,9 @@ public class User {
   @Column(length = 160)
   private String bio;
 
+  @Column
+  private boolean isValidated;
+
   @LazyCollection(LazyCollectionOption.FALSE)
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "sender", fetch = FetchType.LAZY)
 //  @JsonManagedReference
@@ -81,6 +84,7 @@ public class User {
     this.kweets = new ArrayList<>();
     this.following = new ArrayList<>();
     this.followers = new ArrayList<>();
+    this.isValidated = false;
   }
 
   public User(Role role, String email, String username) {
@@ -93,6 +97,7 @@ public class User {
     this.following = new ArrayList<>();
     this.followers = new ArrayList<>();
 
+    this.isValidated = false;
     this.location = "";
     this.websiteUrl = "";
     this.bio = "";
@@ -150,6 +155,14 @@ public class User {
 
   public void setEmail(String email) {
     this.email = email;
+  }
+
+  public boolean isValidated() {
+    return isValidated;
+  }
+
+  public void setValidated(boolean validated) {
+    isValidated = validated;
   }
 
   public String getPicture() {

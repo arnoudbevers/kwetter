@@ -30,6 +30,7 @@ import { ProfileKweetsComponent } from "./components/profile-kweets/profile-kwee
 import { DatePipe } from "./pipes/date.pipe";
 import { ProfileDetailsComponent } from "./components/profile-details/profile-details.component";
 import { ProfileFriendshipsComponent } from './components/profile-friendships/profile-friendships.component';
+import { VerifyComponent } from './components/verify/verify.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { ProfileFriendshipsComponent } from './components/profile-friendships/pr
     ProfileKweetsComponent,
     DatePipe,
     ProfileDetailsComponent,
-    ProfileFriendshipsComponent
+    ProfileFriendshipsComponent,
+    VerifyComponent
   ],
   imports: [
     BrowserModule,

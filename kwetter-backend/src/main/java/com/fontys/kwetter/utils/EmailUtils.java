@@ -23,7 +23,11 @@ public class EmailUtils {
     Message message = new MimeMessage(mailSession);
     message.setSubject("Verify email");
     message.setRecipient(Message.RecipientType.TO, new InternetAddress(user.getEmail()));
-    message.setText(String.format("Welcome %s to Kwetter!", user.getUsername()));
+    message.setText(String.format("Welcome to Kwetter! Please press the following link to verify your account! %s", this.generateVerifyUrl(user.getUuid())));
     Transport.send(message);
+  }
+
+  private String generateVerifyUrl(String uuid) {
+    return String.format("http://localhost:4200/verify/%s", uuid);
   }
 }
