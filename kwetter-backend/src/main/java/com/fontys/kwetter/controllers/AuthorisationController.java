@@ -7,6 +7,7 @@ import com.fontys.kwetter.domain.api.Credentials;
 import com.fontys.kwetter.dto.UserDTO;
 import com.fontys.kwetter.security.JWTGenerator;
 import com.fontys.kwetter.services.UserService;
+import com.fontys.kwetter.utils.EmailUtils;
 import com.fontys.kwetter.utils.RecaptchaUtils;
 import org.json.JSONObject;
 import org.modelmapper.ModelMapper;
@@ -16,6 +17,7 @@ import javax.ejb.EJBTransactionRolledbackException;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.mail.MessagingException;
 import javax.persistence.PersistenceException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -43,12 +45,34 @@ public class AuthorisationController {
 
   @Inject
   private RecaptchaUtils recaptchaUtils;
-
+  @Inject
+  private EmailUtils emailUtils;
   @EJB
   private UserDTO userDTO;
 
   private ObjectMapper objectMapper = new ObjectMapper();
   private ModelMapper modelMapper = new ModelMapper();
+
+  @GET
+  @Path("verify/{uuid}")
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response verifyUser(@PathParam("uuid") String uuid) {
+    try {
+      userService.verifyUser(uuid);
+      JSONObject json = new JSONObject();
+      json.put("result", "User has been successfully verified!");
+      json.put("status", "OK");
+      return Response.ok(json.toString()).build();
+    } catch (EJBTransactionRolledbackException | PersistenceException e) {
+      LOGGER.log(Level.SEVERE, e.toString(), e);
+      JSONObject json = new JSONObject();
+      json.put("result", "User cannot be verified!");
+      json.put("status", "ERROR");
+      return Response.status(Response.Status.BAD_REQUEST).entity(json.toString()).build();
+    }
+  }
+
 
   @POST
   @Path("login")
@@ -61,6 +85,9 @@ public class AuthorisationController {
       // 2. Check if user is null - this means login has failed!
       if (user == null) {
         return Response.status(400).entity("The username and password combination is incorrect!").build();
+      }
+      if (!user.isValidated()) {
+        return Response.status(400).entity(String.format("%s is not yet validated!", credentials.getUsername())).build();
       }
       // 3. Use username and UUID in JWT generator
       String jwt = JWTGenerator.createJWT(user.getUuid());
@@ -81,14 +108,15 @@ public class AuthorisationController {
   public Response register(User user) {
     try {
       user = userService.register(user);
-      if(user == null) {
+      if (user == null) {
         return Response.status(Response.Status.BAD_REQUEST).entity("A user with this username already exists!").build();
       }
       user = userDTO.simplifyUser(user);
+      emailUtils.sendWelcomeEmail(user);
       userDTO = modelMapper.map(user, UserDTO.class);
       final String jsonResult = objectMapper.writeValueAsString(userDTO);
       return Response.ok(jsonResult, MediaType.APPLICATION_JSON).build();
-    } catch (EJBTransactionRolledbackException | JsonProcessingException | PersistenceException e) {
+    } catch (EJBTransactionRolledbackException | JsonProcessingException | PersistenceException | MessagingException e) {
       LOGGER.log(Level.SEVERE, e.toString(), e);
       return Response.status(Response.Status.BAD_REQUEST).entity("Something went wrong when registering user!").build();
     }

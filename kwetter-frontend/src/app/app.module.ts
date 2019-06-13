@@ -17,6 +17,8 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { AppComponent } from "./app.component";
 import { LoginComponent } from "./components/login/login.component";
 import { NavbarComponent } from "./components/navbar/navbar.component";
+import { VerifyComponent } from "./components/verify/verify.component";
+
 
 // Serivces
 import { StorageService } from "./services/storage/storage.service";
@@ -47,7 +49,8 @@ import { ProfileFriendshipsComponent } from './components/profile-friendships/pr
     ProfileKweetsComponent,
     DatePipe,
     ProfileDetailsComponent,
-    ProfileFriendshipsComponent
+    ProfileFriendshipsComponent,
+    VerifyComponent
   ],
   imports: [
     BrowserModule,
