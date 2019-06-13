@@ -3,7 +3,7 @@ import { AuthenticationService } from 'src/app/services/authentication/authentic
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-verify',
+  selector: 'verify',
   templateUrl: './verify.component.html',
   styleUrls: ['./verify.component.css']
 })
