@@ -7,6 +7,7 @@ import { HttpClientModule } from "@angular/common/http";
 import { JwtModule } from "@auth0/angular-jwt";
 import { RecaptchaModule } from "ng-recaptcha";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms"; // <== add the imports!
+import { ToastrModule } from 'ngx-toastr';
 
 //Angular Material Modules
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
@@ -57,6 +58,7 @@ import { ProfileFriendshipsComponent } from './components/profile-friendships/pr
     FormsModule,
     ReactiveFormsModule,
     RecaptchaModule,
+    ToastrModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: function tokenGetter() {

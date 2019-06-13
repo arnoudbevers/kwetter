@@ -4,6 +4,7 @@ import { NgForm, FormGroup, FormControl, Validators } from "@angular/forms";
 import { AuthenticationService } from "src/app/services/authentication/authentication.service";
 import { Router } from "@angular/router";
 import { RecaptchaService } from "src/app/services/recaptcha/recaptcha.service";
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: "app-register",
@@ -17,6 +18,7 @@ export class RegisterComponent implements OnInit {
   constructor(
     private authService: AuthenticationService,
     private recaptchaService: RecaptchaService,
+    private toastr: ToastrService,
     private router: Router
   ) {}
 
@@ -70,6 +72,9 @@ export class RegisterComponent implements OnInit {
   resolved(token: any) {
     this.recaptchaService.validateRecaptcha(token).subscribe(response => {
       this.recaptchaSuccess = response["success"];
+      if(this.recaptchaSuccess){
+        this.toastr.success("Recaptcha", "Recaptcha has been validated!");
+      }
     });
   }
 }
