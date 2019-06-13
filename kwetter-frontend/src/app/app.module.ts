@@ -16,6 +16,8 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { AppComponent } from "./app.component";
 import { LoginComponent } from "./components/login/login.component";
 import { NavbarComponent } from "./components/navbar/navbar.component";
+import { VerifyComponent } from "./components/verify/verify.component";
+
 
 // Serivces
 import { StorageService } from "./services/storage/storage.service";
@@ -30,7 +32,6 @@ import { ProfileKweetsComponent } from "./components/profile-kweets/profile-kwee
 import { DatePipe } from "./pipes/date.pipe";
 import { ProfileDetailsComponent } from "./components/profile-details/profile-details.component";
 import { ProfileFriendshipsComponent } from './components/profile-friendships/profile-friendships.component';
-import { VerifyComponent } from './components/verify/verify.component';
 
 @NgModule({
   declarations: [
