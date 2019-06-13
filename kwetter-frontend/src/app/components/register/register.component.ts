@@ -67,7 +67,6 @@ export class RegisterComponent implements OnInit {
   resolved(token: any) {
     this.recaptchaService.validateRecaptcha(token).subscribe(response => {
       this.recaptchaSuccess = response["success"];
-      console.log(response);
     });
   }
 }
