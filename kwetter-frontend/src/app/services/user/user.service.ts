@@ -4,7 +4,6 @@ import { HttpClient } from "@angular/common/http";
 import { User } from "../../models/user";
 import { StorageService } from "../storage/storage.service";
 import { map } from "rxjs/operators";
-import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: "root"

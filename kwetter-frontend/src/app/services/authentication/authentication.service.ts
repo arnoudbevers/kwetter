@@ -1,14 +1,9 @@
 import { Injectable } from "@angular/core";
 import { ApiService } from "../api/api.service";
-import {
-  HttpClient,
-  HttpHeaders,
-  HttpErrorResponse
-} from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { Credentials } from "src/app/models/credentials";
 import { StorageService } from "../storage/storage.service";
 import { tap, catchError, map } from "rxjs/operators";
-import { throwError } from "rxjs";
 import { User } from "src/app/models/user";
 
 @Injectable({
@@ -42,12 +37,18 @@ export class AuthenticationService extends ApiService {
   register(user: User) {
     return this.getHttpClient()
       .post(`${this.getApiUrl()}/auth/register`, user, this.getHttpOptions())
-      .pipe(map(user => user));
+      .pipe(
+        map(user => user),
+        catchError(this.handleError)
+      );
   }
 
   verify(uuid: string) {
     return this.getHttpClient()
       .get(`${this.getApiUrl()}/auth/verify/${uuid}`, this.getHttpOptions())
-      .pipe(map(user => user));
+      .pipe(
+        map(response => response),
+        catchError(this.handleError)
+      );
   }
 }

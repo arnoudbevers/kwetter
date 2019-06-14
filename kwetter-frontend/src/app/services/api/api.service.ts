@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { catchError, tap, map } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
 
 
 const httpOptions = {
@@ -17,7 +18,7 @@ export class ApiService {
   constructor(private http: HttpClient) { }
   
   handleError(error: HttpErrorResponse) {
-    console.error(error);
+    alert(error.error);
     return throwError(error);
   }
 

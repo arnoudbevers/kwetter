@@ -4,6 +4,7 @@ import { NgForm, FormGroup, FormControl, Validators } from "@angular/forms";
 import { AuthenticationService } from "src/app/services/authentication/authentication.service";
 import { Router } from "@angular/router";
 import { RecaptchaService } from "src/app/services/recaptcha/recaptcha.service";
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: "app-register",
@@ -17,6 +18,7 @@ export class RegisterComponent implements OnInit {
   constructor(
     private authService: AuthenticationService,
     private recaptchaService: RecaptchaService,
+    private toastr: ToastrService,
     private router: Router
   ) {}
 
@@ -39,19 +41,20 @@ export class RegisterComponent implements OnInit {
       ])
     });
   }
-
+s
   get f() {
     return this.registerForm.controls;
   }
 
   register() {
     if (this.registerForm.invalid) {
-      console.error("Form is invalid!");
+      this.toastr.warning("Please fill in all the required fields!", "Form validation");
       return;
     } 
-    // else if (!this.recaptchaSuccess) {
-    //   console.error("Cannot register without successful recaptcha!");
-    // } 
+    else if (!this.recaptchaSuccess) {
+      this.toastr.warning("reCAPTCHA", "Please validate using the reCAPTCHA before registering!");
+      return;
+    } 
     else {
       this.user = new User(
         this.f.username.value,
@@ -70,6 +73,11 @@ export class RegisterComponent implements OnInit {
   resolved(token: any) {
     this.recaptchaService.validateRecaptcha(token).subscribe(response => {
       this.recaptchaSuccess = response["success"];
+      if(this.recaptchaSuccess){
+        this.toastr.success("reCAPTCHA has been validated!", "reCAPTCHA");
+      } else {
+        this.toastr.error("Something went wrong when validating this reCAPTCHA.. Please reload the page!", "reCAPTCHA");
+      }
     });
   }
 }
