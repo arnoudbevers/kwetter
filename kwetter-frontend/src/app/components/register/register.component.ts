@@ -41,19 +41,20 @@ export class RegisterComponent implements OnInit {
       ])
     });
   }
-
+s
   get f() {
     return this.registerForm.controls;
   }
 
   register() {
     if (this.registerForm.invalid) {
-      console.error("Form is invalid!");
+      this.toastr.warning("Please fill in all the required fields!", "Form validation");
       return;
     } 
-    // else if (!this.recaptchaSuccess) {
-    //   console.error("Cannot register without successful recaptcha!");
-    // } 
+    else if (!this.recaptchaSuccess) {
+      this.toastr.warning("reCAPTCHA", "Please validate using the reCAPTCHA before registering!");
+      return;
+    } 
     else {
       this.user = new User(
         this.f.username.value,
@@ -73,7 +74,9 @@ export class RegisterComponent implements OnInit {
     this.recaptchaService.validateRecaptcha(token).subscribe(response => {
       this.recaptchaSuccess = response["success"];
       if(this.recaptchaSuccess){
-        this.toastr.success("Recaptcha", "Recaptcha has been validated!");
+        this.toastr.success("reCAPTCHA has been validated!", "reCAPTCHA");
+      } else {
+        this.toastr.error("Something went wrong when validating this reCAPTCHA.. Please reload the page!", "reCAPTCHA");
       }
     });
   }

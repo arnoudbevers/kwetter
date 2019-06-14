@@ -3,7 +3,6 @@ import { ApiService } from "../api/api.service";
 import { HttpClient } from "@angular/common/http";
 import { Kweet } from "src/app/models/kweet";
 import { map } from "rxjs/operators";
-import { BehaviorSubject, Observable, of, Subject } from "rxjs";
 import { StorageService } from "../storage/storage.service";
 
 @Injectable({
